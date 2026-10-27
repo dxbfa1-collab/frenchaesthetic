@@ -33,21 +33,25 @@ export const trainers: DoctorSeed[] = [
   {
     name: 'Dr. Maria',
     slug: 'dr-maria',
-    title: 'BDS · Aesthetic Practitioner',
+    // Owner, 28 Oct 2026 (as in the FMA brand guide). Her degree (MBBS or BDS) is not confirmed.
+    title: 'Aesthetic Physician',
     isTrainer: true,
     order: 2,
-    status: 'confirm',
+    status: 'confirmed',
     internalNote:
-      'Current staff (owner, 28 Oct 2026). Title to confirm: the academy brief says "BDS · Aesthetic Practitioner", the clinic brief and brand guide "Aesthetic Physician" (older record: MBBS).',
+      'Current staff. Title confirmed by the owner on 28 Oct 2026. Degree still to confirm (older record MBBS, academy brief BDS), and the PMDC number.',
   },
   {
     name: 'Dr. Sadaf',
     slug: 'dr-sadaf',
+    // Owner, 28 Oct 2026: DPT (Doctor of Physical Therapy); "Physical Therapist" in the FMA brand guide.
+    title: 'Physical Therapist',
+    degrees: 'DPT',
     isTrainer: true,
     order: 3,
-    status: 'confirm',
+    status: 'confirmed',
     internalNote:
-      'Current staff (owner, 28 Oct 2026). Title to confirm: "DPT and Gyne" in the academy brief, "Physical Therapist" in the FMA brand guide, "MS Gynaecology" in an older record. Do not show her as an injectables trainer if DPT.',
+      'Current staff. DPT confirmed by the owner on 28 Oct 2026. A physical therapist: never list her as an injectables trainer or performing doctor.',
   },
 ]
 

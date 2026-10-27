@@ -250,8 +250,8 @@ The current team is these three (owner, 28 Oct 2026). Dr. Kashmala and Dr. Sarah
 | Name | Title on record | Status |
 | --- | --- | --- |
 | Dr. Iqra Fatima | Dermatologist (also the Academy's Lead Trainer) | Current. Ready to use the title. CONFIRM degree (FCPS/MCPS?), PMDC number, consented photo. |
-| Dr. Maria (possibly Maria Massood) | FMA brief: Aesthetic Physician, MBBS. FAA brief: BDS, Aesthetic Practitioner. | Current. Title CONFLICT |
-| Dr. Sadaf (possibly Sadaf Arif) | Physical Therapist / MS Gynaecology / "DPT and Gyne" | Current. Title CONFLICT. Do not show her as an injector if she is a DPT. |
+| Dr. Maria (possibly Maria Massood) | **Aesthetic Physician** (owner, 28 Oct 2026) | Current. Title CONFIRMED. Degree (MBBS or BDS) and PMDC number still to confirm. |
+| Dr. Sadaf (possibly Sadaf Arif) | **DPT · Physical Therapist** (owner, 28 Oct 2026) | Current. CONFIRMED. A physical therapist: never show her as an injector or performing doctor for medical procedures. |
 
 ### Pricing
 
@@ -399,8 +399,8 @@ Batch data is editable in the CMS (`Batches` collection). Never hard-code dates.
 | Trainer | Title to publish | Status |
 | --- | --- | --- |
 | Dr. Iqra Fatima | Dermatologist · Lead Trainer | CONFIRMED. Add FCPS/MCPS if she holds it; photo consent needed. |
-| Dr. Maria | BDS · Aesthetic Practitioner | OWNER CLAIM (conflicts with the FMA brief) |
-| Dr. Sadaf | CONFIRM | "DPT and Gyne" needs clarifying |
+| Dr. Maria | Aesthetic Physician | CONFIRMED (owner, 28 Oct 2026). Degree still to confirm. |
+| Dr. Sadaf | DPT · Physical Therapist | CONFIRMED (owner, 28 Oct 2026). Not an injectables trainer. |
 | Male trainer (IN-1 photo) | CONFIRM | Name and role needed, or do not use the photo |
 
 Faculty copy says "Dermatologist-led team", not "lady doctors only". Do not claim "1 trainer per 5 students" unless all trainers attend every batch.
@@ -586,7 +586,7 @@ Five phases. Each ends with a working build pushed to GitHub. **Do not start a p
 - [ ] Clinic pricing: "From PKR X", WhatsApp-only, or a full price list?
 - [ ] Academy fee display: show the fee, "from", or "Fee on WhatsApp"? One fixed Invasive fee.
 - [ ] Final list of clinic services and which branch offers each. Do the wellness services and the off-list services stay?
-- [ ] Doctor and trainer titles, degrees, PMDC numbers and consented photos. Resolve the Dr Maria (MBBS vs BDS) and Dr Sadaf titles; identify the male trainer. (Dr Kashmala and Dr Sarah have left.)
+- [ ] Doctor and trainer titles, degrees, PMDC numbers and consented photos. Dr Maria's degree (MBBS or BDS) and PMDC numbers; identify the male trainer. (Titles confirmed 28 Oct; Dr Kashmala and Dr Sarah have left.)
 
 ### Blocking launch
 
@@ -624,7 +624,7 @@ Record each answer here with its date. It overrides anything above.
 - 2026-10-28: Clinic number **0311-1171788** (the UAN; the FMA brand guide labels it "UAN / WhatsApp" and puts it on every branch board). Academy admissions number **+92 311 2748804**.
 - 2026-10-28: Instagram https://www.instagram.com/frenchaestheticsofficial/ and Facebook https://www.facebook.com/frenchaestheticsofficial, which resolves the clinic Instagram conflict. Academy socials and email are still to confirm, so the academy footer shows none yet.
 - 2026-10-28: **Nothing about Fahad Nazeer** on the website: no name, title, bio or photo.
-- 2026-10-28: The clinic's doctors are **Dr. Iqra, Dr. Sadaf and Dr. Maria**. **Dr. Sarah and Dr. Kashmala have left**: they are not on the website and must not be added. The titles of Dr. Sadaf and Dr. Maria are still to confirm, so they show on staging only.
+- 2026-10-28: The clinic's doctors are **Dr. Iqra, Dr. Sadaf and Dr. Maria**. **Dr. Sarah and Dr. Kashmala have left**: they are not on the website and must not be added. Titles, the same day: **Dr. Sadaf: DPT (Physical Therapist)**; **Dr. Maria: Aesthetic Physician**. Both are now published as trainers.
 - 2026-10-28: Academy batches start on the **15th or the 20th** of every month: these are the two possible start days. This replaces the 15th (Non-Invasive) / 22nd (Invasive) rule. The owner then confirmed: **Non-Invasive on the 15th, Invasive on the 20th** (stored per course as "Batch start day"). Still to confirm: whether a Sunday start still moves to Monday (20 Dec 2026 is a Sunday), and whether the November Invasive batch stays on Mon 23 Nov or moves to Fri 20 Nov (seeded as Fri 20 Nov, marked to confirm).
 - 2026-10-28: Brand files received: `FMA_Brand_Guidelines_2026.pptx` and `FMA_Logo_Pack.zip` (includes SVGs) in `D:\French Aesthetics Content\Clinic Content\design system files`; the FAA brand guidelines PDF and logo pack (PNG only, no SVG) in `D:\French Aesthetics Content\Academy Content\Design system files`. The website's copies live in `public/brand`.
 

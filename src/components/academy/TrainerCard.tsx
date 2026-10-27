@@ -19,7 +19,8 @@ export function TrainerCard({ trainer }: { trainer: Doctor }) {
     trainer.photoConsent && trainer.photo && typeof trainer.photo === 'object' && trainer.photo.url
       ? trainer.photo
       : null
-  const role = [trainer.title, trainer.trainerRole].filter(Boolean).join(' · ')
+  // Credentials exactly as documented: degree, title, role, e.g. "DPT · Physical Therapist".
+  const role = [trainer.degrees, trainer.title, trainer.trainerRole].filter(Boolean).join(' · ')
 
   return (
     <article className="flex items-center gap-6 border border-hairline bg-surface p-6 sm:p-7">
