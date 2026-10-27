@@ -59,436 +59,442 @@ export type SupportedTimezones =
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
   | 'Pacific/Auckland'
-  | 'Pacific/Fiji';
+  | 'Pacific/Fiji'
 
 export interface Config {
   auth: {
-    users: UserAuthOperations;
-  };
-  blocks: {};
+    users: UserAuthOperations
+  }
+  blocks: {}
   collections: {
-    branches: Branch;
-    media: Media;
-    users: User;
-    'payload-kv': PayloadKv;
-    'payload-locked-documents': PayloadLockedDocument;
-    'payload-preferences': PayloadPreference;
-    'payload-migrations': PayloadMigration;
-  };
-  collectionsJoins: {};
+    branches: Branch
+    media: Media
+    users: User
+    'payload-kv': PayloadKv
+    'payload-locked-documents': PayloadLockedDocument
+    'payload-preferences': PayloadPreference
+    'payload-migrations': PayloadMigration
+  }
+  collectionsJoins: {}
   collectionsSelect: {
-    branches: BranchesSelect<false> | BranchesSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
-    users: UsersSelect<false> | UsersSelect<true>;
-    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
-    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
-    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
-    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
-  };
+    branches: BranchesSelect<false> | BranchesSelect<true>
+    media: MediaSelect<false> | MediaSelect<true>
+    users: UsersSelect<false> | UsersSelect<true>
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>
+    'payload-locked-documents':
+      PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>
+  }
   db: {
-    defaultIDType: string;
-  };
-  fallbackLocale: null;
+    defaultIDType: string
+  }
+  fallbackLocale: null
   globals: {
-    'site-settings': SiteSettings;
-  };
+    'site-settings': SiteSettings
+  }
   globalsSelect: {
-    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
-  };
-  locale: null;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>
+  }
+  locale: null
   widgets: {
-    collections: CollectionsWidget;
-  };
-  user: User;
+    collections: CollectionsWidget
+  }
+  user: User
   jobs: {
-    tasks: unknown;
-    workflows: unknown;
-  };
+    tasks: unknown
+    workflows: unknown
+  }
 }
 export interface UserAuthOperations {
   forgotPassword: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   login: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   registerFirstUser: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   unlock: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "branches".
  */
 export interface Branch {
-  id: string;
-  name: string;
+  id: string
+  name: string
   /**
    * Optional shorter name, e.g. "Iqbal Town" for academy pages.
    */
-  shortName?: string | null;
+  shortName?: string | null
   /**
    * Used in the page address. Filled in from the name.
    */
-  slug: string;
-  business: 'clinic' | 'academy' | 'both';
-  city: 'Lahore' | 'Karachi';
-  status: 'active' | 'planned';
+  slug: string
+  business: 'clinic' | 'academy' | 'both'
+  city: 'Lahore' | 'Karachi'
+  status: 'active' | 'planned'
   /**
    * Lower numbers show first.
    */
-  order?: number | null;
-  address?: string | null;
-  addressStatus: 'confirmed' | 'confirm';
-  mapUrl?: string | null;
-  googleBusinessUrl?: string | null;
-  parkingNote?: string | null;
-  landmarkNote?: string | null;
+  order?: number | null
+  address?: string | null
+  addressStatus: 'confirmed' | 'confirm'
+  mapUrl?: string | null
+  googleBusinessUrl?: string | null
+  parkingNote?: string | null
+  landmarkNote?: string | null
   /**
    * Only an owner-approved branch number. Leave empty to use the main UAN.
    */
-  whatsapp?: string | null;
-  phone?: string | null;
-  consultation?: ('free' | 'paid' | 'unknown') | null;
+  whatsapp?: string | null
+  phone?: string | null
+  consultation?: ('free' | 'paid' | 'unknown') | null
   /**
    * Shown only when filled in.
    */
-  consultationFee?: number | null;
-  skinAnalysis?: boolean | null;
+  consultationFee?: number | null
+  skinAnalysis?: boolean | null
   hours?:
     | {
-        days: string;
-        opens?: string | null;
-        closes?: string | null;
-        id?: string | null;
+        days: string
+        opens?: string | null
+        closes?: string | null
+        id?: string | null
       }[]
-    | null;
-  hoursStatus: 'confirmed' | 'confirm';
-  photos?: (string | Media)[] | null;
+    | null
+  hoursStatus: 'confirmed' | 'confirm'
+  photos?: (string | Media)[] | null
   /**
    * Staff only. Never shown on the website.
    */
-  internalNote?: string | null;
-  updatedAt: string;
-  createdAt: string;
+  internalNote?: string | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: string
   /**
    * Describe the photo for people who cannot see it, e.g. "Doctor examining skin at DHA Phase 4".
    */
-  alt: string;
+  alt: string
   /**
    * Brand rule: real photos only, never AI-made faces, and written consent from every identifiable person.
    */
-  peopleConsent: 'none' | 'onFile' | 'missing';
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
+  peopleConsent: 'none' | 'onFile' | 'missing'
+  updatedAt: string
+  createdAt: string
+  url?: string | null
+  thumbnailURL?: string | null
+  filename?: string | null
+  mimeType?: string | null
+  filesize?: number | null
+  width?: number | null
+  height?: number | null
+  focalX?: number | null
+  focalY?: number | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
-  name?: string | null;
+  id: string
+  name?: string | null
   /**
    * The first account is always made the owner. After that, only the owner can change roles.
    */
-  roles: ('owner' | 'clinicCoordinator' | 'academyCoordinator' | 'editor')[];
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
+  roles: ('owner' | 'clinicCoordinator' | 'academyCoordinator' | 'editor')[]
+  updatedAt: string
+  createdAt: string
+  email: string
+  resetPasswordToken?: string | null
+  resetPasswordExpiration?: string | null
+  salt?: string | null
+  hash?: string | null
+  resetPasswordRequestedAt?: string | null
+  loginAttempts?: number | null
+  lockUntil?: string | null
   sessions?:
     | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
+        id: string
+        createdAt?: string | null
+        expiresAt: string
       }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
+    | null
+  password?: string | null
+  collection: 'users'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
-  key: string;
+  id: string
+  key: string
   data:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
+    | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: string
   document?:
     | ({
-        relationTo: 'branches';
-        value: string | Branch;
+        relationTo: 'branches'
+        value: string | Branch
       } | null)
     | ({
-        relationTo: 'media';
-        value: string | Media;
+        relationTo: 'media'
+        value: string | Media
       } | null)
     | ({
-        relationTo: 'users';
-        value: string | User;
-      } | null);
-  globalSlug?: string | null;
+        relationTo: 'users'
+        value: string | User
+      } | null)
+  globalSlug?: string | null
   user: {
-    relationTo: 'users';
-    value: string | User;
-  };
-  updatedAt: string;
-  createdAt: string;
+    relationTo: 'users'
+    value: string | User
+  }
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: string
   user: {
-    relationTo: 'users';
-    value: string | User;
-  };
-  key?: string | null;
+    relationTo: 'users'
+    value: string | User
+  }
+  key?: string | null
   value?:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
+    | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
-  name?: string | null;
-  batch?: number | null;
-  updatedAt: string;
-  createdAt: string;
+  id: string
+  name?: string | null
+  batch?: number | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "branches_select".
  */
 export interface BranchesSelect<T extends boolean = true> {
-  name?: T;
-  shortName?: T;
-  slug?: T;
-  business?: T;
-  city?: T;
-  status?: T;
-  order?: T;
-  address?: T;
-  addressStatus?: T;
-  mapUrl?: T;
-  googleBusinessUrl?: T;
-  parkingNote?: T;
-  landmarkNote?: T;
-  whatsapp?: T;
-  phone?: T;
-  consultation?: T;
-  consultationFee?: T;
-  skinAnalysis?: T;
+  name?: T
+  shortName?: T
+  slug?: T
+  business?: T
+  city?: T
+  status?: T
+  order?: T
+  address?: T
+  addressStatus?: T
+  mapUrl?: T
+  googleBusinessUrl?: T
+  parkingNote?: T
+  landmarkNote?: T
+  whatsapp?: T
+  phone?: T
+  consultation?: T
+  consultationFee?: T
+  skinAnalysis?: T
   hours?:
     | T
     | {
-        days?: T;
-        opens?: T;
-        closes?: T;
-        id?: T;
-      };
-  hoursStatus?: T;
-  photos?: T;
-  internalNote?: T;
-  updatedAt?: T;
-  createdAt?: T;
+        days?: T
+        opens?: T
+        closes?: T
+        id?: T
+      }
+  hoursStatus?: T
+  photos?: T
+  internalNote?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  peopleConsent?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
+  alt?: T
+  peopleConsent?: T
+  updatedAt?: T
+  createdAt?: T
+  url?: T
+  thumbnailURL?: T
+  filename?: T
+  mimeType?: T
+  filesize?: T
+  width?: T
+  height?: T
+  focalX?: T
+  focalY?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  name?: T;
-  roles?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  resetPasswordRequestedAt?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
+  name?: T
+  roles?: T
+  updatedAt?: T
+  createdAt?: T
+  email?: T
+  resetPasswordToken?: T
+  resetPasswordExpiration?: T
+  salt?: T
+  hash?: T
+  resetPasswordRequestedAt?: T
+  loginAttempts?: T
+  lockUntil?: T
   sessions?:
     | T
     | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
+        id?: T
+        createdAt?: T
+        expiresAt?: T
+      }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
-  key?: T;
-  data?: T;
+  key?: T
+  data?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
-  document?: T;
-  globalSlug?: T;
-  user?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  document?: T
+  globalSlug?: T
+  user?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences_select".
  */
 export interface PayloadPreferencesSelect<T extends boolean = true> {
-  user?: T;
-  key?: T;
-  value?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  user?: T
+  key?: T
+  value?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations_select".
  */
 export interface PayloadMigrationsSelect<T extends boolean = true> {
-  name?: T;
-  batch?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  name?: T
+  batch?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
  */
 export interface SiteSettings {
-  id: string;
+  id: string
   /**
    * The only number in the clinic header and footer, written as it should appear.
    */
-  clinicPhone: string;
+  clinicPhone: string
   /**
    * Leave empty when the UAN itself is on WhatsApp.
    */
-  clinicWhatsApp?: string | null;
-  clinicEmail?: string | null;
-  clinicInstagram?: string | null;
-  clinicFacebook?: string | null;
+  clinicWhatsApp?: string | null
+  clinicEmail?: string | null
+  clinicInstagram?: string | null
+  clinicFacebook?: string | null
   /**
    * The one admissions number on every academy page.
    */
-  admissionsWhatsApp: string;
-  academyEmail?: string | null;
-  academyInstagram?: string | null;
-  academyFacebook?: string | null;
-  googleReviewsUrl?: string | null;
-  ga4Id?: string | null;
-  metaPixelId?: string | null;
-  medicalDisclaimer: string;
-  academyFilterLine: string;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+  admissionsWhatsApp: string
+  academyEmail?: string | null
+  academyInstagram?: string | null
+  academyFacebook?: string | null
+  /**
+   * Days of the month on which a new batch can start (owner rule, 28 Oct 2026: the 15th and the 20th). Shown on academy pages. Leave empty to say "New batches every month".
+   */
+  batchStartDays?: number[] | null
+  googleReviewsUrl?: string | null
+  ga4Id?: string | null
+  metaPixelId?: string | null
+  medicalDisclaimer: string
+  academyFilterLine: string
+  updatedAt?: string | null
+  createdAt?: string | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
-  clinicPhone?: T;
-  clinicWhatsApp?: T;
-  clinicEmail?: T;
-  clinicInstagram?: T;
-  clinicFacebook?: T;
-  admissionsWhatsApp?: T;
-  academyEmail?: T;
-  academyInstagram?: T;
-  academyFacebook?: T;
-  googleReviewsUrl?: T;
-  ga4Id?: T;
-  metaPixelId?: T;
-  medicalDisclaimer?: T;
-  academyFilterLine?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+  clinicPhone?: T
+  clinicWhatsApp?: T
+  clinicEmail?: T
+  clinicInstagram?: T
+  clinicFacebook?: T
+  admissionsWhatsApp?: T
+  academyEmail?: T
+  academyInstagram?: T
+  academyFacebook?: T
+  batchStartDays?: T
+  googleReviewsUrl?: T
+  ga4Id?: T
+  metaPixelId?: T
+  medicalDisclaimer?: T
+  academyFilterLine?: T
+  updatedAt?: T
+  createdAt?: T
+  globalType?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -496,18 +502,17 @@ export interface SiteSettingsSelect<T extends boolean = true> {
  */
 export interface CollectionsWidget {
   data?: {
-    [k: string]: unknown;
-  };
-  width: 'full';
+    [k: string]: unknown
+  }
+  width: 'full'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "auth".
  */
 export interface Auth {
-  [k: string]: unknown;
+  [k: string]: unknown
 }
-
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}

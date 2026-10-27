@@ -47,7 +47,8 @@ export const Users: CollectionConfig = {
         update: ownerField,
       },
       admin: {
-        description: 'The first account is always made the owner. After that, only the owner can change roles.',
+        description:
+          'The first account is always made the owner. After that, only the owner can change roles.',
       },
     },
   ],

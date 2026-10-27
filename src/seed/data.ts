@@ -17,6 +17,8 @@ export const siteSettings: SettingsSeed = {
   clinicFacebook: 'https://www.facebook.com/frenchaestheticsofficial',
   // Owner, 28 Oct 2026. Academy email and socials are still to confirm, so they stay empty.
   admissionsWhatsApp: '0311 2748804',
+  // Owner, 28 Oct 2026: training starts on one of these two days each month.
+  batchStartDays: [15, 20],
   medicalDisclaimer: DEFAULT_MEDICAL_DISCLAIMER,
   academyFilterLine: DEFAULT_ACADEMY_FILTER_LINE,
 }

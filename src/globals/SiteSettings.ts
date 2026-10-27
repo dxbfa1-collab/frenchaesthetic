@@ -61,6 +61,19 @@ export const SiteSettings: GlobalConfig = {
             { name: 'academyEmail', label: 'Email', type: 'email' },
             { name: 'academyInstagram', label: 'Instagram link', type: 'text' },
             { name: 'academyFacebook', label: 'Facebook link', type: 'text' },
+            {
+              name: 'batchStartDays',
+              label: 'Batch start days',
+              type: 'number',
+              hasMany: true,
+              min: 1,
+              max: 28,
+              defaultValue: [15, 20],
+              admin: {
+                description:
+                  'Days of the month on which a new batch can start (owner rule, 28 Oct 2026: the 15th and the 20th). Shown on academy pages. Leave empty to say "New batches every month".',
+              },
+            },
           ],
         },
         {

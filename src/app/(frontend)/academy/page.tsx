@@ -7,6 +7,7 @@ import { Container } from '@/components/ui/Container'
 import { OfferPanel } from '@/components/ui/OfferPanel'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
+import { batchStartLine } from '@/lib/batches'
 import { getSiteSettings } from '@/lib/payload'
 import { academyMessages } from '@/lib/whatsapp'
 
@@ -115,7 +116,7 @@ export default async function AcademyHome() {
               ))}
             </div>
             <p className="rise rise-3 mt-6 text-[0.9375rem] text-muted">
-              Lahore · Max 20 seats · New batches every month
+              Lahore · Max 20 seats · {batchStartLine(settings.batchStartDays)}
             </p>
           </div>
           <OfferPanel

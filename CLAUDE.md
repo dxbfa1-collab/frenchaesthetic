@@ -309,7 +309,7 @@ Do not use these as USPs: "affordable", "most comprehensive", "latest machines".
 | For | Salon owners, beauticians, makeup artists, hair stylists, nail technicians, skin care specialists, cosmetology students, beginners, career changers. **No experience and no PMDC needed.** Copy stays gender-neutral. | **MBBS and BDS doctors only, PMDC registered:** house officers, MOs, GPs, dentists, clinic owners, career-break doctors |
 | Format | 1 week hands-on training + 2 weeks internship on live clients, supervised by doctors (3 weeks / 21 days) | 1 week intensive training + 2 weeks clinical internship; doctors perform procedures on real patients, supervised |
 | Fee (PKR) | 120,000 (regular). Display decision: CONFIRM. | 180,000–200,000 range (OWNER CLAIM). One number needed. |
-| Batch start | 15th of each month; a Sunday start moves to Monday | 22nd of each month; same Sunday rule |
+| Batch start | **15th or 20th of each month** (owner, 28 Oct 2026; replaces "15th"). Which course takes which day: CONFIRM. A Sunday start moves to Monday (CONFIRM this still applies). | Same rule (replaces "22nd") |
 | Campus | Iqbal Town | Iqbal Town (assumed for Nov; CONFIRM) |
 | Timing | 1:00–5:00 PM (Aug 2026 batch); CONFIRM current hours | Flexible; exact slots CONFIRM |
 | Featured | HydraFacial, BB Glow, Chemical Peels, HIFU, Laser Hair Removal, AI Skin Analysis & consultation | Facial anatomy, injectables, fillers, PDO threads, PRP, skin boosters, complication management |
@@ -373,11 +373,12 @@ Batch data is editable in the CMS (`Batches` collection). Never hard-code dates.
 | Month | Course | Start | Campus | Seats | Status |
 | --- | --- | --- | --- | --- | --- |
 | Nov 2026 | Non-Invasive | Mon 16 Nov | Iqbal Town | 20 | CONFIRMED |
-| Nov 2026 | Invasive | Mon 23 Nov | Iqbal Town (assumed) | 20 | CONFIRMED date |
-| Dec 2026 | Non-Invasive / Invasive | Tue 15 Dec / Tue 22 Dec | CONFIRM | 20 | By rule. 25 Dec falls in the Invasive training week. |
-| Jan 2027 | Non-Invasive / Invasive | Fri 15 Jan / Fri 22 Jan | CONFIRM | 20 | By rule. The owner may prefer Mondays. |
-| Feb 2027 | Non-Invasive / Invasive | Mon 15 Feb / Mon 22 Feb | CONFIRM | 20 | By rule |
+| Nov 2026 | Invasive | Mon 23 Nov | Iqbal Town (assumed) | 20 | CONFIRMED date. The new 15th/20th rule would put it on Fri 20 Nov: CONFIRM which date applies. |
+| Dec 2026 | Non-Invasive / Invasive (order assumed) | Tue 15 Dec / Sun 20 Dec (Mon 21 Dec under the Sunday rule) | CONFIRM | 20 | New 15th/20th rule. 25 Dec (public holiday) falls in the second batch's training week. |
+| Jan 2027 | Non-Invasive / Invasive (order assumed) | Fri 15 Jan / Wed 20 Jan | CONFIRM | 20 | New 15th/20th rule |
+| Feb 2027 | Non-Invasive / Invasive (order assumed) | Mon 15 Feb / Sat 20 Feb | CONFIRM | 20 | New 15th/20th rule |
 
+- The start days live in Site settings → Academy → Batch start days (now 15 and 20). The academy pages state the rule from there; Phase 3 checks batch dates against it.
 - Show "X seats left" only if the CSR updates it daily. A fake counter destroys trust.
 - Still open: minimum students to run a batch (estimated 6–8), seat deposit, installments, refund / reschedule policy.
 
@@ -623,6 +624,7 @@ Record each answer here with its date. It overrides anything above.
 - 2026-10-28: Clinic number **0311-1171788** (the UAN; the FMA brand guide labels it "UAN / WhatsApp" and puts it on every branch board). Academy admissions number **+92 311 2748804**.
 - 2026-10-28: Instagram https://www.instagram.com/frenchaestheticsofficial/ and Facebook https://www.facebook.com/frenchaestheticsofficial, which resolves the clinic Instagram conflict. Academy socials and email are still to confirm, so the academy footer shows none yet.
 - 2026-10-28: **Nothing about Fahad Nazeer** on the website: no name, title, bio or photo.
+- 2026-10-28: Academy batches start on the **15th or the 20th** of every month: these are the two possible start days. This replaces the 15th (Non-Invasive) / 22nd (Invasive) rule. Still to confirm: which course takes which day, whether a Sunday start still moves to Monday (20 Dec 2026 is a Sunday), and whether the November Invasive batch stays on Mon 23 Nov or moves to Fri 20 Nov.
 - 2026-10-28: Brand files received: `FMA_Brand_Guidelines_2026.pptx` and `FMA_Logo_Pack.zip` (includes SVGs) in `D:\French Aesthetics Content\Clinic Content\design system files`; the FAA brand guidelines PDF and logo pack (PNG only, no SVG) in `D:\French Aesthetics Content\Academy Content\Design system files`. The website's copies live in `public/brand`.
 
 ### Build decisions (Phase 1, 2026-10-28)
