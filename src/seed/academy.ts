@@ -16,6 +16,8 @@ type BatchSeed = Omit<Batch, 'id' | 'createdAt' | 'updatedAt' | 'course' | 'camp
   campusSlug?: string
 }
 
+// The current team is Dr. Iqra, Dr. Sadaf and Dr. Maria (owner, 28 Oct 2026).
+// Dr. Sarah and Dr. Kashmala have left the clinic: never add them back.
 export const trainers: DoctorSeed[] = [
   {
     name: 'Dr. Iqra Fatima',
@@ -26,35 +28,26 @@ export const trainers: DoctorSeed[] = [
     order: 1,
     status: 'confirmed',
     internalNote:
-      'Add FCPS / MCPS if she holds it, and the PMDC number. A photo needs written consent.',
-  },
-  {
-    name: 'Dr. Sarah',
-    slug: 'dr-sarah',
-    title: 'MBBS',
-    isTrainer: true,
-    order: 2,
-    status: 'confirm',
-    internalNote: 'Owner claim, no proof seen. Add specialisation and role.',
+      'Current staff (owner, 28 Oct 2026). Add FCPS / MCPS if she holds it, and the PMDC number. A photo needs written consent.',
   },
   {
     name: 'Dr. Maria',
     slug: 'dr-maria',
     title: 'BDS · Aesthetic Practitioner',
     isTrainer: true,
-    order: 3,
+    order: 2,
     status: 'confirm',
     internalNote:
-      'Owner claim. The clinic brief says "Aesthetic Physician, MBBS": conflict to resolve.',
+      'Current staff (owner, 28 Oct 2026). Title to confirm: the academy brief says "BDS · Aesthetic Practitioner", the clinic brief and brand guide "Aesthetic Physician" (older record: MBBS).',
   },
   {
     name: 'Dr. Sadaf',
     slug: 'dr-sadaf',
     isTrainer: true,
-    order: 4,
+    order: 3,
     status: 'confirm',
     internalNote:
-      '"DPT and Gyne" needs clarifying (the FMA brand guide says Physical Therapist). Do not show her as an injectables trainer if DPT.',
+      'Current staff (owner, 28 Oct 2026). Title to confirm: "DPT and Gyne" in the academy brief, "Physical Therapist" in the FMA brand guide, "MS Gynaecology" in an older record. Do not show her as an injectables trainer if DPT.',
   },
 ]
 
