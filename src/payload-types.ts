@@ -67,7 +67,13 @@ export interface Config {
   }
   blocks: {}
   collections: {
+    courses: Course
+    batches: Batch
+    enrollments: Enrollment
+    'enrollment-files': EnrollmentFile
+    doctors: Doctor
     branches: Branch
+    faqs: Faq
     media: Media
     users: User
     'payload-kv': PayloadKv
@@ -77,7 +83,13 @@ export interface Config {
   }
   collectionsJoins: {}
   collectionsSelect: {
+    courses: CoursesSelect<false> | CoursesSelect<true>
+    batches: BatchesSelect<false> | BatchesSelect<true>
+    enrollments: EnrollmentsSelect<false> | EnrollmentsSelect<true>
+    'enrollment-files': EnrollmentFilesSelect<false> | EnrollmentFilesSelect<true>
+    doctors: DoctorsSelect<false> | DoctorsSelect<true>
     branches: BranchesSelect<false> | BranchesSelect<true>
+    faqs: FaqsSelect<false> | FaqsSelect<true>
     media: MediaSelect<false> | MediaSelect<true>
     users: UsersSelect<false> | UsersSelect<true>
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>
@@ -123,6 +135,174 @@ export interface UserAuthOperations {
     email: string
     password: string
   }
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses".
+ */
+export interface Course {
+  id: string
+  name: string
+  shortName: string
+  /**
+   * Used in the page address. Filled in from the name.
+   */
+  slug: string
+  track: 'nonInvasive' | 'invasive'
+  /**
+   * Asks for the PMDC number and documents when enrolling.
+   */
+  requiresPMDC?: boolean | null
+  /**
+   * Day of the month a batch starts. A Sunday moves to Monday.
+   */
+  batchStartDay: number
+  duration?: string | null
+  /**
+   * One or two sentences for cards and search results.
+   */
+  summary?: string | null
+  trainers?: (string | Doctor)[] | null
+  order?: number | null
+  hero: {
+    label?: string | null
+    headline: string
+    headlineAccent?: string | null
+    subheadline?: string | null
+    ctaLabel?: string | null
+  }
+  /**
+   * Pre-filled WhatsApp message. Keep the page's WEB code at the end, e.g. (WEB-NI).
+   */
+  whatsappMessage: string
+  painPoints?:
+    | {
+        text: string
+        id?: string | null
+      }[]
+    | null
+  audience?: string[] | null
+  featured?: string[] | null
+  journey?:
+    | {
+        label: string
+        text: string
+        id?: string | null
+      }[]
+    | null
+  highlights?:
+    | {
+        text: string
+        id?: string | null
+      }[]
+    | null
+  /**
+   * Optional line at the end of the page, e.g. who the course is not for.
+   */
+  filterLine?: string | null
+  modules?:
+    | {
+        title: string
+        theoryOnly?: boolean | null
+        topics?: string[] | null
+        id?: string | null
+      }[]
+    | null
+  /**
+   * Leave empty until the current class hours are confirmed.
+   */
+  timetable?:
+    | {
+        day: string
+        focus: string
+        id?: string | null
+      }[]
+    | null
+  glance?:
+    | {
+        item: string
+        detail: string
+        status: 'confirmed' | 'confirm'
+        id?: string | null
+      }[]
+    | null
+  feeDisplay: 'whatsapp' | 'show' | 'from'
+  fee?: number | null
+  /**
+   * About 60 characters.
+   */
+  metaTitle?: string | null
+  /**
+   * About 155 characters.
+   */
+  metaDescription?: string | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "doctors".
+ */
+export interface Doctor {
+  id: string
+  name: string
+  /**
+   * Used in the page address. Filled in from the name.
+   */
+  slug: string
+  /**
+   * Exactly as documented, e.g. "Dermatologist". Never a title that is not on record.
+   */
+  title?: string | null
+  degrees?: string | null
+  pmdcNumber?: string | null
+  photo?: (string | null) | Media
+  /**
+   * The photo shows on the website only when this is ticked.
+   */
+  photoConsent?: boolean | null
+  bio?: string | null
+  isTrainer?: boolean | null
+  trainerRole?: string | null
+  /**
+   * One line on what they teach.
+   */
+  teaches?: string | null
+  worksAt?: (string | Branch)[] | null
+  order?: number | null
+  status: 'confirmed' | 'confirm'
+  /**
+   * Staff only. Never shown on the website.
+   */
+  internalNote?: string | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string
+  /**
+   * Describe the photo for people who cannot see it, e.g. "Doctor examining skin at DHA Phase 4".
+   */
+  alt: string
+  /**
+   * Brand rule: real photos only, never AI-made faces, and written consent from every identifiable person.
+   */
+  peopleConsent: 'none' | 'onFile' | 'missing'
+  updatedAt: string
+  createdAt: string
+  url?: string | null
+  thumbnailURL?: string | null
+  filename?: string | null
+  mimeType?: string | null
+  filesize?: number | null
+  width?: number | null
+  height?: number | null
+  focalX?: number | null
+  focalY?: number | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -182,18 +362,99 @@ export interface Branch {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "batches".
  */
-export interface Media {
+export interface Batch {
   id: string
   /**
-   * Describe the photo for people who cannot see it, e.g. "Doctor examining skin at DHA Phase 4".
+   * Filled in automatically.
    */
-  alt: string
+  title?: string | null
+  course: string | Course
+  startDate: string
   /**
-   * Brand rule: real photos only, never AI-made faces, and written consent from every identifiable person.
+   * Optional.
    */
-  peopleConsent: 'none' | 'onFile' | 'missing'
+  endDate?: string | null
+  /**
+   * Tick only when the owner has approved a different start date for this batch.
+   */
+  ruleException?: boolean | null
+  campus?: (string | null) | Branch
+  totalSeats: number
+  /**
+   * Goes up by one when an online enrollment is confirmed. Add WhatsApp bookings by hand.
+   */
+  seatsTaken: number
+  /**
+   * Only if admissions update the count every day.
+   */
+  showSeatsLeft?: boolean | null
+  status: 'open' | 'full' | 'completed' | 'cancelled'
+  factStatus: 'confirmed' | 'confirm'
+  /**
+   * Staff only. Never shown on the website.
+   */
+  internalNote?: string | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "enrollments".
+ */
+export interface Enrollment {
+  id: string
+  reference?: string | null
+  status: 'applied' | 'verified' | 'paid' | 'confirmed' | 'rejected'
+  batch: string | Batch
+  /**
+   * Follows the batch.
+   */
+  course?: (string | null) | Course
+  track?: ('nonInvasive' | 'invasive') | null
+  name: string
+  phone: string
+  email?: string | null
+  city: string
+  profession: string
+  pmdcNumber?: string | null
+  houseJob?: ('completed' | 'inProgress' | 'notStarted') | null
+  documents?: (string | EnrollmentFile)[] | null
+  /**
+   * After verifying, send this link with the payment details on WhatsApp. The student uploads the payment proof there.
+   */
+  paymentLink?: string | null
+  paymentMethod?: ('bankTransfer' | 'jazzCash' | 'easypaisa' | 'other') | null
+  paymentProofUploadedAt?: string | null
+  paymentProof?: (string | EnrollmentFile)[] | null
+  whatsappConsent?: boolean | null
+  /**
+   * Where the application came from (page, WEB code, ad campaign).
+   */
+  source?: {
+    code?: string | null
+    page?: string | null
+    referrer?: string | null
+    utmSource?: string | null
+    utmMedium?: string | null
+    utmCampaign?: string | null
+    utmContent?: string | null
+    utmTerm?: string | null
+  }
+  staffNotes?: string | null
+  paymentKey?: string | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "enrollment-files".
+ */
+export interface EnrollmentFile {
+  id: string
+  kind: 'pmdcDocument' | 'paymentProof'
+  reference?: string | null
   updatedAt: string
   createdAt: string
   url?: string | null
@@ -203,8 +464,24 @@ export interface Media {
   filesize?: number | null
   width?: number | null
   height?: number | null
-  focalX?: number | null
-  focalY?: number | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: string
+  question: string
+  answer: string
+  business: 'clinic' | 'academy'
+  /**
+   * Leave empty for a general academy question.
+   */
+  course?: (string | null) | Course
+  order?: number | null
+  status: 'confirmed' | 'confirm'
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -262,8 +539,32 @@ export interface PayloadLockedDocument {
   id: string
   document?:
     | ({
+        relationTo: 'courses'
+        value: string | Course
+      } | null)
+    | ({
+        relationTo: 'batches'
+        value: string | Batch
+      } | null)
+    | ({
+        relationTo: 'enrollments'
+        value: string | Enrollment
+      } | null)
+    | ({
+        relationTo: 'enrollment-files'
+        value: string | EnrollmentFile
+      } | null)
+    | ({
+        relationTo: 'doctors'
+        value: string | Doctor
+      } | null)
+    | ({
         relationTo: 'branches'
         value: string | Branch
+      } | null)
+    | ({
+        relationTo: 'faqs'
+        value: string | Faq
       } | null)
     | ({
         relationTo: 'media'
@@ -317,6 +618,183 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses_select".
+ */
+export interface CoursesSelect<T extends boolean = true> {
+  name?: T
+  shortName?: T
+  slug?: T
+  track?: T
+  requiresPMDC?: T
+  batchStartDay?: T
+  duration?: T
+  summary?: T
+  trainers?: T
+  order?: T
+  hero?:
+    | T
+    | {
+        label?: T
+        headline?: T
+        headlineAccent?: T
+        subheadline?: T
+        ctaLabel?: T
+      }
+  whatsappMessage?: T
+  painPoints?:
+    | T
+    | {
+        text?: T
+        id?: T
+      }
+  audience?: T
+  featured?: T
+  journey?:
+    | T
+    | {
+        label?: T
+        text?: T
+        id?: T
+      }
+  highlights?:
+    | T
+    | {
+        text?: T
+        id?: T
+      }
+  filterLine?: T
+  modules?:
+    | T
+    | {
+        title?: T
+        theoryOnly?: T
+        topics?: T
+        id?: T
+      }
+  timetable?:
+    | T
+    | {
+        day?: T
+        focus?: T
+        id?: T
+      }
+  glance?:
+    | T
+    | {
+        item?: T
+        detail?: T
+        status?: T
+        id?: T
+      }
+  feeDisplay?: T
+  fee?: T
+  metaTitle?: T
+  metaDescription?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "batches_select".
+ */
+export interface BatchesSelect<T extends boolean = true> {
+  title?: T
+  course?: T
+  startDate?: T
+  endDate?: T
+  ruleException?: T
+  campus?: T
+  totalSeats?: T
+  seatsTaken?: T
+  showSeatsLeft?: T
+  status?: T
+  factStatus?: T
+  internalNote?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "enrollments_select".
+ */
+export interface EnrollmentsSelect<T extends boolean = true> {
+  reference?: T
+  status?: T
+  batch?: T
+  course?: T
+  track?: T
+  name?: T
+  phone?: T
+  email?: T
+  city?: T
+  profession?: T
+  pmdcNumber?: T
+  houseJob?: T
+  documents?: T
+  paymentLink?: T
+  paymentMethod?: T
+  paymentProofUploadedAt?: T
+  paymentProof?: T
+  whatsappConsent?: T
+  source?:
+    | T
+    | {
+        code?: T
+        page?: T
+        referrer?: T
+        utmSource?: T
+        utmMedium?: T
+        utmCampaign?: T
+        utmContent?: T
+        utmTerm?: T
+      }
+  staffNotes?: T
+  paymentKey?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "enrollment-files_select".
+ */
+export interface EnrollmentFilesSelect<T extends boolean = true> {
+  kind?: T
+  reference?: T
+  updatedAt?: T
+  createdAt?: T
+  url?: T
+  thumbnailURL?: T
+  filename?: T
+  mimeType?: T
+  filesize?: T
+  width?: T
+  height?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "doctors_select".
+ */
+export interface DoctorsSelect<T extends boolean = true> {
+  name?: T
+  slug?: T
+  title?: T
+  degrees?: T
+  pmdcNumber?: T
+  photo?: T
+  photoConsent?: T
+  bio?: T
+  isTrainer?: T
+  trainerRole?: T
+  teaches?: T
+  worksAt?: T
+  order?: T
+  status?: T
+  internalNote?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "branches_select".
  */
 export interface BranchesSelect<T extends boolean = true> {
@@ -349,6 +827,20 @@ export interface BranchesSelect<T extends boolean = true> {
   hoursStatus?: T
   photos?: T
   internalNote?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  question?: T
+  answer?: T
+  business?: T
+  course?: T
+  order?: T
+  status?: T
   updatedAt?: T
   createdAt?: T
 }
@@ -461,9 +953,13 @@ export interface SiteSettings {
   academyInstagram?: string | null
   academyFacebook?: string | null
   /**
-   * Days of the month on which a new batch can start (owner rule, 28 Oct 2026: the 15th and the 20th). Shown on academy pages. Leave empty to say "New batches every month".
+   * Who is emailed about each new enrollment and payment proof. Separate several with commas. Staff only.
    */
-  batchStartDays?: number[] | null
+  enrollmentAlertEmails?: string | null
+  /**
+   * Bank transfer / JazzCash details shown to a verified student on their private payment page. Leave empty until the owner confirms them.
+   */
+  paymentInstructions?: string | null
   googleReviewsUrl?: string | null
   ga4Id?: string | null
   metaPixelId?: string | null
@@ -486,7 +982,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   academyEmail?: T
   academyInstagram?: T
   academyFacebook?: T
-  batchStartDays?: T
+  enrollmentAlertEmails?: T
+  paymentInstructions?: T
   googleReviewsUrl?: T
   ga4Id?: T
   metaPixelId?: T

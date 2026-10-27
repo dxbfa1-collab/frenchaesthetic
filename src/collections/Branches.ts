@@ -1,22 +1,8 @@
-import type { CollectionConfig, FieldHook } from 'payload'
+import type { CollectionConfig } from 'payload'
 
-import { anyone, ownerOr, staffField } from '../access/roles'
+import { anyone, ownerOr } from '../access/roles'
+import { FACT_STATUS_OPTIONS as FACT_STATUS, internalNoteField, slugField } from '../fields/shared'
 import { revalidateSite } from '../hooks/revalidate'
-
-const slugify = (value: string) =>
-  value
-    .toLowerCase()
-    .replace(/&/g, ' and ')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-
-const slugFromName: FieldHook = ({ value, siblingData }) =>
-  value || (typeof siblingData?.name === 'string' ? slugify(siblingData.name) : value)
-
-const FACT_STATUS = [
-  { label: 'Confirmed by the owner', value: 'confirmed' },
-  { label: 'To confirm (hidden on the live site)', value: 'confirm' },
-]
 
 /**
  * Clinic branches and academy campuses (one record when they share a building).
@@ -55,18 +41,7 @@ export const Branches: CollectionConfig = {
         },
       ],
     },
-    {
-      name: 'slug',
-      type: 'text',
-      required: true,
-      unique: true,
-      index: true,
-      hooks: { beforeValidate: [slugFromName] },
-      admin: {
-        position: 'sidebar',
-        description: 'Used in the page address. Filled in from the name.',
-      },
-    },
+    slugField(),
     {
       type: 'row',
       fields: [
@@ -233,11 +208,6 @@ export const Branches: CollectionConfig = {
       relationTo: 'media',
       hasMany: true,
     },
-    {
-      name: 'internalNote',
-      type: 'textarea',
-      access: { read: staffField },
-      admin: { description: 'Staff only. Never shown on the website.' },
-    },
+    internalNoteField,
   ],
 }

@@ -1,14 +1,26 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+import { BatchList, campusName } from '@/components/academy/BatchList'
+import { CourseCard } from '@/components/academy/CourseCard'
+import { TrainerCard } from '@/components/academy/TrainerCard'
 import { ArrowRightIcon, WhatsAppIcon } from '@/components/icons'
-import { buttonClass, ButtonLink } from '@/components/ui/Button'
+import { buttonClass } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
+import { CtaBand } from '@/components/ui/CtaBand'
+import { FaqList } from '@/components/ui/FaqList'
 import { OfferPanel } from '@/components/ui/OfferPanel'
+import { Pending } from '@/components/ui/Pending'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
-import { batchStartLine } from '@/lib/batches'
-import { getSiteSettings } from '@/lib/payload'
+import { batchRuleSentence, formatBatchDate } from '@/lib/batches'
+import {
+  getAcademyFaqs,
+  getCourses,
+  getSiteSettings,
+  getTrainers,
+  getUpcomingBatches,
+} from '@/lib/payload'
 import { academyMessages } from '@/lib/whatsapp'
 
 // Meta title and description from the FAA brief's SEO starter pack (§14).
@@ -19,50 +31,9 @@ export const metadata: Metadata = {
   alternates: { canonical: '/academy' },
 }
 
-/*
-  Copy is verbatim from the FAA brief §3 (hooks in Roman Urdu, details in English).
-  Phase 3 adds the batch calendar, the FAQ preview and the course pages these cards link to.
-*/
-const paths = [
-  {
-    audience: 'For beauty professionals & beginners',
-    title: 'Non-Invasive',
-    who: 'For salon owners, beauticians, makeup artists, hair stylists, nail technicians, skin care specialists, students, beginners.',
-    topics: [
-      'HydraFacial',
-      'BB Glow',
-      'Chemical Peels',
-      'HIFU',
-      'Laser Hair Removal',
-      'Skin Analysis',
-    ],
-    format: '1 week training + 2 weeks internship on live clients',
-    note: 'No experience needed',
-    href: '/academy/non-invasive-aesthetics-course',
-    message: academyMessages.homeNonInvasive,
-    label: 'home-path-ni',
-  },
-  {
-    audience: 'For MBBS & BDS doctors',
-    title: 'Invasive',
-    who: 'For MBBS & BDS doctors: house officers, MOs, GPs, dentists, career-break doctors.',
-    topics: [
-      'Facial anatomy',
-      'Injectables',
-      'Dermal fillers',
-      'PDO threads',
-      'PRP',
-      'Skin boosters',
-      'Complication management',
-    ],
-    format: '1 week training + 2 weeks clinical internship on real patients',
-    note: 'Flexible timing',
-    href: '/academy/invasive-aesthetics-course-for-doctors',
-    message: academyMessages.homeInvasive,
-    label: 'home-path-in',
-  },
-]
+export const revalidate = 3600
 
+// Copy is verbatim from the FAA brief §3 (hooks in Roman Urdu, details in English).
 const whyUs = [
   '2 weeks internship included. No extra fee.',
   'Hands-on on real clients and patients, under supervision.',
@@ -76,9 +47,26 @@ const journey = [
   { week: 'Week 3', text: 'Supervised practice until you work with confidence.' },
 ]
 
+// The two home buttons carry their own WEB codes (FAA brief §15).
+const homeMessage = {
+  nonInvasive: academyMessages.homeNonInvasive,
+  invasive: academyMessages.homeInvasive,
+}
+
 export default async function AcademyHome() {
-  const settings = await getSiteSettings()
+  const [settings, courses, batches, trainers, faqs] = await Promise.all([
+    getSiteSettings(),
+    getCourses(),
+    getUpcomingBatches(),
+    getTrainers(),
+    getAcademyFaqs(),
+  ])
   const whatsapp = settings.admissionsWhatsApp
+  const nextByCourse = courses
+    .map((course) => batches.find((b) => b.course.id === course.id))
+    .filter((b): b is (typeof batches)[number] => Boolean(b))
+  const campus = nextByCourse.map(campusName).find(Boolean)
+  const generalFaqs = faqs.filter((f) => !f.course).slice(0, 4)
 
   return (
     <>
@@ -96,27 +84,47 @@ export default async function AcademyHome() {
               nahi.
             </p>
             <div className="rise rise-3 mt-10 grid gap-4 sm:grid-cols-2">
-              {paths.map((path) => (
+              {courses.map((course) => (
                 <WhatsAppLink
-                  key={path.label}
+                  key={course.id}
                   number={whatsapp}
-                  message={path.message}
+                  message={homeMessage[course.track]}
                   side="academy"
-                  label={`hero-${path.label}`}
+                  label={`hero-${course.slug}`}
                   className="group flex items-center justify-between gap-4 rounded-[6px] border-[1.5px] border-gold px-5 py-4 transition-colors hover:bg-gold/15"
                 >
                   <span>
-                    <span className="block font-extrabold text-heading">{path.title} Course</span>
-                    <span className="block text-sm text-muted">
-                      {path.audience.replace('For ', 'for ')}
+                    <span className="block font-extrabold text-heading">
+                      {course.shortName} Course
                     </span>
+                    {course.hero.label && (
+                      <span className="block text-sm text-muted">
+                        {course.hero.label.replace(/^For /, 'for ')}
+                      </span>
+                    )}
                   </span>
                   <WhatsAppIcon size={22} className="shrink-0 text-gold" />
                 </WhatsAppLink>
               ))}
             </div>
             <p className="rise rise-3 mt-6 text-[0.9375rem] text-muted">
-              Lahore · Max 20 seats · {batchStartLine(settings.batchStartDays)}
+              {nextByCourse.length > 0 ? (
+                <>
+                  Next batch:{' '}
+                  {nextByCourse.map((batch, i) => (
+                    <span key={batch.id}>
+                      {i > 0 && ' · '}
+                      <Pending confirmed={batch.factStatus === 'confirmed'}>
+                        {formatBatchDate(batch.startDate, 'long')}
+                      </Pending>{' '}
+                      ({batch.course.shortName})
+                    </span>
+                  ))}
+                  {campus && ` · ${campus}, Lahore`} · Max 20 seats
+                </>
+              ) : (
+                <>{batchRuleSentence(courses)} Max 20 seats.</>
+              )}
             </p>
           </div>
           <OfferPanel
@@ -135,42 +143,14 @@ export default async function AcademyHome() {
             <SectionHeading eyebrow="Choose your path" title="Which course" accent="is for you?" />
           </div>
           <div data-reveal="" className="mt-14 grid gap-5 lg:grid-cols-2">
-            {paths.map((path) => (
-              <article
-                key={path.href}
-                className="relative flex flex-col border border-hairline bg-surface p-7 sm:p-10"
-              >
-                <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gold" />
-                <span className="pill self-start">{path.audience}</span>
-                <h3 className="mt-6 text-[2.5rem] sm:text-5xl">
-                  {path.title}
-                  <span className="block italic text-accent">Aesthetics</span>
-                </h3>
-                <p className="mt-5 text-lg">{path.who}</p>
-                <ul className="mt-6 flex flex-wrap gap-2" aria-label="What you practise">
-                  {path.topics.map((topic) => (
-                    <li key={topic} className="chip">
-                      {topic}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-7 font-semibold text-heading">{path.format}</p>
-                <p className="mt-1 text-muted">{path.note}</p>
-                <div className="mt-auto flex flex-wrap items-center gap-x-8 gap-y-4 pt-9">
-                  <ButtonLink href={path.href} variant="outline">
-                    View course <ArrowRightIcon size={18} />
-                  </ButtonLink>
-                  <WhatsAppLink
-                    number={whatsapp}
-                    message={path.message}
-                    side="academy"
-                    label={`card-${path.label}`}
-                    className="link-arrow"
-                  >
-                    Ask on WhatsApp
-                  </WhatsAppLink>
-                </div>
-              </article>
+            {courses.map((course) => (
+              <CourseCard
+                key={course.id}
+                course={course}
+                nextBatch={batches.find((b) => b.course.id === course.id)}
+                whatsapp={whatsapp}
+                whatsappMessage={homeMessage[course.track]}
+              />
             ))}
           </div>
         </Container>
@@ -214,6 +194,23 @@ export default async function AcademyHome() {
         </Container>
       </section>
 
+      {/* Next batches */}
+      {batches.length > 0 && (
+        <section className="border-t border-hairline">
+          <Container className="py-20 lg:py-28">
+            <div data-reveal="">
+              <SectionHeading eyebrow="Next batches" title="Choose" accent="your start date." />
+            </div>
+            <div data-reveal="" className="mt-12">
+              <BatchList batches={batches.slice(0, 4)} whatsapp={whatsapp} from="WEB-HOME" />
+            </div>
+            <Link href="/academy/batches" className="link-arrow mt-8">
+              Full batch calendar <ArrowRightIcon size={18} />
+            </Link>
+          </Container>
+        </section>
+      )}
+
       {/* Faculty and proof */}
       <section className="border-t border-hairline">
         <Container className="grid gap-14 py-20 lg:grid-cols-2 lg:gap-20 lg:py-28">
@@ -223,20 +220,10 @@ export default async function AcademyHome() {
               title="Dermatologist-led,"
               accent="inside a working clinic."
             />
-            <div className="mt-10 flex items-center gap-6 border border-hairline bg-surface p-6 sm:p-8">
-              {/* Neutral placeholder until a consented photo is supplied (no stock or AI faces). */}
-              <span
-                aria-hidden="true"
-                className="flex size-20 shrink-0 items-center justify-center rounded-full border-[1.5px] border-gold font-display text-3xl text-heading"
-              >
-                IF
-              </span>
-              <div>
-                <p className="font-display text-[1.875rem] leading-tight text-heading">
-                  Dr. Iqra Fatima
-                </p>
-                <p className="label mt-2 text-accent">Dermatologist · Lead Trainer</p>
-              </div>
+            <div className="mt-10 space-y-4">
+              {trainers.slice(0, 4).map((trainer) => (
+                <TrainerCard key={trainer.id} trainer={trainer} />
+              ))}
             </div>
             <Link href="/academy/faculty" className="link-arrow mt-8">
               Meet the faculty <ArrowRightIcon size={18} />
@@ -251,29 +238,39 @@ export default async function AcademyHome() {
         </Container>
       </section>
 
-      {/* Final CTA */}
-      <section className="tone-dark border-t border-hairline bg-deep-charcoal">
-        <Container className="py-20 text-center lg:py-28">
-          <div data-reveal="">
-            <SectionHeading
-              align="center"
-              title="Apni seat"
-              accent="reserve karein."
-              intro="Sirf 20 seats per batch. Fee aur details WhatsApp par."
-            />
-            <WhatsAppLink
-              number={whatsapp}
-              message={academyMessages.page('HOME')}
-              side="academy"
-              label="academy-closing"
-              className={buttonClass('primary', { size: 'lg', className: 'mt-10' })}
-            >
-              <WhatsAppIcon size={20} />
-              WhatsApp Karein: <span className="whitespace-nowrap">{whatsapp}</span>
-            </WhatsAppLink>
-          </div>
-        </Container>
-      </section>
+      {/* FAQ preview */}
+      {generalFaqs.length > 0 && (
+        <section className="border-t border-hairline">
+          <Container className="grid gap-12 py-20 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:py-28">
+            <div data-reveal="">
+              <SectionHeading eyebrow="Questions" title="Questions," accent="answered." />
+              <Link href="/academy/faq" className="link-arrow mt-8">
+                All questions <ArrowRightIcon size={18} />
+              </Link>
+            </div>
+            <div data-reveal="">
+              <FaqList items={generalFaqs} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      <CtaBand
+        title="Apni seat"
+        accent="reserve karein."
+        intro="Sirf 20 seats per batch. Fee aur details WhatsApp par."
+      >
+        <WhatsAppLink
+          number={whatsapp}
+          message={academyMessages.page('HOME')}
+          side="academy"
+          label="academy-closing"
+          className={buttonClass('primary', { size: 'lg' })}
+        >
+          <WhatsAppIcon size={20} />
+          WhatsApp Karein: <span className="whitespace-nowrap">{whatsapp}</span>
+        </WhatsAppLink>
+      </CtaBand>
     </>
   )
 }

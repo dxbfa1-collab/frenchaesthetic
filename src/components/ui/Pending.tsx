@@ -21,7 +21,7 @@ export function Pending({
     <>
       {children}
       <span
-        className="ml-2 inline-flex items-center rounded-sm border border-dashed border-line px-1.5 py-px align-middle text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-muted"
+        className="ml-2 inline-flex items-center rounded-sm border border-dashed border-line px-1.5 py-px align-middle font-sans text-[0.6875rem] font-bold uppercase not-italic tracking-[0.16em] text-muted"
         title="Not confirmed by the owner yet. Hidden on the live site."
       >
         Confirm

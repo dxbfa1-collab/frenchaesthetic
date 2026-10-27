@@ -309,7 +309,7 @@ Do not use these as USPs: "affordable", "most comprehensive", "latest machines".
 | For | Salon owners, beauticians, makeup artists, hair stylists, nail technicians, skin care specialists, cosmetology students, beginners, career changers. **No experience and no PMDC needed.** Copy stays gender-neutral. | **MBBS and BDS doctors only, PMDC registered:** house officers, MOs, GPs, dentists, clinic owners, career-break doctors |
 | Format | 1 week hands-on training + 2 weeks internship on live clients, supervised by doctors (3 weeks / 21 days) | 1 week intensive training + 2 weeks clinical internship; doctors perform procedures on real patients, supervised |
 | Fee (PKR) | 120,000 (regular). Display decision: CONFIRM. | 180,000–200,000 range (OWNER CLAIM). One number needed. |
-| Batch start | **15th or 20th of each month** (owner, 28 Oct 2026; replaces "15th"). Which course takes which day: CONFIRM. A Sunday start moves to Monday (CONFIRM this still applies). | Same rule (replaces "22nd") |
+| Batch start | **15th of each month** (owner, 28 Oct 2026). A Sunday start moves to Monday (CONFIRM this still applies). | **20th of each month** (owner, 28 Oct 2026; replaces the 22nd). Same Sunday rule. |
 | Campus | Iqbal Town | Iqbal Town (assumed for Nov; CONFIRM) |
 | Timing | 1:00–5:00 PM (Aug 2026 batch); CONFIRM current hours | Flexible; exact slots CONFIRM |
 | Featured | HydraFacial, BB Glow, Chemical Peels, HIFU, Laser Hair Removal, AI Skin Analysis & consultation | Facial anatomy, injectables, fillers, PDO threads, PRP, skin boosters, complication management |
@@ -374,9 +374,9 @@ Batch data is editable in the CMS (`Batches` collection). Never hard-code dates.
 | --- | --- | --- | --- | --- | --- |
 | Nov 2026 | Non-Invasive | Mon 16 Nov | Iqbal Town | 20 | CONFIRMED |
 | Nov 2026 | Invasive | Mon 23 Nov | Iqbal Town (assumed) | 20 | CONFIRMED date. The new 15th/20th rule would put it on Fri 20 Nov: CONFIRM which date applies. |
-| Dec 2026 | Non-Invasive / Invasive (order assumed) | Tue 15 Dec / Sun 20 Dec (Mon 21 Dec under the Sunday rule) | CONFIRM | 20 | New 15th/20th rule. 25 Dec (public holiday) falls in the second batch's training week. |
-| Jan 2027 | Non-Invasive / Invasive (order assumed) | Fri 15 Jan / Wed 20 Jan | CONFIRM | 20 | New 15th/20th rule |
-| Feb 2027 | Non-Invasive / Invasive (order assumed) | Mon 15 Feb / Sat 20 Feb | CONFIRM | 20 | New 15th/20th rule |
+| Dec 2026 | Non-Invasive / Invasive | Tue 15 Dec / Sun 20 Dec (Mon 21 Dec under the Sunday rule) | CONFIRM | 20 | New 15th/20th rule. 25 Dec (public holiday) falls in the second batch's training week. |
+| Jan 2027 | Non-Invasive / Invasive | Fri 15 Jan / Wed 20 Jan | CONFIRM | 20 | New 15th/20th rule |
+| Feb 2027 | Non-Invasive / Invasive | Mon 15 Feb / Sat 20 Feb | CONFIRM | 20 | New 15th/20th rule |
 
 - The start days live in Site settings → Academy → Batch start days (now 15 and 20). The academy pages state the rule from there; Phase 3 checks batch dates against it.
 - Show "X seats left" only if the CSR updates it daily. A fake counter destroys trust.
@@ -624,7 +624,7 @@ Record each answer here with its date. It overrides anything above.
 - 2026-10-28: Clinic number **0311-1171788** (the UAN; the FMA brand guide labels it "UAN / WhatsApp" and puts it on every branch board). Academy admissions number **+92 311 2748804**.
 - 2026-10-28: Instagram https://www.instagram.com/frenchaestheticsofficial/ and Facebook https://www.facebook.com/frenchaestheticsofficial, which resolves the clinic Instagram conflict. Academy socials and email are still to confirm, so the academy footer shows none yet.
 - 2026-10-28: **Nothing about Fahad Nazeer** on the website: no name, title, bio or photo.
-- 2026-10-28: Academy batches start on the **15th or the 20th** of every month: these are the two possible start days. This replaces the 15th (Non-Invasive) / 22nd (Invasive) rule. Still to confirm: which course takes which day, whether a Sunday start still moves to Monday (20 Dec 2026 is a Sunday), and whether the November Invasive batch stays on Mon 23 Nov or moves to Fri 20 Nov.
+- 2026-10-28: Academy batches start on the **15th or the 20th** of every month: these are the two possible start days. This replaces the 15th (Non-Invasive) / 22nd (Invasive) rule. The owner then confirmed: **Non-Invasive on the 15th, Invasive on the 20th** (stored per course as "Batch start day"). Still to confirm: whether a Sunday start still moves to Monday (20 Dec 2026 is a Sunday), and whether the November Invasive batch stays on Mon 23 Nov or moves to Fri 20 Nov (seeded as Fri 20 Nov, marked to confirm).
 - 2026-10-28: Brand files received: `FMA_Brand_Guidelines_2026.pptx` and `FMA_Logo_Pack.zip` (includes SVGs) in `D:\French Aesthetics Content\Clinic Content\design system files`; the FAA brand guidelines PDF and logo pack (PNG only, no SVG) in `D:\French Aesthetics Content\Academy Content\Design system files`. The website's copies live in `public/brand`.
 
 ### Build decisions (Phase 1, 2026-10-28)
@@ -635,5 +635,12 @@ The owner's website prompt of 28 Oct was built against this brief. Where the two
 - The academy has two tracks. Non-Invasive is open to beauty professionals and beginners; only Invasive needs MBBS/BDS and PMDC.
 - Four clinic branches, not DHA only, each with its own consultation wording.
 - The brand palette and fonts (Cormorant Garamond + Nunito Sans), not the prompt's placeholder ivory palette and Inter.
-- Academy URLs: course pages at `/academy/<course-slug>` (`non-invasive-aesthetics-course`, `invasive-aesthetics-course-for-doctors`), the list at `/academy/courses`, the calendar at `/academy/batches`, trainers at `/academy/faculty`. No `/academy/fees` or `/academy/accreditation` in v1. Phase 4 redirects `/academy/calendar`, `/academy/trainers` and `/academy/courses/:slug` to these.
+- Academy URLs: course pages at `/academy/<course-slug>` (`non-invasive-aesthetics-course`, `invasive-aesthetics-course-for-doctors`), the list at `/academy/courses`, the calendar at `/academy/batches`, trainers at `/academy/faculty`. No `/academy/fees` or `/academy/accreditation` in v1. `next.config.ts` redirects `/academy/calendar`, `/academy/trainers` and `/academy/courses/:slug` to these, and `/academy/fees` and `/academy/accreditation` (temporarily) to the course list and About.
 - Home `/` is neutral: two doors with the names set in type and no logos, because the two logos must never sit side by side.
+
+### Academy build notes (Phase 3, 2026-10-28)
+
+- **Enrollment workflow:** the website form (`/academy/enroll`) saves an Enrollment as "applied" with its source (page, WEB code, UTM cookie) and emails admissions. Admissions verify it in `/admin`, set "verified", and send the student the **payment link** shown on the enrollment (private, one per application) on WhatsApp. The student uploads the payment proof there; admissions then set "paid" and "confirmed", which adds one to the batch's seats taken.
+- **Private documents** (PMDC certificates, payment proofs) are in the `enrollment-files` collection: readable only by the owner and academy coordinators, renamed on upload, stored as Cloudinary authenticated files once the keys are set (untested until then; locally they sit in the gitignored `private-uploads/`).
+- **Needed from the owner before launch:** SMTP details for the alert emails (Hostinger mailbox) and the recipients (Site settings → Academy → Enrollment alert emails); the bank / JazzCash payment details (Site settings → Academy → Payment instructions); Cloudinary keys.
+- **Batches** live in the CMS (Academy → Batches). A start date must follow the course's start day (or the Monday after a Sunday) unless "Exception to the start-day rule" is ticked. The calendar shows open and full batches from today on; unconfirmed ones only on staging.

@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import { anyone, ownerOr } from '../access/roles'
+import { anyone, ownerOr, staffField } from '../access/roles'
 import { revalidateSite } from '../hooks/revalidate'
 import { DEFAULT_ACADEMY_FILTER_LINE, DEFAULT_MEDICAL_DISCLAIMER } from '../lib/site'
 
@@ -62,16 +62,22 @@ export const SiteSettings: GlobalConfig = {
             { name: 'academyInstagram', label: 'Instagram link', type: 'text' },
             { name: 'academyFacebook', label: 'Facebook link', type: 'text' },
             {
-              name: 'batchStartDays',
-              label: 'Batch start days',
-              type: 'number',
-              hasMany: true,
-              min: 1,
-              max: 28,
-              defaultValue: [15, 20],
+              name: 'enrollmentAlertEmails',
+              label: 'Enrollment alert emails',
+              type: 'text',
+              access: { read: staffField },
               admin: {
                 description:
-                  'Days of the month on which a new batch can start (owner rule, 28 Oct 2026: the 15th and the 20th). Shown on academy pages. Leave empty to say "New batches every month".',
+                  'Who is emailed about each new enrollment and payment proof. Separate several with commas. Staff only.',
+              },
+            },
+            {
+              name: 'paymentInstructions',
+              type: 'textarea',
+              access: { read: staffField },
+              admin: {
+                description:
+                  'Bank transfer / JazzCash details shown to a verified student on their private payment page. Leave empty until the owner confirms them.',
               },
             },
           ],

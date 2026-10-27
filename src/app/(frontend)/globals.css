@@ -291,6 +291,41 @@
     transform: scaleX(1);
   }
 
+  /* Form fields: at least 3:1 boundary contrast on both tones. The palette has no red, so an
+     invalid field is marked by a heavier border and a written message, never by colour alone. */
+  .field-input {
+    display: block;
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--tone-muted) 75%, transparent);
+    border-radius: 6px;
+    background-color: var(--tone-bg);
+    color: var(--tone-fg);
+    font: inherit;
+  }
+
+  .field-input::placeholder {
+    color: var(--tone-muted);
+  }
+
+  .field-input:focus {
+    border-color: #c9a96e;
+  }
+
+  .field-input[aria-invalid='true'] {
+    border-width: 2px;
+    border-color: var(--tone-heading);
+  }
+
+  .faq > summary {
+    list-style: none;
+  }
+
+  .faq > summary::-webkit-details-marker {
+    display: none;
+  }
+
   /* Desktop-only round WhatsApp button; on phones the sticky bar carries WhatsApp. */
   .whatsapp-float {
     position: fixed;
@@ -376,6 +411,25 @@
 [data-reveal='pending'] {
   opacity: 0;
   transform: translateY(16px);
+}
+
+/* Smooth FAQ and syllabus accordions where the browser supports animating to auto height. */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  .faq::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      block-size 0.3s var(--ease-soft),
+      content-visibility 0.3s var(--ease-soft) allow-discrete;
+  }
+
+  .faq[open]::details-content {
+    block-size: auto;
+  }
 }
 
 dialog.menu-sheet[open] {

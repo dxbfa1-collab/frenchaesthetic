@@ -59,6 +59,11 @@ const ACADEMY_PAGE_MESSAGES: Record<string, string> = {
   '/academy/faq': academyMessages.page('FAQ'),
 }
 
+/** The WEB code at the end of a pre-filled message, e.g. "WEB-NI". */
+export function webCode(message: string): string | undefined {
+  return message.match(/\((WEB-[A-Z0-9-]+)\)\s*$/)?.[1]
+}
+
 export function academyMessageFor(pathname: string): string {
   const path = pathname.replace(/\/$/, '') || '/'
   if (ACADEMY_PAGE_MESSAGES[path]) return ACADEMY_PAGE_MESSAGES[path]

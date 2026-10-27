@@ -7,6 +7,7 @@
 import { getPayload } from 'payload'
 
 import config from '../payload.config'
+import { batches, courses, faqs, trainers } from './academy'
 import { branches, siteSettings } from './data'
 
 const context = { disableRevalidate: true }
@@ -39,5 +40,57 @@ for (const branch of branches) {
   await payload.create({ collection: 'branches', data: branch, context })
   payload.logger.info(`Branch "${branch.name}" created.`)
 }
+
+// Academy: trainers, then courses (which point at trainers), then FAQs and batches (which point at courses).
+const idBySlug = async (collection: 'branches' | 'courses' | 'doctors', slug: string) =>
+  (await payload.find({ collection, where: { slug: { equals: slug } }, limit: 1, depth: 0 }))
+    .docs[0]?.id
+
+for (const trainer of trainers) {
+  if (await idBySlug('doctors', trainer.slug)) continue
+  await payload.create({ collection: 'doctors', data: trainer, context })
+  payload.logger.info(`Trainer "${trainer.name}" created.`)
+}
+
+for (const { trainerSlugs, ...course } of courses) {
+  if (await idBySlug('courses', course.slug)) continue
+  const trainerIds = (
+    await Promise.all(trainerSlugs.map((slug) => idBySlug('doctors', slug)))
+  ).filter((id): id is string => Boolean(id))
+  await payload.create({
+    collection: 'courses',
+    data: { ...course, trainers: trainerIds },
+    context,
+  })
+  payload.logger.info(`Course "${course.name}" created.`)
+}
+
+let newFaqs = 0
+for (const { courseSlug, ...faq } of faqs) {
+  const { totalDocs } = await payload.count({
+    collection: 'faqs',
+    where: { question: { equals: faq.question } },
+  })
+  if (totalDocs > 0) continue
+  const course = courseSlug ? await idBySlug('courses', courseSlug) : undefined
+  await payload.create({ collection: 'faqs', data: { ...faq, course }, context })
+  newFaqs++
+}
+payload.logger.info(`FAQs created: ${newFaqs}.`)
+
+let newBatches = 0
+for (const { courseSlug, campusSlug, ...batch } of batches) {
+  const course = await idBySlug('courses', courseSlug)
+  if (!course) continue
+  const { totalDocs } = await payload.count({
+    collection: 'batches',
+    where: { and: [{ course: { equals: course } }, { startDate: { equals: batch.startDate } }] },
+  })
+  if (totalDocs > 0) continue
+  const campus = campusSlug ? await idBySlug('branches', campusSlug) : undefined
+  await payload.create({ collection: 'batches', data: { ...batch, course, campus }, context })
+  newBatches++
+}
+payload.logger.info(`Batches created: ${newBatches}.`)
 
 process.exit(0)
