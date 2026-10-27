@@ -54,3 +54,37 @@ export const internalNoteField: Field = {
   access: { read: staffField },
   admin: { description: 'Staff only. Never shown on the website.' },
 }
+
+/** Where a form came from: page, WEB code and the ad campaign's UTM tags (brief §4). */
+export const sourceField: Field = {
+  name: 'source',
+  type: 'group',
+  admin: { description: 'Where the form came from (page, WEB code, ad campaign).' },
+  fields: [
+    {
+      type: 'row',
+      fields: [
+        { name: 'code', type: 'text', admin: { width: '33%', readOnly: true } },
+        { name: 'page', type: 'text', admin: { width: '33%', readOnly: true } },
+        { name: 'referrer', type: 'text', admin: { width: '33%', readOnly: true } },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        { name: 'utmSource', type: 'text', admin: { width: '20%', readOnly: true } },
+        { name: 'utmMedium', type: 'text', admin: { width: '20%', readOnly: true } },
+        { name: 'utmCampaign', type: 'text', admin: { width: '20%', readOnly: true } },
+        { name: 'utmContent', type: 'text', admin: { width: '20%', readOnly: true } },
+        { name: 'utmTerm', type: 'text', admin: { width: '20%', readOnly: true } },
+      ],
+    },
+  ],
+}
+
+/** Ready → live only with a doctor's sign-off; the rest are kept for the owner to review on staging. */
+export const CONTENT_STATUS_OPTIONS = [
+  { label: 'Ready (offered now)', value: 'ready' },
+  { label: 'To confirm (owner listed it, not confirmed as offered)', value: 'confirm' },
+  { label: 'Historical (offered before, not reconfirmed)', value: 'historical' },
+]

@@ -49,5 +49,15 @@ export const Media: CollectionConfig = {
           'Brand rule: real photos only, never AI-made faces, and written consent from every identifiable person.',
       },
     },
+    {
+      name: 'gallery',
+      label: 'Show in the gallery',
+      type: 'select',
+      options: [
+        { label: 'Clinic gallery', value: 'clinic' },
+        { label: 'Academy gallery', value: 'academy' },
+      ],
+      admin: { description: 'Gallery photos also need consent (or no identifiable person).' },
+    },
   ],
 }

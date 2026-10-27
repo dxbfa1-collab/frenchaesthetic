@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone, ownerOr } from '../access/roles'
+import { anyone, ownerOr, staffField } from '../access/roles'
 import { FACT_STATUS_OPTIONS as FACT_STATUS, internalNoteField, slugField } from '../fields/shared'
 import { revalidateSite } from '../hooks/revalidate'
 
@@ -128,6 +128,16 @@ export const Branches: CollectionConfig = {
             },
             { name: 'phone', type: 'text', admin: { width: '50%' } },
           ],
+        },
+        {
+          name: 'alertEmails',
+          label: 'Booking alert emails',
+          type: 'text',
+          access: { read: staffField },
+          admin: {
+            description:
+              "This branch's CSR, emailed about each booking for it. Separate several with commas. Staff only.",
+          },
         },
       ],
     },

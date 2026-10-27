@@ -3,7 +3,7 @@
 import { type ReactNode, useEffect, useRef } from 'react'
 import { useFormStatus } from 'react-dom'
 
-import type { FormState } from '@/app/(frontend)/academy/enroll/actions'
+import type { FormState } from '@/lib/forms'
 import { buttonClass } from '@/components/ui/Button'
 
 type ControlProps = { id: string; 'aria-invalid'?: true; 'aria-describedby'?: string }

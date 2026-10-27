@@ -46,6 +46,16 @@ export const SiteSettings: GlobalConfig = {
             { name: 'clinicEmail', label: 'Email', type: 'email' },
             { name: 'clinicInstagram', label: 'Instagram link', type: 'text' },
             { name: 'clinicFacebook', label: 'Facebook link', type: 'text' },
+            {
+              name: 'bookingAlertEmails',
+              label: 'Booking alert emails',
+              type: 'text',
+              access: { read: staffField },
+              admin: {
+                description:
+                  'Who is emailed about every booking and patient message (each branch can add its own CSR too). Separate several with commas. Staff only.',
+              },
+            },
           ],
         },
         {

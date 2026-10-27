@@ -50,6 +50,16 @@ export const Faqs: CollectionConfig = {
             description: 'Leave empty for a general academy question.',
           },
         },
+        {
+          name: 'treatment',
+          type: 'relationship',
+          relationTo: 'treatments',
+          admin: {
+            width: '50%',
+            condition: (_, siblingData) => siblingData?.business === 'clinic',
+            description: 'Leave empty for a general clinic question.',
+          },
+        },
       ],
     },
     { name: 'order', type: 'number', defaultValue: 10, admin: { position: 'sidebar' } },

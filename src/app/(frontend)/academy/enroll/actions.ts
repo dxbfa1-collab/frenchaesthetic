@@ -2,33 +2,28 @@
 
 import config from '@payload-config'
 import { randomUUID } from 'crypto'
-import { cookies, headers } from 'next/headers'
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getPayload, type Payload } from 'payload'
 import { z } from 'zod'
 
 import { findEnrollmentForPayment } from '@/lib/enrollments'
-import { sendAdmissionsAlert } from '@/lib/notify'
-import { normalizePhone } from '@/lib/phone'
+import { readSource } from '@/lib/formSource'
+import {
+  consentField,
+  fieldErrors,
+  type FormState,
+  inFormOrder,
+  nameField,
+  optionalEmailField,
+  phoneField,
+  stringValues,
+  withNonce,
+} from '@/lib/forms'
+import { sendStaffAlert } from '@/lib/notify'
 import { clientIp, tooManyAttempts } from '@/lib/rateLimit'
 import { relationId } from '@/lib/relation'
 import { siteUrl } from '@/lib/site'
-import type { Enrollment } from '@/payload-types'
-
-export type FormState = {
-  status: 'idle' | 'error' | 'success'
-  message?: string
-  errors?: Record<string, string>
-  /** What the visitor typed, so the form can be shown again after an error. */
-  values?: Record<string, string>
-  /**
-   * New on every reply. The form uses it as its key, so it remounts with `values` as defaults:
-   * React's own reset after an action would put selects back to their first value.
-   */
-  nonce?: number
-}
-
-const withNonce = (state: FormState): FormState => ({ ...state, nonce: Date.now() })
 
 export async function submitEnrollment(prev: FormState, formData: FormData): Promise<FormState> {
   return withNonce(await enroll(prev, formData))
@@ -48,23 +43,9 @@ const EXTENSIONS: Record<string, string> = {
 
 const enrollmentSchema = z.object({
   batch: z.string().min(1, 'Choose a batch.'),
-  name: z
-    .string()
-    .trim()
-    .min(2, 'Enter your full name.')
-    .max(80, 'Keep the name under 80 characters.'),
-  phone: z
-    .string()
-    .trim()
-    .transform((value, ctx) => {
-      const phone = normalizePhone(value)
-      if (!phone) {
-        ctx.addIssue({ code: 'custom', message: 'Enter your WhatsApp number, e.g. 0300 1234567.' })
-        return z.NEVER
-      }
-      return phone
-    }),
-  email: z.union([z.literal(''), z.email('Enter a valid email, or leave it empty.')]).default(''),
+  name: nameField,
+  phone: phoneField,
+  email: optionalEmailField,
   city: z.string().trim().min(2, 'Enter your city.').max(60, 'Keep the city under 60 characters.'),
   profession: z
     .string()
@@ -73,7 +54,7 @@ const enrollmentSchema = z.object({
     .max(80, 'Keep it under 80 characters.'),
   pmdcNumber: z.string().trim().max(40, 'That PMDC number looks too long.').default(''),
   houseJob: z.enum(['', 'completed', 'inProgress', 'notStarted']).default(''),
-  consent: z.literal('on', { error: 'Please agree to be contacted on WhatsApp.' }),
+  consent: consentField,
 })
 
 const paymentSchema = z.object({
@@ -83,18 +64,6 @@ const paymentSchema = z.object({
     error: 'Choose how you paid.',
   }),
 })
-
-function stringValues(formData: FormData): Record<string, string> {
-  const values: Record<string, string> = {}
-  for (const [key, value] of formData.entries()) if (typeof value === 'string') values[key] = value
-  return values
-}
-
-function fieldErrors(error: z.ZodError | undefined): Record<string, string> {
-  const errors: Record<string, string> = {}
-  for (const issue of error?.issues ?? []) errors[String(issue.path[0] ?? 'form')] ??= issue.message
-  return errors
-}
 
 // Errors are listed in the order the fields appear on the form.
 const FIELD_ORDER = [
@@ -109,12 +78,6 @@ const FIELD_ORDER = [
   'documents',
   'consent',
 ]
-
-function inFormOrder(errors: Record<string, string>): Record<string, string> {
-  const rank = (key: string) =>
-    FIELD_ORDER.includes(key) ? FIELD_ORDER.indexOf(key) : FIELD_ORDER.length
-  return Object.fromEntries(Object.entries(errors).sort(([a], [b]) => rank(a) - rank(b)))
-}
 
 const UNREADABLE_FILE = 'This file could not be read. Please upload a clear PDF, JPG, PNG or WebP.'
 
@@ -176,30 +139,6 @@ async function removeFiles(payload: Payload, ids: string[]) {
   )
 }
 
-/** Page, WEB code and the UTM cookie set by <TrackClicks />, saved with each application. */
-async function readSource(
-  values: Record<string, string>,
-): Promise<NonNullable<Enrollment['source']>> {
-  let utm: Record<string, unknown> = {}
-  try {
-    utm = JSON.parse(decodeURIComponent((await cookies()).get('fa_utm')?.value ?? '%7B%7D'))
-  } catch {
-    // A malformed cookie is ignored.
-  }
-  const clip = (value: unknown, max: number) =>
-    typeof value === 'string' && value ? value.slice(0, max) : undefined
-  return {
-    code: /^WEB-[A-Z0-9-]{1,30}$/.test(values.from ?? '') ? values.from : undefined,
-    page: clip(values.page, 200),
-    referrer: clip((await headers()).get('referer'), 300),
-    utmSource: clip(utm.source, 100),
-    utmMedium: clip(utm.medium, 100),
-    utmCampaign: clip(utm.campaign, 150),
-    utmContent: clip(utm.content, 150),
-    utmTerm: clip(utm.term, 100),
-  }
-}
-
 async function enroll(_prev: FormState, formData: FormData): Promise<FormState> {
   const values = stringValues(formData)
   // Honeypot: people never see this field, so anything in it is a bot. It gets a normal-looking reply.
@@ -228,7 +167,7 @@ async function enroll(_prev: FormState, formData: FormData): Promise<FormState> 
     if (fileError) errors.documents ??= fileError
   }
   if (!parsed.success || !batch || !course || Object.keys(errors).length > 0) {
-    return { status: 'error', errors: inFormOrder(errors), values }
+    return { status: 'error', errors: inFormOrder(errors, FIELD_ORDER), values }
   }
   const data = parsed.data
 
@@ -330,13 +269,17 @@ async function uploadPaymentProof(_prev: FormState, formData: FormData): Promise
       paymentProofUploadedAt: new Date().toISOString(),
     },
   })
-  await sendAdmissionsAlert(payload, `Payment proof received: ${enrollment.reference}`, [
-    `Reference: ${enrollment.reference}`,
-    `Name: ${enrollment.name}`,
-    `Method: ${parsed.data.method}`,
-    `Files: ${ids.length}`,
-    '',
-    `Open in the admin: ${siteUrl}/admin/collections/enrollments/${enrollment.id}`,
-  ])
+  await sendStaffAlert(payload, {
+    inbox: 'enrollment',
+    subject: `Payment proof received: ${enrollment.reference}`,
+    lines: [
+      `Reference: ${enrollment.reference}`,
+      `Name: ${enrollment.name}`,
+      `Method: ${parsed.data.method}`,
+      `Files: ${ids.length}`,
+      '',
+      `Open in the admin: ${siteUrl}/admin/collections/enrollments/${enrollment.id}`,
+    ],
+  })
   return { status: 'success' }
 }

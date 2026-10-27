@@ -2,9 +2,10 @@
 
 import { useActionState } from 'react'
 
-import { type FormState, submitPaymentProof } from '@/app/(frontend)/academy/enroll/actions'
+import { submitPaymentProof } from '@/app/(frontend)/academy/enroll/actions'
+import type { FormState } from '@/lib/forms'
 
-import { ErrorSummary, Field, SubmitButton } from './FormParts'
+import { ErrorSummary, Field, SubmitButton } from '@/components/forms/FormParts'
 
 const initialState: FormState = { status: 'idle' }
 

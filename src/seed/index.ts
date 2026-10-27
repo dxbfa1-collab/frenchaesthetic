@@ -8,6 +8,7 @@ import { getPayload } from 'payload'
 
 import config from '../payload.config'
 import { batches, courses, faqs, trainers } from './academy'
+import { categories, clinicFaqs, concerns, treatments } from './clinic'
 import { branches, siteSettings } from './data'
 
 const context = { disableRevalidate: true }
@@ -92,5 +93,74 @@ for (const { courseSlug, campusSlug, ...batch } of batches) {
   newBatches++
 }
 payload.logger.info(`Batches created: ${newBatches}.`)
+
+// Clinic: categories and concerns first, then treatments (which point at both), then FAQs.
+const idOf = async (collection: 'treatment-categories' | 'concerns' | 'treatments', slug: string) =>
+  (await payload.find({ collection, where: { slug: { equals: slug } }, limit: 1, depth: 0 }))
+    .docs[0]?.id
+
+for (const category of categories) {
+  if (await idOf('treatment-categories', category.slug)) continue
+  await payload.create({ collection: 'treatment-categories', data: category, context })
+}
+for (const concern of concerns) {
+  if (await idOf('concerns', concern.slug)) continue
+  await payload.create({ collection: 'concerns', data: concern, context })
+}
+
+const skinAnalysisBranches = (
+  await payload.find({
+    collection: 'branches',
+    where: { skinAnalysis: { equals: true } },
+    depth: 0,
+  })
+).docs.map((b) => b.id)
+
+let newTreatments = 0
+for (const {
+  categorySlug,
+  concernSlugs = [],
+  branchesFrom,
+  avoid,
+  suits,
+  priceFactors,
+  ...treatment
+} of treatments) {
+  if (await idOf('treatments', treatment.slug)) continue
+  const category = await idOf('treatment-categories', categorySlug)
+  if (!category) continue
+  const concernIds = (await Promise.all(concernSlugs.map((slug) => idOf('concerns', slug)))).filter(
+    (id): id is string => Boolean(id),
+  )
+  const asLines = (items?: string[]) => items?.map((text) => ({ text }))
+  await payload.create({
+    collection: 'treatments',
+    data: {
+      ...treatment,
+      category,
+      concerns: concernIds,
+      branches: branchesFrom === 'skinAnalysis' ? skinAnalysisBranches : [],
+      avoid: asLines(avoid),
+      suits: asLines(suits),
+      priceFactors: asLines(priceFactors),
+    },
+    context,
+  })
+  newTreatments++
+}
+payload.logger.info(`Treatments created: ${newTreatments}.`)
+
+let newClinicFaqs = 0
+for (const { treatmentSlug, ...faq } of clinicFaqs) {
+  const treatment = treatmentSlug ? await idOf('treatments', treatmentSlug) : undefined
+  const { totalDocs } = await payload.count({
+    collection: 'faqs',
+    where: { and: [{ question: { equals: faq.question } }, { business: { equals: 'clinic' } }] },
+  })
+  if (totalDocs > 0) continue
+  await payload.create({ collection: 'faqs', data: { ...faq, treatment }, context })
+  newClinicFaqs++
+}
+payload.logger.info(`Clinic FAQs created: ${newClinicFaqs}.`)
 
 process.exit(0)

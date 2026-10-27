@@ -2,9 +2,10 @@
 
 import { useActionState, useState } from 'react'
 
-import { type FormState, submitEnrollment } from '@/app/(frontend)/academy/enroll/actions'
+import { submitEnrollment } from '@/app/(frontend)/academy/enroll/actions'
+import type { FormState } from '@/lib/forms'
 
-import { ErrorSummary, Field, SubmitButton } from './FormParts'
+import { ErrorSummary, Field, SubmitButton } from '@/components/forms/FormParts'
 
 export type CourseOption = {
   id: string

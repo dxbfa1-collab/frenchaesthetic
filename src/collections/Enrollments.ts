@@ -9,26 +9,16 @@ import type {
 } from 'payload'
 
 import { ownerOr, staffField } from '../access/roles'
+import { sourceField } from '../fields/shared'
 import { revalidateSite } from '../hooks/revalidate'
-import { pktDateKey } from '../lib/batches'
-import { sendAdmissionsAlert } from '../lib/notify'
+import { sendStaffAlert } from '../lib/notify'
+import { newReference } from '../lib/reference'
 import { relationId } from '../lib/relation'
 import { siteUrl } from '../lib/site'
 
-// No 0/O or 1/I, so a reference read out on the phone cannot be misheard.
-const REFERENCE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-
-function newReference(): string {
-  const key = pktDateKey(new Date())
-  const code = [...randomBytes(4)]
-    .map((b) => REFERENCE_ALPHABET[b % REFERENCE_ALPHABET.length])
-    .join('')
-  return `FAA-${key.slice(2, 4)}${key.slice(5, 7)}-${code}`
-}
-
 const prepare: CollectionBeforeChangeHook = async ({ data, operation, originalDoc, req }) => {
   if (operation === 'create') {
-    data.reference = newReference()
+    data.reference = newReference('FAA')
     data.paymentKey = randomBytes(18).toString('base64url')
   }
   // Course and track always follow the chosen batch.
@@ -83,10 +73,11 @@ const alertOnCreate: CollectionAfterChangeHook = async ({ doc, operation, req })
         .findByID({ collection: 'batches', id: batchId, depth: 0, req })
         .catch(() => null)
     : null
-  await sendAdmissionsAlert(
-    req.payload,
-    `New enrollment ${doc.reference}: ${batch?.title ?? 'batch not set'}`,
-    [
+  await sendStaffAlert(req.payload, {
+    inbox: 'enrollment',
+    req,
+    subject: `New enrollment ${doc.reference}: ${batch?.title ?? 'batch not set'}`,
+    lines: [
       `Reference: ${doc.reference}`,
       `Batch: ${batch?.title ?? '-'}`,
       `Name: ${doc.name}`,
@@ -101,8 +92,7 @@ const alertOnCreate: CollectionAfterChangeHook = async ({ doc, operation, req })
       '',
       `Open in the admin: ${siteUrl}/admin/collections/enrollments/${doc.id}`,
     ],
-    req,
-  )
+  })
   return doc
 }
 
@@ -305,31 +295,7 @@ export const Enrollments: CollectionConfig = {
       type: 'checkbox',
       admin: { readOnly: true },
     },
-    {
-      name: 'source',
-      type: 'group',
-      admin: { description: 'Where the application came from (page, WEB code, ad campaign).' },
-      fields: [
-        {
-          type: 'row',
-          fields: [
-            { name: 'code', type: 'text', admin: { width: '33%', readOnly: true } },
-            { name: 'page', type: 'text', admin: { width: '33%', readOnly: true } },
-            { name: 'referrer', type: 'text', admin: { width: '33%', readOnly: true } },
-          ],
-        },
-        {
-          type: 'row',
-          fields: [
-            { name: 'utmSource', type: 'text', admin: { width: '20%', readOnly: true } },
-            { name: 'utmMedium', type: 'text', admin: { width: '20%', readOnly: true } },
-            { name: 'utmCampaign', type: 'text', admin: { width: '20%', readOnly: true } },
-            { name: 'utmContent', type: 'text', admin: { width: '20%', readOnly: true } },
-            { name: 'utmTerm', type: 'text', admin: { width: '20%', readOnly: true } },
-          ],
-        },
-      ],
-    },
+    sourceField,
     { name: 'staffNotes', type: 'textarea' },
     { name: 'paymentKey', type: 'text', hidden: true, index: true },
   ],

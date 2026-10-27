@@ -7,14 +7,23 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
 import { Batches } from './collections/Batches'
+import { Bookings } from './collections/Bookings'
 import { Branches } from './collections/Branches'
+import { Concerns } from './collections/Concerns'
 import { Courses } from './collections/Courses'
 import { Doctors } from './collections/Doctors'
 import { EnrollmentFiles } from './collections/EnrollmentFiles'
 import { Enrollments } from './collections/Enrollments'
 import { Faqs } from './collections/Faqs'
 import { Media } from './collections/Media'
+import { Messages } from './collections/Messages'
+import { Posts } from './collections/Posts'
+import { Results } from './collections/Results'
+import { Reviews } from './collections/Reviews'
+import { TreatmentCategories } from './collections/TreatmentCategories'
+import { Treatments } from './collections/Treatments'
 import { Users } from './collections/Users'
+import { Policies } from './globals/Policies'
 import { SiteSettings } from './globals/SiteSettings'
 import { cloudinaryStorage } from './storage/cloudinary'
 
@@ -47,18 +56,27 @@ export default buildConfig({
       titleSuffix: ' · Website admin',
     },
   },
+  // Admin sidebar order: the day-to-day inboxes first, then content.
   collections: [
+    Bookings,
+    Enrollments,
+    Messages,
+    Treatments,
+    TreatmentCategories,
+    Concerns,
+    Results,
     Courses,
     Batches,
-    Enrollments,
     EnrollmentFiles,
     Doctors,
     Branches,
     Faqs,
+    Reviews,
+    Posts,
     Media,
     Users,
   ],
-  globals: [SiteSettings],
+  globals: [SiteSettings, Policies],
   editor: lexicalEditor(),
   email,
   secret: process.env.PAYLOAD_SECRET || '',
