@@ -664,3 +664,15 @@ The owner's website prompt of 28 Oct was built against this brief. Where the two
 - 2026-10-29: **All four branch addresses are confirmed** as shown on the website (owner). Opening hours are still to confirm.
 - 2026-10-29: **Privacy policy approved** by the owner (the two [CONFIRM] lines replaced with general wording). Terms, refunds and cancellations are still to come.
 
+
+### Launch steps (frenchaesthetic.com, agreed 29 Oct 2026)
+
+DNS and email are already on Hostinger (nameservers `*.dns-parking.com`, MX `mx1/mx2.hostinger.com`), so nothing changes at GoDaddy. The owner chose not to back up WordPress; its site is moved to `old.frenchaesthetic.com` rather than deleted.
+
+1. hPanel → Websites → the WordPress `frenchaesthetic.com` site → Settings → Change domain → `old.frenchaesthetic.com`. Never delete the domain, its DNS zone or the email accounts.
+2. hPanel → the Web App (`mediumorchid-caribou-170902.hostingersite.com`) → Domains → Connect / Change domain → `frenchaesthetic.com`; also `www.frenchaesthetic.com` if offered.
+3. Web App → Environment variables: `NEXT_PUBLIC_SITE_URL=https://frenchaesthetic.com`, `SITE_STAGE=production` → Save → Deployments → Redeploy (10–15 minutes).
+4. Security → SSL: install or confirm the free certificate for `frenchaesthetic.com` and `www`; force HTTPS.
+5. Check: home, /clinic, /academy, a treatment page, /clinic/book (send a test booking and delete it in /admin), /admin login, an old address such as /service/botox, /robots.txt (should allow indexing) and /sitemap.xml.
+6. Google Search Console: add the domain, submit `https://frenchaesthetic.com/sitemap.xml`.
+7. Later: Cloudinary keys (photo uploads), SMTP for alert emails, opening hours, GA4/Pixel IDs, terms/refund/cancellation texts.
