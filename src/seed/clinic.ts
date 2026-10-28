@@ -150,7 +150,7 @@ const ready: TreatmentSeed[] = [
       'Non-surgical HIFU skin tightening for the face, jawline and neck at French Medical Aesthetics. Doctor-led consultation; price given at consultation.',
   },
   {
-    name: 'Non-surgical face lifting',
+    name: 'EMFACE (non-surgical face lifting)',
     slug: 'non-surgical-face-lifting',
     categorySlug: 'face-lifting-and-tightening',
     contentStatus: 'ready',
@@ -167,8 +167,7 @@ const ready: TreatmentSeed[] = [
     suits: ['People looking for a needle-free option for facial tone'],
     avoid: [...ENERGY, 'You have a pacemaker, an electronic implant or metal implants in the face'],
     concernSlugs: ['sagging-skin'],
-    internalNote:
-      'Shown generically. Use the EMFACE name only once the genuine branded device is confirmed (FMA brief §4).',
+    // Owner, 29 Oct 2026: the clinic uses the genuine BTL EMFACE device.
   },
   {
     name: 'RF microneedling',
