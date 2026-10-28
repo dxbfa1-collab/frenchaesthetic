@@ -95,9 +95,10 @@ type PoliciesSeed = Omit<Policies, 'id' | 'createdAt' | 'updatedAt' | 'globalTyp
 // A draft for the owner to review (FMA brief §9 requires a privacy policy covering form, upload
 // and WhatsApp data). It stays off the live site until its status is set to confirmed.
 export const policies: PoliciesSeed = {
-  privacyStatus: 'confirm',
+  // Approved by the owner, 29 Oct 2026.
+  privacyStatus: 'confirmed',
   privacy: [
-    'This policy explains what information French Medical Aesthetics (the clinic) and French Aesthetics Academy (the academy) collect through this website, how it is used and who can see it. [CONFIRM: legal name and address of each business.]',
+    'This policy explains what information French Medical Aesthetics (the clinic) and French Aesthetics Academy (the academy) collect through this website, how it is used and who can see it.',
     '## What we collect',
     [
       '- Booking requests: your name, WhatsApp number, optional email, branch, the treatment or concern you chose, your preferred date and time, and any notes, gender or age you choose to share.',
@@ -115,7 +116,7 @@ export const policies: PoliciesSeed = {
     '## Cookies and analytics',
     'The website remembers your light or dark theme on your own device. If you arrive from an advert, a small cookie keeps its campaign tags for 30 days, so we can see which adverts help people find us. Analytics and advertising tags (Google Analytics and the Meta Pixel) load only if you accept them in the cookie notice.',
     '## How long we keep it',
-    '[CONFIRM: how long bookings, applications, documents and payment proofs are kept.]',
+    'We keep your details only for as long as we need them to handle your request, and as required by law and medical record-keeping rules.',
     '## Your choices',
     'You can ask to see, correct or delete the information you have sent us. Message the clinic or academy admissions on WhatsApp, or email info@frenchaesthetic.com.',
     '## Changes',

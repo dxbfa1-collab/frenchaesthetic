@@ -662,4 +662,5 @@ The owner's website prompt of 28 Oct was built against this brief. Where the two
 - 2026-10-29: **All 13 "Ready" treatments are approved** by the owner; medical sign-off ticked in the CMS, so they show on the live site.
 - 2026-10-29: **The clinic uses the genuine BTL EMFACE device** (owner). The treatment is now "EMFACE (non-surgical face lifting)"; its address stays `/clinic/treatments/face-lifting-and-tightening/non-surgical-face-lifting`. Morpheus8 and HydraFacial are still shown generically.
 - 2026-10-29: **All four branch addresses are confirmed** as shown on the website (owner). Opening hours are still to confirm.
+- 2026-10-29: **Privacy policy approved** by the owner (the two [CONFIRM] lines replaced with general wording). Terms, refunds and cancellations are still to come.
 
