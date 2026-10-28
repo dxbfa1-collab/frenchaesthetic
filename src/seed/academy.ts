@@ -46,7 +46,7 @@ export const trainers: DoctorSeed[] = [
     slug: 'dr-sadaf',
     // Owner, 28 Oct 2026: DPT (Doctor of Physical Therapy); "Physical Therapist" in the FMA brand guide.
     title: 'Physical Therapist',
-    degrees: 'DPT',
+    degrees: 'DPT, MS in Gyne',
     isTrainer: true,
     order: 3,
     status: 'confirmed',
