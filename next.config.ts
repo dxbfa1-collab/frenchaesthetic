@@ -140,6 +140,10 @@ const nextConfig: NextConfig = {
   experimental: {
     // Enrollment uploads: up to two documents of 5 MB each.
     serverActions: { bodySizeLimit: '11mb' },
+    // Hostinger caps processes and threads per plan (120 in all), so the build uses one worker.
+    // The build script also uses webpack, which does not start a thread per CPU core as Turbopack does.
+    cpus: 1,
+    webpackMemoryOptimizations: true,
   },
   async redirects() {
     return [
