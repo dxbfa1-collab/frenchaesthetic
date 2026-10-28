@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "start"],
       "port": 3000
+    },
+    {
+      "name": "website-production",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["cross-env", "SITE_STAGE=production", "npm", "run", "start"],
+      "port": 3000
     }
   ]
 }

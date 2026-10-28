@@ -571,7 +571,7 @@ Five phases. Each ends with a working build pushed to GitHub. **Do not start a p
 1. Push the repo to GitHub.
 2. In hPanel, go to Websites > Add Website > Node.js Web App > Import Git Repository.
 3. Choose the Next.js framework and Node 22 (22.23.4 or newer).
-4. Add the env vars: DB URL, Payload secret, media keys, notification keys.
+4. Add the env vars: DB URL, Payload secret, media keys, notification keys, `NEXT_PUBLIC_SITE_URL` (the site's own address, used in the sitemap and share links) and `SITE_STAGE` (`staging` until launch day, then `production`). The server reads `SITE_STAGE` at run time as well as at build time, so set it for both.
 5. Deploy, attach the domain, enable SSL.
 
 **Time pressure:** the next academy batches start on 16 and 23 Nov 2026. The academy pages are the simplest part, since they are WhatsApp-led with no payments. If the owner needs them live first, Phase 3 can ship before Phase 2.

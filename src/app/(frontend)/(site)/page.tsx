@@ -9,7 +9,7 @@ import { getSiteSettings } from '@/lib/payload'
 import { academyMessages, clinicMessages } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
-  title: 'French Medical Aesthetics · French Aesthetics Academy',
+  title: { absolute: 'French Medical Aesthetics · French Aesthetics Academy' },
   description:
     'Doctor-led aesthetic treatments at four branches in Lahore and Karachi, and hands-on aesthetics training in Lahore with a 2-week supervised internship.',
   alternates: { canonical: '/' },

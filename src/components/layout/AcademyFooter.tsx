@@ -109,6 +109,7 @@ export function AcademyFooter({
         </div>
       </Container>
       <FooterBase
+        floatingButton
         cookieSettings={Boolean(settings.ga4Id || settings.metaPixelId)}
         disclaimer={settings.medicalDisclaimer}
         copyright="French Aesthetics Academy"

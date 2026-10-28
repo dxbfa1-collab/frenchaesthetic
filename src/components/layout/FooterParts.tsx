@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { CookieSettingsButton } from '@/components/analytics/Consent'
 import { FacebookIcon, InstagramIcon } from '@/components/icons'
 import { Container } from '@/components/ui/Container'
+import { cn } from '@/lib/cn'
 import type { NavItem } from '@/lib/nav'
 
 export function FooterColumn({ title, items }: { title: string; items: NavItem[] }) {
@@ -73,16 +74,19 @@ export function FooterBase({
   copyright,
   links,
   cookieSettings = false,
+  floatingButton = false,
 }: {
   disclaimer: string
   copyright: string
   links: NavItem[]
   /** Shows "Cookie settings" when analytics tags are configured. */
   cookieSettings?: boolean
+  /** The page has the floating WhatsApp button, so the last row needs room above it on desktop. */
+  floatingButton?: boolean
 }) {
   return (
     <div className="border-t border-hairline">
-      <Container className="py-8 text-[0.9375rem] text-muted">
+      <Container className={cn('py-8 text-[0.9375rem] text-muted', floatingButton && 'lg:pb-28')}>
         <p className="max-w-4xl leading-relaxed">{disclaimer}</p>
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p>

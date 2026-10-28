@@ -442,7 +442,11 @@ export default async function TreatmentPage({ params }: Props) {
       <section className="tone-inverse">
         <Container className="py-20 lg:py-28">
           <div data-reveal="">
-            <SectionHeading eyebrow="Where" title="Branches and" accent="doctors." />
+            {performedBy.length > 0 ? (
+              <SectionHeading eyebrow="Where" title="Branches and" accent="doctors." />
+            ) : (
+              <SectionHeading eyebrow="Where" title="Where it is" accent="offered." />
+            )}
           </div>
           {offeredAt.length > 0 ? (
             <div data-reveal="" className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
