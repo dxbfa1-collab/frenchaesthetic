@@ -16,4 +16,4 @@ export const DEFAULT_MEDICAL_DISCLAIMER =
 
 /** Shown at the bottom of every academy page (FAA brief §3). */
 export const DEFAULT_ACADEMY_FILTER_LINE =
-  'Ye training course hai, treatment booking nahi. Treatments ke liye French Medical Aesthetics clinic se rabta karein.'
+  'This is a training course, not a treatment booking. For treatments, please contact French Medical Aesthetics clinic.'

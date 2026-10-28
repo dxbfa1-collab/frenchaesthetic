@@ -10,7 +10,7 @@ import { AcademyWhatsApp } from './AcademyWhatsApp'
 import { MobileMenu } from './MobileMenu'
 import { NavLinks } from './NavLinks'
 
-/** FAA brief §2: horizontal logo left, menu, gold "WhatsApp Karein" button. */
+/** FAA brief §2: horizontal logo left, menu, gold "Chat on WhatsApp" button. */
 export function AcademyHeader({ whatsapp }: { whatsapp: string }) {
   return (
     <header className="tone-dark sticky top-0 z-40 border-b border-hairline bg-bg/95 backdrop-blur-md">
@@ -32,7 +32,7 @@ export function AcademyHeader({ whatsapp }: { whatsapp: string }) {
             className={buttonClass('primary', { className: 'hidden lg:inline-flex' })}
           >
             <WhatsAppIcon size={18} />
-            WhatsApp Karein
+            Chat on WhatsApp
           </AcademyWhatsApp>
           <MobileMenu
             label="Academy"
@@ -46,7 +46,7 @@ export function AcademyHeader({ whatsapp }: { whatsapp: string }) {
               className={buttonClass('primary', { size: 'lg', className: 'w-full' })}
             >
               <WhatsAppIcon size={20} />
-              WhatsApp Karein: <span className="whitespace-nowrap">{whatsapp}</span>
+              Chat on WhatsApp: <span className="whitespace-nowrap">{whatsapp}</span>
             </AcademyWhatsApp>
           </MobileMenu>
         </div>

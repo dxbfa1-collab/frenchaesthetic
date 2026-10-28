@@ -48,7 +48,7 @@ export default async function PaymentPage({ searchParams }: Props) {
     <>
       <PageHero
         eyebrow={`Reference ${enrollment.reference}`}
-        title={`Assalam o Alaikum, ${firstName}.`}
+        title={`Hello, ${firstName}.`}
         accent="Payment for your seat."
         intro={
           batch?.startDate ? (

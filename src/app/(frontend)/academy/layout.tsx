@@ -48,7 +48,7 @@ export default async function AcademyLayout({ children }: { children: ReactNode 
         </ButtonLink>
         <AcademyWhatsApp number={whatsapp} label="sticky-bar" className={buttonClass('primary')}>
           <WhatsAppIcon size={18} />
-          WhatsApp Karein
+          Chat on WhatsApp
         </AcademyWhatsApp>
       </MobileStickyBar>
 

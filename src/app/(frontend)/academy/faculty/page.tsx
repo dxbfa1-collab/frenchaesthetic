@@ -51,7 +51,7 @@ export default async function FacultyPage() {
           className={buttonClass('primary', { size: 'lg' })}
         >
           <WhatsAppIcon size={20} />
-          WhatsApp Karein
+          Chat on WhatsApp
         </WhatsAppLink>
       </CtaBand>
     </>

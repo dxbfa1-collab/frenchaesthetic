@@ -48,8 +48,8 @@ export default async function AcademyAboutPage() {
     <>
       <PageHero
         eyebrow="About the academy"
-        title="Ek clinic ki academy."
-        accent="Asli practice ke liye."
+        title="The academy of a clinic."
+        accent="Built for real practice."
       />
 
       <section className="border-t border-hairline">
@@ -107,9 +107,9 @@ export default async function AcademyAboutPage() {
       </section>
 
       <CtaBand
-        title="Apni seat"
-        accent="reserve karein."
-        intro="Sirf 20 seats per batch. Fee aur details WhatsApp par."
+        title="Reserve"
+        accent="your seat."
+        intro="Only 20 seats per batch. Admissions share the fee and details on WhatsApp."
       >
         <WhatsAppLink
           number={settings.admissionsWhatsApp}
@@ -119,7 +119,7 @@ export default async function AcademyAboutPage() {
           className={buttonClass('primary', { size: 'lg' })}
         >
           <WhatsAppIcon size={20} />
-          WhatsApp Karein
+          Chat on WhatsApp
         </WhatsAppLink>
       </CtaBand>
     </>

@@ -1,18 +1,23 @@
+import { HeartHandshake, ScanFace, Waves } from 'lucide-react'
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 
 import { BranchCard } from '@/components/clinic/BranchCard'
 import { DoctorCard } from '@/components/clinic/DoctorCard'
-import { TreatmentStatus } from '@/components/clinic/TreatmentStatus'
+import { TreatmentCard } from '@/components/clinic/TreatmentCard'
 import { ArrowRightIcon, WhatsAppIcon } from '@/components/icons'
+import { HeroSlider, type Slide } from '@/components/motion/HeroSlider'
+import { Marquee } from '@/components/motion/Marquee'
 import { buttonClass, ButtonLink } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { FaqList } from '@/components/ui/FaqList'
 import { JsonLd } from '@/components/ui/JsonLd'
-import { Numerals } from '@/components/ui/Numerals'
-import { OfferPanel } from '@/components/ui/OfferPanel'
 import { SectionHeading } from '@/components/ui/SectionHeading'
+import { IconBadge, TopicIcon } from '@/components/ui/TopicIcon'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
+import { categoryPhoto, SITE_PHOTOS, treatmentPhoto } from '@/lib/images'
+import { publicImage } from '@/lib/media'
 import {
   getClinicBranches,
   getClinicDoctors,
@@ -21,8 +26,8 @@ import {
   getSiteSettings,
   getTreatmentMenu,
 } from '@/lib/payload'
-import { DEFAULT_STEPS, treatmentHref } from '@/lib/treatments'
 import { siteUrl } from '@/lib/site'
+import { DEFAULT_STEPS, treatmentHref } from '@/lib/treatments'
 import { clinicMessages, telHref } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
@@ -38,17 +43,25 @@ export const metadata: Metadata = {
   Device and trademark names are left out (owner decision D-005).
 */
 const reasons = [
-  { title: 'Doctor-led care', text: 'Every plan starts with an in-person medical assessment.' },
   {
+    topic: 'doctor',
+    title: 'Doctor-led care',
+    text: 'Every plan starts with an in-person medical assessment.',
+  },
+  {
+    topic: 'technology',
     title: 'Modern technology',
     text: 'Focused ultrasound, radiofrequency, lasers and AI skin analysis, explained in plain words.',
   },
   {
+    topic: 'price',
     title: 'Fair, transparent pricing',
     text: 'You receive a clear quote at your consultation, before any treatment begins.',
   },
-  { title: 'Four branches', text: 'Three in Lahore and one in Karachi.' },
+  { topic: 'branches', title: 'Four branches', text: 'Three in Lahore and one in Karachi.' },
 ]
+
+const STEP_TOPICS = ['consultation', 'plan', 'treatment', 'aftercare']
 
 const listFormat = new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' })
 
@@ -67,6 +80,94 @@ export default async function ClinicHome() {
   // "Free consultation" is named per branch, never implied for all (FMA brief §2).
   const freeAt = branches.filter((b) => b.consultation === 'free').map((b) => b.shortName || b.name)
   const questions = faqs.filter((f) => !f.treatment).slice(0, 4)
+  const lifting = menu.find((c) => c.slug === 'face-lifting-and-tightening')
+  // Bento grid of 4 columns: the first tile takes 4 cells and the fourth 2; the last tile widens
+  // when that would otherwise leave an empty cell at the end.
+  const tileGap = (4 - ((menu.length + (menu.length > 3 ? 4 : 3)) % 4)) % 4
+  const facials = menu.find((c) => c.slug === 'skin-and-facials')
+
+  const whatsappButton = (
+    label: string,
+    place: string,
+    message = clinicMessages.consultation(),
+  ) => (
+    <WhatsAppLink
+      number={whatsapp}
+      message={message}
+      side="clinic"
+      label={place}
+      className={buttonClass('primary', { size: 'lg' })}
+    >
+      <WhatsAppIcon size={20} />
+      {label}
+    </WhatsAppLink>
+  )
+
+  // Owner, 29 Oct 2026: a slider of 2–3 slides on the clinic home.
+  const slides: Slide[] = [
+    {
+      id: 'lift',
+      eyebrow: 'Face lifting & tightening',
+      title: 'Lift and tighten,',
+      accent: 'without surgery.',
+      text: 'Focused ultrasound and energy-based treatments for the face, jawline and neck, planned by a doctor for your skin.',
+      image: treatmentPhoto('hifu-22d-skin-tightening') ?? undefined,
+      badge: { icon: <Waves size={22} />, label: 'Non-surgical, doctor-led' },
+      actions: (
+        <>
+          {whatsappButton('Book on WhatsApp', 'slider-lift')}
+          <ButtonLink
+            href={lifting ? `/clinic/treatments/${lifting.slug}` : '/clinic/treatments'}
+            variant="outline"
+            size="lg"
+          >
+            Explore treatments
+          </ButtonLink>
+        </>
+      ),
+    },
+    {
+      id: 'glow',
+      eyebrow: 'Skin & facials',
+      title: 'Healthy, glowing skin,',
+      accent: 'made simple.',
+      text: 'Hydrating facials, peels and laser facials, chosen after an assessment of your skin type.',
+      image: treatmentPhoto('hydrating-facial') ?? undefined,
+      badge: { icon: <ScanFace size={22} />, label: 'AI skin analysis at participating branches' },
+      actions: (
+        <>
+          {whatsappButton('Ask on WhatsApp', 'slider-glow', clinicMessages.treatment('facials'))}
+          <ButtonLink
+            href={facials ? `/clinic/treatments/${facials.slug}` : '/clinic/treatments'}
+            variant="outline"
+            size="lg"
+          >
+            See facials
+          </ButtonLink>
+        </>
+      ),
+    },
+    {
+      id: 'care',
+      eyebrow: 'French Medical Aesthetics · Lahore & Karachi',
+      title: 'Premium care,',
+      accent: 'priced with fairness.',
+      text:
+        freeAt.length > 0
+          ? `A doctor-led assessment and a clear quote before any treatment. Free consultation at ${listFormat.format(freeAt)}.`
+          : 'A doctor-led assessment and a clear quote before any treatment.',
+      image: SITE_PHOTOS.consultation,
+      badge: { icon: <HeartHandshake size={22} />, label: 'A clear quote before treatment' },
+      actions: (
+        <>
+          {whatsappButton('Book on WhatsApp', 'slider-care')}
+          <ButtonLink href="/clinic/book" variant="outline" size="lg">
+            Book a Consultation
+          </ButtonLink>
+        </>
+      ),
+    },
+  ]
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -88,67 +189,19 @@ export default async function ClinicHome() {
   return (
     <>
       <JsonLd data={jsonLd} />
-      {/* Hero */}
-      <section>
-        <Container className="grid gap-14 pb-20 pt-14 sm:pt-20 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-16 lg:pb-28 lg:pt-28">
-          <div>
-            <p className="label eyebrow rise">French Medical Aesthetics · Lahore & Karachi</p>
-            <h1 className="rise rise-2 mt-6 max-w-3xl text-[2.875rem] sm:text-6xl lg:text-[5rem]">
-              Premium care,
-              <span className="block italic text-accent">priced with fairness.</span>
-            </h1>
-            <p className="rise rise-3 mt-7 max-w-xl text-lg sm:text-xl">
-              Doctor-led aesthetic treatments for skin, face and body. Every plan starts with an
-              honest consultation about your skin, your goals and what will suit you.
-            </p>
-            <div className="rise rise-3 mt-10 flex flex-wrap gap-4">
-              <WhatsAppLink
-                number={whatsapp}
-                message={clinicMessages.consultation()}
-                side="clinic"
-                label="clinic-hero"
-                className={buttonClass('primary', { size: 'lg' })}
-              >
-                <WhatsAppIcon size={20} />
-                Book on WhatsApp
-              </WhatsAppLink>
-              <ButtonLink href="/clinic/book" variant="outline" size="lg">
-                Book a Consultation
-              </ButtonLink>
-            </div>
-            {signature.length > 0 && (
-              <ul
-                className="rise rise-3 mt-12 flex flex-wrap gap-2.5"
-                aria-label="Signature treatments"
-              >
-                {signature.map((t) => (
-                  <li key={t.id}>
-                    <Link href={treatmentHref(t)} className="chip">
-                      {t.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <OfferPanel
-            className="rise rise-3"
-            title="Your consultation"
-            points={[
-              'Doctor-led skin assessment',
-              'AI skin analysis at participating branches',
-              'A clear quote before any treatment',
-            ]}
-            footer={
-              freeAt.length > 0 ? <>Free consultation at {listFormat.format(freeAt)}.</> : undefined
-            }
-          />
-        </Container>
-      </section>
+
+      <HeroSlider slides={slides} label="French Medical Aesthetics highlights" />
+
+      {treatments.length > 0 && (
+        <Marquee
+          label="Treatments"
+          items={treatments.map((t) => ({ label: t.name, href: treatmentHref(t), topic: t.slug }))}
+        />
+      )}
 
       {/* Concern finder */}
       {concerns.length > 0 && treatments.length > 0 && (
-        <section className="border-t border-hairline">
+        <section>
           <Container className="grid gap-10 py-16 lg:grid-cols-[1fr_2fr] lg:items-center lg:gap-16 lg:py-20">
             <div data-reveal="">
               <p className="label eyebrow">Start with your concern</p>
@@ -157,10 +210,10 @@ export default async function ClinicHome() {
                 <span className="block italic text-accent">like to improve?</span>
               </h2>
             </div>
-            <ul data-reveal="" className="flex flex-wrap gap-2.5">
+            <ul data-reveal="" className="stagger flex flex-wrap gap-2.5">
               {concerns.map((concern) => (
                 <li key={concern.id}>
-                  <Link href={`/clinic/concerns/${concern.slug}`} className="chip">
+                  <Link href={`/clinic/concerns/${concern.slug}`} className="chip chip-hover">
                     {concern.name}
                   </Link>
                 </li>
@@ -174,44 +227,25 @@ export default async function ClinicHome() {
       {signature.length > 0 && (
         <section className="border-t border-hairline">
           <Container className="py-20 lg:py-28">
-            <div data-reveal="">
+            <div
+              data-reveal=""
+              className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
+            >
               <SectionHeading
                 eyebrow="Signature treatments"
                 title="Lift, tighten,"
                 accent="refresh."
                 intro="The treatments our patients ask about most. Your doctor confirms what suits you at consultation."
               />
+              <Link href="/clinic/treatments" className="link-arrow shrink-0">
+                All treatments <ArrowRightIcon size={18} />
+              </Link>
             </div>
-            <ul
-              data-reveal=""
-              className="mt-14 grid gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-2"
-            >
+            <div data-reveal="" className="stagger mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {signature.map((t) => (
-                <li key={t.id} className="flex flex-col gap-4 bg-bg p-7 sm:p-10">
-                  <TreatmentStatus treatment={t} />
-                  <h3 className="text-[2rem]">
-                    <Link href={treatmentHref(t)} className="hover:text-accent">
-                      <Numerals>{t.name}</Numerals>
-                    </Link>
-                  </h3>
-                  <p>{t.summary || t.promise}</p>
-                  <div className="mt-auto flex flex-wrap items-center gap-x-8 gap-y-3 pt-4">
-                    <Link href={treatmentHref(t)} className="link-arrow">
-                      View treatment <ArrowRightIcon size={18} />
-                    </Link>
-                    <WhatsAppLink
-                      number={whatsapp}
-                      message={clinicMessages.treatment(t.name)}
-                      side="clinic"
-                      label={`signature-${t.slug}`}
-                      className="text-sm font-bold text-muted transition-colors hover:text-heading"
-                    >
-                      Ask on WhatsApp
-                    </WhatsAppLink>
-                  </div>
-                </li>
+                <TreatmentCard key={t.id} treatment={t} />
               ))}
-            </ul>
+            </div>
             <p className="mt-6 text-sm text-muted">
               Results vary from person to person. Treatment is subject to medical assessment.
             </p>
@@ -219,43 +253,69 @@ export default async function ClinicHome() {
         </section>
       )}
 
-      {/* Categories */}
+      {/* Categories as photo tiles */}
       {menu.length > 0 && (
         <section className="border-t border-hairline">
           <Container className="py-20 lg:py-28">
-            <div
-              data-reveal=""
-              className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
-            >
+            <div data-reveal="">
               <SectionHeading eyebrow="Treatments" title="Explore" accent="by category." />
-              <Link href="/clinic/treatments" className="link-arrow shrink-0">
-                All treatments <ArrowRightIcon size={18} />
-              </Link>
             </div>
-            <ul data-reveal="" className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {menu.map((category) => (
-                <li
-                  key={category.id}
-                  className="relative flex flex-col border border-hairline bg-surface p-7 transition-colors hover:border-line"
-                >
-                  <h3 className="text-[1.75rem] leading-tight">
+            <ul
+              data-reveal=""
+              className="stagger mt-12 grid auto-rows-[15rem] gap-4 sm:grid-cols-2 lg:grid-cols-4"
+            >
+              {menu.map((category, i) => {
+                const uploaded = publicImage(category.image)
+                const photo = uploaded
+                  ? { src: uploaded.url!, alt: uploaded.alt, position: undefined }
+                  : categoryPhoto(category.slug)
+                return (
+                  <li
+                    key={category.id}
+                    className={
+                      i === 0
+                        ? 'sm:col-span-2 sm:row-span-2'
+                        : i === 3 || (i === menu.length - 1 && tileGap > 0)
+                          ? 'lg:col-span-2'
+                          : undefined
+                    }
+                  >
                     <Link
                       href={`/clinic/treatments/${category.slug}`}
-                      className="after:absolute after:inset-0 after:content-['']"
+                      className="tile group tone-dark relative flex h-full flex-col justify-end overflow-hidden rounded-2xl bg-deep-charcoal p-6"
                     >
-                      {category.name}
+                      {photo && (
+                        <Image
+                          src={photo.src}
+                          alt=""
+                          fill
+                          sizes="(min-width: 1024px) 50vw, 100vw"
+                          className="-z-0 object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                          style={{ objectPosition: photo.position ?? 'center' }}
+                        />
+                      )}
+                      <span className="absolute inset-0 bg-linear-to-t from-charcoal via-charcoal/45 to-transparent" />
+                      <span className="relative flex items-end justify-between gap-4">
+                        <span>
+                          <span className="icon-badge mb-4">
+                            <TopicIcon topic={category.slug} />
+                          </span>
+                          <span className="block font-display text-2xl font-bold text-ivory">
+                            {category.name}
+                          </span>
+                          <span className="mt-1 block text-sm text-ivory/75">
+                            {category.treatments.length} treatment
+                            {category.treatments.length === 1 ? '' : 's'}
+                          </span>
+                        </span>
+                        <span className="tile-arrow" aria-hidden="true">
+                          <ArrowRightIcon size={20} />
+                        </span>
+                      </span>
                     </Link>
-                  </h3>
-                  {category.description && <p className="mt-3">{category.description}</p>}
-                  <p className="mt-auto pt-6 text-sm text-muted">
-                    {category.treatments
-                      .slice(0, 3)
-                      .map((t) => t.name)
-                      .join(' · ')}
-                    {category.treatments.length > 3 && ' · more'}
-                  </p>
-                </li>
-              ))}
+                  </li>
+                )
+              })}
             </ul>
           </Container>
         </section>
@@ -270,11 +330,25 @@ export default async function ClinicHome() {
               title="What you can"
               accent="expect from us."
             />
+            <div className="relative mt-10 hidden aspect-[4/3] overflow-hidden rounded-2xl lg:block">
+              <Image
+                src={SITE_PHOTOS.reception.src}
+                alt={SITE_PHOTOS.reception.alt}
+                fill
+                sizes="40vw"
+                className="object-cover"
+                style={{ objectPosition: SITE_PHOTOS.reception.position }}
+              />
+            </div>
           </div>
-          <ul data-reveal="" className="grid gap-x-12 gap-y-10 sm:grid-cols-2">
+          <ul data-reveal="" className="stagger grid gap-5 self-center sm:grid-cols-2">
             {reasons.map((r) => (
-              <li key={r.title} className="border-t border-line pt-6">
-                <h3 className="text-[1.75rem]">{r.title}</h3>
+              <li
+                key={r.title}
+                className="group lift rounded-2xl border border-hairline bg-surface p-7"
+              >
+                <IconBadge topic={r.topic} />
+                <h3 className="mt-6 text-[1.375rem]">{r.title}</h3>
                 <p className="mt-3">{r.text}</p>
               </li>
             ))}
@@ -292,11 +366,19 @@ export default async function ClinicHome() {
               accent="from first message to aftercare."
             />
           </div>
-          <ol data-reveal="" className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          <ol
+            data-reveal=""
+            className="steps stagger relative mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8"
+          >
             {DEFAULT_STEPS.map((step, i) => (
-              <li key={step.title}>
-                <span className="label text-accent">Step {String(i + 1).padStart(2, '0')}</span>
-                <h3 className="mt-4 text-[1.875rem]">{step.title}</h3>
+              <li key={step.title} className="relative">
+                <span className="step-icon">
+                  <TopicIcon topic={STEP_TOPICS[i]} size={26} />
+                </span>
+                <span className="label mt-6 block text-accent">
+                  Step {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 className="mt-3 text-[1.5rem]">{step.title}</h3>
                 <p className="mt-3">{step.text}</p>
               </li>
             ))}
@@ -317,7 +399,7 @@ export default async function ClinicHome() {
                 Meet the team <ArrowRightIcon size={18} />
               </Link>
             </div>
-            <div data-reveal="" className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div data-reveal="" className="stagger mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {doctors.slice(0, 3).map((doctor) => (
                 <DoctorCard key={doctor.id} doctor={doctor} />
               ))}
@@ -333,7 +415,7 @@ export default async function ClinicHome() {
             <div data-reveal="">
               <SectionHeading eyebrow="Our branches" title="Lahore" accent="and Karachi." />
             </div>
-            <div data-reveal="" className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div data-reveal="" className="stagger mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {branches.map((branch) => (
                 <BranchCard key={branch.id} branch={branch} whatsapp={whatsapp} />
               ))}
@@ -359,9 +441,17 @@ export default async function ClinicHome() {
         </section>
       )}
 
-      {/* Closing CTA */}
-      <section className="tone-dark border-t border-hairline bg-deep-charcoal">
-        <Container className="py-20 text-center lg:py-28">
+      {/* Closing CTA over a photo */}
+      <section className="tone-dark relative isolate overflow-hidden border-t border-hairline bg-charcoal">
+        <Image
+          src={SITE_PHOTOS.waitingRoom.src}
+          alt=""
+          fill
+          sizes="100vw"
+          className="-z-20 object-cover opacity-40"
+        />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-charcoal/70" />
+        <Container className="py-24 text-center lg:py-32">
           <div data-reveal="">
             <SectionHeading
               align="center"

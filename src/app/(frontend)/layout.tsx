@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Cormorant_Garamond, Nunito_Sans } from 'next/font/google'
+import { Montserrat, Nunito_Sans } from 'next/font/google'
 import type { ReactNode } from 'react'
 
 import { Consent } from '@/components/analytics/Consent'
@@ -10,12 +10,12 @@ import { isStaging, siteUrl } from '@/lib/site'
 
 import './globals.css'
 
-// Brand fonts (both guidelines): Cormorant Garamond Bold / Bold Italic for headlines, Nunito Sans for the rest.
-const display = Cormorant_Garamond({
+// Fonts (owner, 29 Oct 2026): Montserrat for headings, for readability; Nunito Sans for the rest.
+const display = Montserrat({
   subsets: ['latin'],
-  weight: '700',
+  weight: ['600', '700', '800'],
   style: ['normal', 'italic'],
-  variable: '--font-cormorant',
+  variable: '--font-montserrat',
   display: 'swap',
 })
 

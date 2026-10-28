@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 /**
  * Phone-only bar with two actions (clinic: Book + WhatsApp; academy: Enroll + WhatsApp).
  * The first child keeps its natural width and the second (the primary) takes the rest, so a
- * longer label such as "WhatsApp Karein" stays on one line at 360 px.
+ * longer label such as "Chat on WhatsApp" stays on one line at 360 px.
  * The spacer keeps the end of the footer readable above the fixed bar.
  */
 export function MobileStickyBar({ children }: { children: ReactNode }) {

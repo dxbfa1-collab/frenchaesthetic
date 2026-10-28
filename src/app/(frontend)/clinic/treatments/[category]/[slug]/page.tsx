@@ -19,6 +19,7 @@ import { OfferPanel } from '@/components/ui/OfferPanel'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
+import { treatmentPhoto } from '@/lib/images'
 import { publicImage } from '@/lib/media'
 import {
   findTreatment,
@@ -131,7 +132,16 @@ export default async function TreatmentPage({ params }: Props) {
   const aftercare = treatment.aftercare ?? []
   const timeline = treatment.timeline ?? []
   const priceFactors = treatment.priceFactors ?? []
-  const hero = publicImage(treatment.heroImage)
+  const uploaded = publicImage(treatment.heroImage)
+  // A photo uploaded in the CMS wins; otherwise the illustrative photo for this treatment.
+  const hero = uploaded
+    ? { url: uploaded.url!, alt: uploaded.alt, focal: focalPoint(uploaded) }
+    : (() => {
+        const p = treatmentPhoto(treatment.slug)
+        return p
+          ? { url: p.src, alt: p.alt, focal: { objectPosition: p.position ?? 'center' } }
+          : null
+      })()
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -140,7 +150,7 @@ export default async function TreatmentPage({ params }: Props) {
     description: treatment.summary || treatment.promise || undefined,
     url: `${siteUrl}${treatmentHref(treatment)}`,
     ...(treatment.howItWorks ? { howPerformed: treatment.howItWorks } : {}),
-    ...(hero ? { image: absolute(hero.url!) } : {}),
+    ...(hero ? { image: absolute(hero.url) } : {}),
   }
 
   const whatsappButton = (label: string, place: string, size: 'md' | 'lg' = 'lg') => (
@@ -224,14 +234,15 @@ export default async function TreatmentPage({ params }: Props) {
 
       {hero && (
         <Container className="pb-16 lg:pb-24">
-          <div className="relative aspect-[4/3] overflow-hidden sm:aspect-[21/9]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sm:aspect-[21/9]">
             <Image
-              src={hero.url!}
+              src={hero.url}
               alt={hero.alt}
               fill
+              priority
               sizes="(min-width: 1280px) 1200px, 100vw"
-              className="object-cover"
-              style={focalPoint(hero)}
+              className="hero-kenburns object-cover"
+              style={hero.focal}
             />
           </div>
         </Container>

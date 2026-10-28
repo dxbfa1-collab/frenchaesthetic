@@ -77,18 +77,18 @@ export const courses: CourseSeed[] = [
     trainerSlugs: ['dr-iqra-fatima'],
     hero: {
       label: 'For beauty professionals & beginners',
-      headline: 'Beauty field mein hain?',
-      headlineAccent: 'Ab Aesthetic Treatments bhi seekhein.',
+      headline: 'Work in beauty?',
+      headlineAccent: 'Now learn aesthetic treatments.',
       subheadline:
         "1 week hands-on training + 2 weeks internship on live clients, under doctors' supervision. No separate internship fee.",
-      ctaLabel: 'WhatsApp Karein',
+      ctaLabel: 'Chat on WhatsApp',
     },
     whatsappMessage: academyMessages.nonInvasive,
     painPoints: [
-      { text: 'Clients HydraFacial maangte hain, aur aap mana kar dete hain?' },
-      { text: 'Saalon se wohi kaam, wohi income?' },
-      { text: 'Beauty mein career banana hai, lekin tajurba zero hai?' },
-      { text: 'Real client par galti ka dar?' },
+      { text: 'Clients ask for HydraFacial and you have to say no?' },
+      { text: 'Years of the same work and the same income?' },
+      { text: 'Want a career in beauty, but have no experience yet?' },
+      { text: 'Worried about making a mistake on a real client?' },
     ],
     audience: [
       'Salon owners',
@@ -184,17 +184,17 @@ export const courses: CourseSeed[] = [
     trainerSlugs: ['dr-iqra-fatima'],
     hero: {
       label: 'For MBBS & BDS doctors',
-      headline: 'Course kar liya,',
-      headlineAccent: 'lekin pehla patient inject karne ki himmat nahi?',
+      headline: 'Done a course,',
+      headlineAccent: 'but not yet confident to treat your first patient?',
       subheadline:
         '1 week intensive training + 2 weeks clinical internship. You perform procedures yourself on real patients, under supervision. No separate internship fee.',
-      ctaLabel: 'Syllabus WhatsApp par mangwayein',
+      ctaLabel: 'Get the Syllabus on WhatsApp',
     },
     whatsappMessage: academyMessages.invasive,
     painPoints: [
-      { text: 'Course kar liya, lekin pehle real patient ka confidence nahi.' },
-      { text: 'Lambi duties, wohi tankhwa. Job ke saath ek nayi skill.' },
-      { text: 'Degree hai, lekin practice ruk gayi?' },
+      { text: 'You have done a course, but not yet treated a real patient with confidence.' },
+      { text: 'Long duties, the same salary. Add a new skill alongside your job.' },
+      { text: 'You have the degree, but your practice has paused?' },
     ],
     audience: [
       'MBBS doctors',
@@ -263,7 +263,7 @@ export const courses: CourseSeed[] = [
       { item: 'Seats', detail: 'Max 20 doctors', status: 'confirmed' },
     ],
     filterLine:
-      'Invasive training sirf MBBS & BDS doctors ke liye hai. Non-medical candidates ke liye hamara Non-Invasive course available hai.',
+      'Invasive training is for MBBS and BDS doctors only. Non-medical candidates can join our Non-Invasive course.',
     feeDisplay: 'whatsapp',
     metaTitle: 'Aesthetic Medicine Course for Doctors in Lahore',
     metaDescription:
@@ -276,74 +276,74 @@ const inv = 'invasive-aesthetics-course-for-doctors'
 
 export const faqs: FaqSeed[] = [
   {
-    question: 'Kya ye treatment ke liye hai?',
+    question: 'Is this for treatments?',
     answer:
-      'Nahi. Ye training academy hai. Treatments ke liye French Medical Aesthetics clinic se rabta karein.',
+      'No. This is a training academy. For treatments, please contact French Medical Aesthetics clinic.',
   },
   {
-    question: 'Internship ki fee alag hai?',
-    answer: 'Nahi. 2 weeks internship course mein shamil hai.',
+    question: 'Is there a separate internship fee?',
+    answer: 'No. The 2-week internship is included in the course.',
   },
-  { question: 'Ek batch mein kitne students?', answer: 'Maximum 20.' },
+  { question: 'How many students are in a batch?', answer: 'A maximum of 20.' },
   {
-    question: 'Academy kahan hai?',
-    answer: 'Iqbal Town, Lahore. DHA Phase 4 campus bhi open hai.',
-  },
-  {
-    question: 'Doosre shehar se aa sakte hain?',
-    answer: 'Ji haan. Students Gujranwala, Sialkot, Kasur aur Daska se aate hain.',
+    question: 'Where is the academy?',
+    answer: 'Iqbal Town, Lahore. Our DHA Phase 4 campus is also open.',
   },
   {
-    question: 'Fee kitni hai?',
-    answer: 'Fee aur details WhatsApp par batayi jayengi.',
+    question: 'Can I join from another city?',
+    answer: 'Yes. Students travel from Gujranwala, Sialkot, Kasur and Daska.',
+  },
+  {
+    question: 'What is the fee?',
+    answer: 'Admissions share the fee and details on WhatsApp.',
     status: 'confirm' as const,
   },
   {
     courseSlug: ni,
-    question: 'Pehle se experience nahi, kya seekh sakte hain?',
-    answer: 'Ji haan. Training basics se shuru hoti hai, step by step.',
+    question: 'I have no experience. Can I still learn?',
+    answer: 'Yes. Training starts from the basics, step by step.',
   },
   {
     courseSlug: ni,
-    question: 'Sirf class hogi ya khud bhi karenge?',
+    question: 'Is it only classes, or will I practise myself?',
     answer:
-      '1 week hands-on training, phir 2 weeks internship live clients par, doctors ki supervision mein.',
+      '1 week of hands-on training, then a 2-week internship on live clients, supervised by doctors.',
   },
   {
     courseSlug: ni,
-    question: 'Kya seekhenge?',
+    question: 'What will I learn?',
     answer:
-      'HydraFacial, BB Glow, Chemical Peels, HIFU, Laser Hair Removal, skin analysis aur client consultation.',
+      'HydraFacial, BB Glow, chemical peels, HIFU, laser hair removal, skin analysis and client consultation.',
   },
   {
     courseSlug: ni,
-    question: 'Galti ho gayi to?',
-    answer: 'Har qadam pe supervision hoti hai, aap akele nahi hote.',
+    question: 'What if I make a mistake?',
+    answer: 'Every step is supervised, so you are never on your own.',
   },
-  { courseSlug: inv, question: 'Kaun join kar sakta hai?', answer: 'Sirf MBBS aur BDS doctors.' },
+  { courseSlug: inv, question: 'Who can join?', answer: 'MBBS and BDS doctors only.' },
   {
     courseSlug: inv,
-    question: 'Kya main khud procedures karunga / karungi?',
-    answer: 'Ji haan. 2 weeks clinical internship mein real patients par, supervision ke saath.',
-  },
-  {
-    courseSlug: inv,
-    question: 'Job ke saath ho sakta hai?',
-    answer: 'Ji haan, doctors ke liye timing flexible hai.',
+    question: 'Will I perform procedures myself?',
+    answer: 'Yes. On real patients during the 2-week clinical internship, under supervision.',
   },
   {
     courseSlug: inv,
-    question: 'Complications ki training hogi?',
-    answer: 'Ji haan. Complication management aur emergency protocols syllabus ka hissa hain.',
+    question: 'Can I do it alongside my job?',
+    answer: 'Yes. Timing is flexible for doctors.',
   },
   {
     courseSlug: inv,
-    question: 'Kai saal se practice nahi ki?',
-    answer: 'Training facial anatomy aur patient assessment ke refresh se shuru hoti hai.',
+    question: 'Is complication management covered?',
+    answer: 'Yes. Complication management and emergency protocols are part of the syllabus.',
   },
   {
     courseSlug: inv,
-    question: 'Sikhata kaun hai?',
+    question: 'I have not practised for years. Is that a problem?',
+    answer: 'Training starts with a refresher on facial anatomy and patient assessment.',
+  },
+  {
+    courseSlug: inv,
+    question: 'Who teaches?',
     answer: 'Dermatologist-led team. Lead Trainer: Dr. Iqra, Dermatologist.',
   },
 ].map((faq, i) => ({

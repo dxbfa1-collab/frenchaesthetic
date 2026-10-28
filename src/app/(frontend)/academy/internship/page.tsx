@@ -78,7 +78,7 @@ export default async function InternshipPage() {
       className={buttonClass('primary', { size: 'lg' })}
     >
       <WhatsAppIcon size={20} />
-      WhatsApp Karein
+      Chat on WhatsApp
     </WhatsAppLink>
   )
 
@@ -86,8 +86,8 @@ export default async function InternshipPage() {
     <>
       <PageHero
         eyebrow="Internship included"
-        title="Certificate le kar ghar jaana asaan hai."
-        accent="Asli client ke saamne confidence se kaam karna mushkil."
+        title="Taking a certificate home is easy."
+        accent="Working confidently on a real client is the hard part."
         intro={
           <p>That is why every course includes a 2 week supervised internship. No separate fee.</p>
         }

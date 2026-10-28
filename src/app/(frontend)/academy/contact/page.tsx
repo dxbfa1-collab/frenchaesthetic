@@ -47,7 +47,7 @@ export default async function AcademyContactPage() {
             className={buttonClass('primary', { size: 'lg' })}
           >
             <WhatsAppIcon size={20} />
-            WhatsApp Karein
+            Chat on WhatsApp
           </WhatsAppLink>
         }
       />

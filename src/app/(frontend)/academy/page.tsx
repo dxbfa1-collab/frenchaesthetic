@@ -1,18 +1,21 @@
 import type { Metadata } from 'next'
+import { Award, Sparkles, Stethoscope } from 'lucide-react'
 import Link from 'next/link'
 
 import { BatchList, campusName } from '@/components/academy/BatchList'
 import { CourseCard } from '@/components/academy/CourseCard'
 import { TrainerCard } from '@/components/academy/TrainerCard'
 import { ArrowRightIcon, WhatsAppIcon } from '@/components/icons'
-import { buttonClass } from '@/components/ui/Button'
+import { HeroSlider, type Slide } from '@/components/motion/HeroSlider'
+import { Marquee } from '@/components/motion/Marquee'
+import { buttonClass, ButtonLink } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { CtaBand } from '@/components/ui/CtaBand'
 import { FaqList } from '@/components/ui/FaqList'
 import { JsonLd } from '@/components/ui/JsonLd'
-import { OfferPanel } from '@/components/ui/OfferPanel'
 import { Pending } from '@/components/ui/Pending'
 import { SectionHeading } from '@/components/ui/SectionHeading'
+import { TopicIcon } from '@/components/ui/TopicIcon'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
 import { batchRuleSentence, formatBatchDate } from '@/lib/batches'
 import {
@@ -22,6 +25,7 @@ import {
   getTrainers,
   getUpcomingBatches,
 } from '@/lib/payload'
+import { SITE_PHOTOS } from '@/lib/images'
 import { siteUrl } from '@/lib/site'
 import { academyMessages, telHref } from '@/lib/whatsapp'
 
@@ -70,6 +74,84 @@ export default async function AcademyHome() {
   const campus = nextByCourse.map(campusName).find(Boolean)
   const generalFaqs = faqs.filter((f) => !f.course).slice(0, 4)
 
+  const nonInvasive = courses.find((c) => c.track === 'nonInvasive')
+  const invasive = courses.find((c) => c.track === 'invasive')
+  const chat = (message: string, place: string, label = 'Chat on WhatsApp') => (
+    <WhatsAppLink
+      number={whatsapp}
+      message={message}
+      side="academy"
+      label={place}
+      className={buttonClass('primary', { size: 'lg' })}
+    >
+      <WhatsAppIcon size={20} />
+      {label}
+    </WhatsAppLink>
+  )
+
+  // Owner, 29 Oct 2026: a slider of 2–3 slides on the academy home.
+  const slides: Slide[] = [
+    {
+      id: 'practice',
+      eyebrow: 'Aesthetics Training Academy · Lahore',
+      title: 'More than a certificate.',
+      accent: 'Real practice.',
+      text: '1 week of hands-on training + a 2-week supervised internship, with no separate internship fee.',
+      image: SITE_PHOTOS.supervisedPractice,
+      badge: { icon: <Award size={22} />, label: '2-week internship included' },
+      actions: (
+        <>
+          {chat(academyMessages.page('HOME'), 'slider-practice')}
+          <ButtonLink href="/academy/enroll" variant="outline" size="lg">
+            Enroll Now
+          </ButtonLink>
+        </>
+      ),
+    },
+    ...(nonInvasive
+      ? [
+          {
+            id: 'non-invasive',
+            eyebrow: nonInvasive.hero.label || 'Non-Invasive Aesthetics',
+            title: nonInvasive.hero.headline,
+            accent: nonInvasive.hero.headlineAccent ?? undefined,
+            text: nonInvasive.summary ?? '',
+            image: SITE_PHOTOS.facialPractice,
+            badge: { icon: <Sparkles size={22} />, label: 'No experience needed' },
+            actions: (
+              <>
+                {chat(homeMessage.nonInvasive, 'slider-non-invasive')}
+                <ButtonLink href={`/academy/${nonInvasive.slug}`} variant="outline" size="lg">
+                  View course
+                </ButtonLink>
+              </>
+            ),
+          },
+        ]
+      : []),
+    ...(invasive
+      ? [
+          {
+            id: 'invasive',
+            eyebrow: invasive.hero.label || 'Invasive Aesthetics',
+            title: 'Aesthetic medicine,',
+            accent: 'practised on real patients.',
+            text: invasive.summary ?? '',
+            image: SITE_PHOTOS.anatomyClass,
+            badge: { icon: <Stethoscope size={22} />, label: 'For PMDC-registered doctors' },
+            actions: (
+              <>
+                {chat(homeMessage.invasive, 'slider-invasive')}
+                <ButtonLink href={`/academy/${invasive.slug}`} variant="outline" size="lg">
+                  View course
+                </ButtonLink>
+              </>
+            ),
+          },
+        ]
+      : []),
+  ]
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'EducationalOrganization',
@@ -86,71 +168,46 @@ export default async function AcademyHome() {
   return (
     <>
       <JsonLd data={jsonLd} />
-      {/* Hero */}
-      <section>
-        <Container className="grid gap-14 pb-20 pt-14 sm:pt-20 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-16 lg:pb-28 lg:pt-28">
-          <div>
-            <p className="label eyebrow rise">Aesthetics Training Academy · Lahore</p>
-            <h1 className="rise rise-2 mt-6 text-[2.875rem] sm:text-6xl lg:text-[4.75rem]">
-              Sirf certificate nahi.
-              <span className="block italic text-accent">Real practice.</span>
-            </h1>
-            <p className="rise rise-3 mt-7 max-w-xl text-lg sm:text-xl">
-              1 week hands-on training + 2 weeks supervised internship. Internship ki koi alag fee
-              nahi.
-            </p>
-            <div className="rise rise-3 mt-10 grid gap-4 sm:grid-cols-2">
-              {courses.map((course) => (
-                <WhatsAppLink
-                  key={course.id}
-                  number={whatsapp}
-                  message={homeMessage[course.track]}
-                  side="academy"
-                  label={`hero-${course.slug}`}
-                  className="group flex items-center justify-between gap-4 rounded-[6px] border-[1.5px] border-gold px-5 py-4 transition-colors hover:bg-gold/15"
-                >
-                  <span>
-                    <span className="block font-extrabold text-heading">
-                      {course.shortName} Course
-                    </span>
-                    {course.hero.label && (
-                      <span className="block text-sm text-muted">
-                        {course.hero.label.replace(/^For /, 'for ')}
-                      </span>
-                    )}
+      <HeroSlider slides={slides} label="French Aesthetics Academy highlights" />
+
+      {/* Next batches strip and what you practise */}
+      <div className="border-y border-hairline">
+        <Container className="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 text-[0.9375rem]">
+          <span className="inline-flex items-center gap-2 font-bold text-heading">
+            <TopicIcon topic="calendar" size={18} className="text-gold" />
+            {nextByCourse.length > 0 ? (
+              <>
+                Next batch:{' '}
+                {nextByCourse.map((batch, i) => (
+                  <span key={batch.id}>
+                    {i > 0 && ' · '}
+                    <Pending confirmed={batch.factStatus === 'confirmed'}>
+                      {formatBatchDate(batch.startDate, 'long')}
+                    </Pending>{' '}
+                    ({batch.course.shortName})
                   </span>
-                  <WhatsAppIcon size={22} className="shrink-0 text-gold" />
-                </WhatsAppLink>
-              ))}
-            </div>
-            <p className="rise rise-3 mt-6 text-[0.9375rem] text-muted">
-              {nextByCourse.length > 0 ? (
-                <>
-                  Next batch:{' '}
-                  {nextByCourse.map((batch, i) => (
-                    <span key={batch.id}>
-                      {i > 0 && ' · '}
-                      <Pending confirmed={batch.factStatus === 'confirmed'}>
-                        {formatBatchDate(batch.startDate, 'long')}
-                      </Pending>{' '}
-                      ({batch.course.shortName})
-                    </span>
-                  ))}
-                  {campus && ` · ${campus}, Lahore`} · Max 20 seats
-                </>
-              ) : (
-                <>{batchRuleSentence(courses)} Max 20 seats.</>
-              )}
-            </p>
-          </div>
-          <OfferPanel
-            className="rise rise-3"
-            title="Every course"
-            points={['1 Week Training', '2 Weeks Internship', 'Real Practice', 'Max 20 Seats']}
-            footer={<>WhatsApp {whatsapp}</>}
-          />
+                ))}
+              </>
+            ) : (
+              batchRuleSentence(courses)
+            )}
+          </span>
+          <span className="inline-flex items-center gap-2 text-muted">
+            <TopicIcon topic="seats" size={18} className="text-gold" />
+            Max 20 seats{campus && ` · ${campus}, Lahore`}
+          </span>
+          <Link href="/academy/batches" className="link-arrow ml-auto">
+            All batches <ArrowRightIcon size={18} />
+          </Link>
         </Container>
-      </section>
+      </div>
+      <Marquee
+        label="What you practise"
+        items={[...new Set(courses.flatMap((c) => c.featured ?? []))].map((topic) => ({
+          label: topic,
+          topic: 'training',
+        }))}
+      />
 
       {/* Choose your path */}
       <section className="border-t border-hairline">
@@ -272,9 +329,9 @@ export default async function AcademyHome() {
       )}
 
       <CtaBand
-        title="Apni seat"
-        accent="reserve karein."
-        intro="Sirf 20 seats per batch. Fee aur details WhatsApp par."
+        title="Reserve"
+        accent="your seat."
+        intro="Only 20 seats per batch. Admissions share the fee and details on WhatsApp."
       >
         <WhatsAppLink
           number={whatsapp}
@@ -284,7 +341,7 @@ export default async function AcademyHome() {
           className={buttonClass('primary', { size: 'lg' })}
         >
           <WhatsAppIcon size={20} />
-          WhatsApp Karein: <span className="whitespace-nowrap">{whatsapp}</span>
+          Chat on WhatsApp: <span className="whitespace-nowrap">{whatsapp}</span>
         </WhatsAppLink>
       </CtaBand>
     </>

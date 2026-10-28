@@ -4,13 +4,31 @@
     {
       "name": "website",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "start"],
+      "runtimeArgs": [
+        "run",
+        "start"
+      ],
       "port": 3000
     },
     {
       "name": "website-production",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["cross-env", "SITE_STAGE=production", "npm", "run", "start"],
+      "runtimeArgs": [
+        "cross-env",
+        "SITE_STAGE=production",
+        "npm",
+        "run",
+        "start"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "website-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 3000
     }
   ]

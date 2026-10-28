@@ -33,21 +33,21 @@ export const clinicMessages = {
 }
 
 /**
- * Academy messages, verbatim from the FAA brief §15. The WEB code at the end tells admissions
- * which page produced the lead, the same way the ad codes (NI-1, IN-1) do.
+ * Academy messages (FAA brief §15, in English since the owner's decision of 29 Oct 2026). The WEB
+ * code at the end tells admissions which page produced the lead, the same way the ad codes do.
  */
 export const academyMessages = {
   homeNonInvasive:
-    'Assalam o Alaikum! Website se aaya/aayi hoon. Non-Invasive course ki details chahiye. (WEB-HOME-NI)',
+    'Hello! I found you through your website. I would like details of the Non-Invasive course. (WEB-HOME-NI)',
   homeInvasive:
-    'Assalam o Alaikum! Main MBBS/BDS doctor hoon. Website se Invasive course ki details chahiye. (WEB-HOME-IN)',
+    'Hello! I am an MBBS/BDS doctor. I would like details of the Invasive course. (WEB-HOME-IN)',
   nonInvasive:
-    'Assalam o Alaikum! Non-Invasive Aesthetics course ki fee aur batch details chahiye. (WEB-NI)',
+    'Hello! I would like the fee and batch details of the Non-Invasive Aesthetics course. (WEB-NI)',
   invasive:
-    'Assalam o Alaikum! Main MBBS/BDS doctor hoon. Invasive course ka syllabus aur details chahiye. (WEB-IN)',
-  internship: 'Assalam o Alaikum! Internship wale course ki details chahiye. (WEB-INT)',
-  batches: 'Assalam o Alaikum! Agle batch mein seat ke bare mein poochna hai. (WEB-BATCH)',
-  page: (code: string) => `Assalam o Alaikum! Website se course ki details chahiye. (WEB-${code})`,
+    'Hello! I am an MBBS/BDS doctor. I would like the syllabus and details of the Invasive course. (WEB-IN)',
+  internship: 'Hello! I would like details of the course with the internship. (WEB-INT)',
+  batches: 'Hello! I would like to ask about a seat in the next batch. (WEB-BATCH)',
+  page: (code: string) => `Hello! I would like details of your courses. (WEB-${code})`,
 }
 
 /** Page codes from the FAA sitemap (§2), so header and sticky-bar clicks still say where they came from. */

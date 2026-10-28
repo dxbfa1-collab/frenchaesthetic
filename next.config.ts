@@ -122,7 +122,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
     formats: ['image/avif', 'image/webp'],
-    localPatterns: [{ pathname: '/api/media/file/**' }, { pathname: '/brand/**' }],
+    localPatterns: [
+      { pathname: '/api/media/file/**' },
+      { pathname: '/brand/**' },
+      { pathname: '/images/**' },
+    ],
     remotePatterns: [{ protocol: 'https', hostname: 'res.cloudinary.com' }],
   },
   webpack: (webpackConfig) => {

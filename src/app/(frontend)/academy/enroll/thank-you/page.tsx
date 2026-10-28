@@ -29,7 +29,7 @@ export default async function ThankYouPage({ searchParams }: Props) {
   const ref = typeof raw === 'string' && REFERENCE_PATTERN.test(raw) ? raw : null
   const settings = await getSiteSettings()
   const message = ref
-    ? `Assalam o Alaikum! Maine website par enrollment form submit kiya hai. Reference: ${ref} (WEB-ENROLL)`
+    ? `Hello! I have sent the enrollment form on your website. Reference: ${ref} (WEB-ENROLL)`
     : academyMessages.page('ENROLL')
 
   return (
@@ -37,7 +37,7 @@ export default async function ThankYouPage({ searchParams }: Props) {
       {ref && <TrackLead side="academy" label="enrollment" />}
       <PageHero
         eyebrow="Application received"
-        title="Shukriya."
+        title="Thank you."
         accent="Your application is in."
         intro={
           ref ? (
@@ -59,7 +59,7 @@ export default async function ThankYouPage({ searchParams }: Props) {
             className={buttonClass('primary', { size: 'lg' })}
           >
             <WhatsAppIcon size={20} />
-            WhatsApp Karein
+            Chat on WhatsApp
           </WhatsAppLink>
         }
       />

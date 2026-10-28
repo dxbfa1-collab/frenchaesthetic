@@ -55,7 +55,7 @@ export default async function BatchesPage() {
       className={buttonClass('primary', { size: 'lg' })}
     >
       <WhatsAppIcon size={20} />
-      WhatsApp Karein
+      Chat on WhatsApp
     </WhatsAppLink>
   )
 
@@ -126,9 +126,9 @@ export default async function BatchesPage() {
       </section>
 
       <CtaBand
-        title="Apni seat"
-        accent="reserve karein."
-        intro="Sirf 20 seats per batch. Fee aur details WhatsApp par."
+        title="Reserve"
+        accent="your seat."
+        intro="Only 20 seats per batch. Admissions share the fee and details on WhatsApp."
       >
         {whatsappButton('closing')}
       </CtaBand>

@@ -120,7 +120,7 @@ export const Courses: CollectionConfig = {
                   name: 'ctaLabel',
                   label: 'WhatsApp button text',
                   type: 'text',
-                  defaultValue: 'WhatsApp Karein',
+                  defaultValue: 'Chat on WhatsApp',
                 },
               ],
             },

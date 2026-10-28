@@ -52,7 +52,7 @@ export default async function AcademyFaqPage() {
           ))}
         </Container>
       </section>
-      <CtaBand title="Aur koi" accent="sawal?" intro="Admissions answer on WhatsApp.">
+      <CtaBand title="Any other" accent="questions?" intro="Admissions answer on WhatsApp.">
         <WhatsAppLink
           number={settings.admissionsWhatsApp}
           message={academyMessages.page('FAQ')}
@@ -61,7 +61,7 @@ export default async function AcademyFaqPage() {
           className={buttonClass('primary', { size: 'lg' })}
         >
           <WhatsAppIcon size={20} />
-          WhatsApp Karein
+          Chat on WhatsApp
         </WhatsAppLink>
       </CtaBand>
     </>

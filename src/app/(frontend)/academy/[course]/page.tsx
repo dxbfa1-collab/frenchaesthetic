@@ -119,7 +119,7 @@ export default async function CoursePage({ params }: Props) {
         intro={course.hero.subheadline && <p>{course.hero.subheadline}</p>}
         actions={
           <>
-            {whatsappCta(course.hero.ctaLabel || 'WhatsApp Karein', 'hero')}
+            {whatsappCta(course.hero.ctaLabel || 'Chat on WhatsApp', 'hero')}
             <ButtonLink
               href={`/academy/enroll?course=${course.slug}&from=${code}`}
               variant="outline"
@@ -369,13 +369,13 @@ export default async function CoursePage({ params }: Props) {
             ) : (
               <SectionHeading
                 eyebrow="Fee and payment"
-                title="Fee aur details"
-                accent="WhatsApp par."
+                title="Fee and details"
+                accent="on WhatsApp."
                 intro="Admissions share the current fee, payment options and class timing."
               />
             )}
             <div className="mt-10">
-              {whatsappCta(course.hero.ctaLabel || 'WhatsApp Karein', 'fee', 'md')}
+              {whatsappCta(course.hero.ctaLabel || 'Chat on WhatsApp', 'fee', 'md')}
             </div>
           </div>
           {faqs.length > 0 && (
@@ -406,11 +406,11 @@ export default async function CoursePage({ params }: Props) {
       )}
 
       <CtaBand
-        title="Apni seat"
-        accent="reserve karein."
-        intro="Sirf 20 seats per batch. Fee aur details WhatsApp par."
+        title="Reserve"
+        accent="your seat."
+        intro="Only 20 seats per batch. Admissions share the fee and details on WhatsApp."
       >
-        {whatsappCta(`WhatsApp Karein: ${whatsapp}`, 'closing')}
+        {whatsappCta(`Chat on WhatsApp: ${whatsapp}`, 'closing')}
         <ButtonLink
           href={`/academy/enroll?course=${course.slug}&from=${code}`}
           variant="outline"

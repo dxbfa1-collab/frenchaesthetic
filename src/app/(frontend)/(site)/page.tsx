@@ -1,10 +1,12 @@
+import { GraduationCap, Sparkles } from 'lucide-react'
 import type { Metadata } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
 import type { ReactNode } from 'react'
 
 import { ArrowRightIcon, WhatsAppIcon } from '@/components/icons'
-import { ButtonLink } from '@/components/ui/Button'
-import { Container } from '@/components/ui/Container'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
+import { type SitePhoto, SITE_PHOTOS } from '@/lib/images'
 import { getSiteSettings } from '@/lib/payload'
 import { academyMessages, clinicMessages } from '@/lib/whatsapp'
 
@@ -15,131 +17,110 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
-// Only owner-confirmed facts (CLAUDE.md §5, §6). No counters, no unproven claims.
-const trust = [
-  {
-    title: 'Doctor-led care',
-    text: 'Every treatment starts with an in-person medical assessment.',
-  },
-  { title: 'Lahore and Karachi', text: 'Three clinic branches in Lahore and one in Karachi.' },
-  {
-    title: 'Internship included',
-    text: 'Every academy course includes a 2-week supervised internship.',
-  },
-  { title: 'Small batches', text: 'A maximum of 20 students in each academy batch.' },
-]
-
+/*
+  The shared home (owner, 29 Oct 2026: make it simpler): two large doors, nothing else to read.
+  Names are set in type, never logos side by side (brand rule).
+*/
 export default async function HomePage() {
   const settings = await getSiteSettings()
   const clinicWhatsApp = settings.clinicWhatsApp || settings.clinicPhone
 
   return (
-    <>
-      <section>
-        <Container className="pb-20 pt-14 sm:pt-20 lg:pb-28 lg:pt-24">
-          <p className="label eyebrow rise">Lahore · Karachi</p>
-          <h1 className="rise rise-2 mt-6 max-w-4xl text-[2.75rem] sm:text-6xl lg:text-7xl">
-            Care for your skin.
-            <span className="block italic text-accent">Training for your career.</span>
-          </h1>
-
-          <div className="rise rise-3 mt-12 grid gap-5 sm:mt-16 lg:grid-cols-2 lg:gap-6">
-            <Door
-              label="The clinic"
-              title="French Medical"
-              accent="Aesthetics"
-              text="Doctor-led aesthetic treatments for skin, face and body, at three branches in Lahore and one in Karachi."
-              href="/clinic"
-              cta="Visit the Clinic"
-              contact={
-                <WhatsAppLink
-                  number={clinicWhatsApp}
-                  message={clinicMessages.consultation()}
-                  side="clinic"
-                  label="home-door"
-                  className="inline-flex items-center gap-2 font-semibold text-fg transition-colors hover:text-heading"
-                >
-                  <WhatsAppIcon size={18} className="text-gold" />
-                  {settings.clinicPhone}
-                </WhatsAppLink>
-              }
-            />
-            <Door
-              label="The academy"
-              title="French Aesthetics"
-              accent="Academy"
-              text="Hands-on aesthetics training in Lahore: 1 week of training, then a 2-week supervised internship at no extra fee."
-              href="/academy"
-              cta="Explore the Academy"
-              contact={
-                <WhatsAppLink
-                  number={settings.admissionsWhatsApp}
-                  message={academyMessages.page('MAIN')}
-                  side="academy"
-                  label="home-door"
-                  className="inline-flex items-center gap-2 font-semibold text-fg transition-colors hover:text-heading"
-                >
-                  <WhatsAppIcon size={18} className="text-gold" />
-                  {settings.admissionsWhatsApp}
-                </WhatsAppLink>
-              }
-            />
-          </div>
-        </Container>
-      </section>
-
-      <section className="tone-inverse">
-        <Container className="py-16 lg:py-20">
-          <h2 className="sr-only">Why people choose us</h2>
-          <ul data-reveal="" className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
-            {trust.map((item) => (
-              <li
-                key={item.title}
-                className="lg:border-l lg:border-line lg:px-8 lg:first:border-l-0 lg:first:pl-0"
-              >
-                <h3 className="text-[1.75rem]">{item.title}</h3>
-                <p className="mt-3">{item.text}</p>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
-    </>
+    <section aria-label="Choose where to go" className="relative">
+      <h1 className="sr-only">French Medical Aesthetics and French Aesthetics Academy</h1>
+      <div className="grid min-h-[calc(100svh-2.75rem)] gap-px bg-hairline md:grid-cols-2">
+        <Door
+          photo={SITE_PHOTOS.facial}
+          icon={<Sparkles size={30} strokeWidth={1.5} />}
+          label="Treatments"
+          title="French Medical Aesthetics"
+          text="Doctor-led skin, face and body treatments in Lahore and Karachi."
+          href="/clinic"
+          cta="Visit the Clinic"
+          whatsapp={
+            <WhatsAppLink
+              number={clinicWhatsApp}
+              message={clinicMessages.consultation()}
+              side="clinic"
+              label="home-door"
+              className="door-whatsapp"
+            >
+              <WhatsAppIcon size={18} />
+              {settings.clinicPhone}
+            </WhatsAppLink>
+          }
+        />
+        <Door
+          photo={SITE_PHOTOS.supervisedPractice}
+          icon={<GraduationCap size={30} strokeWidth={1.5} />}
+          label="Training"
+          title="French Aesthetics Academy"
+          text="Hands-on aesthetics courses in Lahore, with a supervised internship."
+          href="/academy"
+          cta="Explore the Academy"
+          whatsapp={
+            <WhatsAppLink
+              number={settings.admissionsWhatsApp}
+              message={academyMessages.page('MAIN')}
+              side="academy"
+              label="home-door"
+              className="door-whatsapp"
+            >
+              <WhatsAppIcon size={18} />
+              {settings.admissionsWhatsApp}
+            </WhatsAppLink>
+          }
+        />
+      </div>
+    </section>
   )
 }
 
 function Door({
+  photo,
+  icon,
   label,
   title,
-  accent,
   text,
   href,
   cta,
-  contact,
+  whatsapp,
 }: {
+  photo: SitePhoto
+  icon: ReactNode
   label: string
   title: string
-  accent: string
   text: string
   href: string
   cta: string
-  contact: ReactNode
+  whatsapp: ReactNode
 }) {
   return (
-    <article className="relative flex flex-col border border-hairline bg-surface p-7 sm:p-10 lg:min-h-[26rem]">
-      <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gold" />
-      <p className="label text-accent">{label}</p>
-      <h2 className="mt-5 text-[2.5rem] sm:text-5xl">
-        {title}
-        <span className="block italic text-accent">{accent}</span>
+    <article className="door group tone-dark relative isolate flex min-h-[26rem] flex-col justify-end overflow-hidden bg-charcoal p-7 sm:p-12 lg:p-16">
+      <Image
+        src={photo.src}
+        alt=""
+        fill
+        priority
+        sizes="(min-width: 768px) 50vw, 100vw"
+        className="door-photo -z-20 object-cover"
+        style={{ objectPosition: photo.position ?? 'center' }}
+      />
+      <div aria-hidden="true" className="door-shade absolute inset-0 -z-10" />
+      <span className="door-icon rise">{icon}</span>
+      <p className="label mt-8 text-accent rise rise-2">{label}</p>
+      <h2 className="mt-3 max-w-md text-[2.25rem] leading-tight text-ivory sm:text-5xl rise rise-2">
+        <Link href={href} className="after:absolute after:inset-0 after:content-['']">
+          {title}
+        </Link>
       </h2>
-      <p className="mt-6 max-w-md text-lg">{text}</p>
-      <div className="mt-auto flex flex-wrap items-center gap-x-8 gap-y-5 pt-10">
-        <ButtonLink href={href} size="lg">
+      <p className="mt-4 max-w-sm text-lg text-ivory/85 rise rise-3">{text}</p>
+      <div className="relative z-10 mt-9 flex flex-wrap items-center gap-x-7 gap-y-4 rise rise-3">
+        <span aria-hidden="true" className="btn btn-primary btn-lg door-cta">
           {cta}
           <ArrowRightIcon size={18} />
-        </ButtonLink>
-        {contact}
+        </span>
+        {whatsapp}
       </div>
     </article>
   )
