@@ -23,8 +23,9 @@ export const Users: CollectionConfig = {
       // The very first account (created on /admin) becomes the owner, so nobody is locked out.
       async ({ data, operation, req }) => {
         if (operation !== 'create') return data
-        const { totalDocs } = await req.payload.count({ collection: 'users', req })
-        if (totalDocs === 0) data.roles = ['owner']
+        // A one-row find, not count: MongoDB refuses count inside the transaction Payload opens here.
+        const existing = await req.payload.db.findOne({ collection: 'users', req, where: {} })
+        if (!existing) data.roles = ['owner']
         return data
       },
     ],
