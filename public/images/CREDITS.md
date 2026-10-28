@@ -34,3 +34,9 @@ Free-licence stock photos (Unsplash Licence / Pexels Licence: commercial use all
 - `academy/syringe-preparation.webp`: https://www.pexels.com/photo/7581073/
 - `academy/skin-booster-vial.webp`: https://www.pexels.com/photo/29648630/
 - `academy/facial-practice.webp`: https://unsplash.com/photos/HtXyytr9304
+
+## Doctors
+
+Photos of our own doctors, taken from the previous frenchaesthetic.com site. The owner confirmed on 29 Oct 2026 that they are real photos, not AI-made.
+
+- `doctors/dr-sadaf.webp`, `doctors/dr-maria.webp`, `doctors/dr-iqra-fatima.webp`

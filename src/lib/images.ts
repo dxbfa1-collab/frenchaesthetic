@@ -112,3 +112,15 @@ export const SITE_PHOTOS = {
   vial: photo('academy/skin-booster-vial', 'Vial and syringe for a skin booster treatment'),
   facialPractice: photo('academy/facial-practice', 'Hydrating facial practised in a clinic'),
 }
+
+/*
+  Our own doctors (owner, 29 Oct 2026: real photos from the previous site, not AI-made). A photo
+  uploaded in the CMS with photo consent ticked wins over these.
+*/
+const DOCTORS: Record<string, SitePhoto> = {
+  'dr-iqra-fatima': photo('doctors/dr-iqra-fatima', 'Dr. Iqra Fatima, Dermatologist', 'center 18%'),
+  'dr-maria': photo('doctors/dr-maria', 'Dr. Maria, Aesthetic Physician', 'center 18%'),
+  'dr-sadaf': photo('doctors/dr-sadaf', 'Dr. Sadaf, Physical Therapist', 'center 18%'),
+}
+
+export const doctorPhoto = (slug: string): SitePhoto | null => DOCTORS[slug] ?? null

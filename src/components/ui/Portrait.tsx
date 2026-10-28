@@ -1,6 +1,7 @@
 import Image from 'next/image'
 
 import { cn } from '@/lib/cn'
+import { doctorPhoto } from '@/lib/images'
 import type { Doctor } from '@/payload-types'
 
 function initials(name: string): string {
@@ -21,19 +22,24 @@ const SIZES = {
 /** A real photo only with written consent; otherwise a neutral initials mark (never stock or AI faces). */
 export function Portrait({ person, size = 'md' }: { person: Doctor; size?: 'md' | 'lg' }) {
   const { box, text, px } = SIZES[size]
-  const photo =
+  const uploaded =
     person.photoConsent && person.photo && typeof person.photo === 'object' && person.photo.url
-      ? person.photo
+      ? { src: person.photo.url, alt: person.photo.alt, position: 'center 20%' }
       : null
+  const photo = uploaded ?? doctorPhoto(person.slug)
 
   if (photo) {
     return (
       <Image
-        src={photo.url!}
+        src={photo.src}
         alt={photo.alt}
         width={px}
         height={px}
-        className={cn(box, 'shrink-0 rounded-full object-cover')}
+        className={cn(
+          box,
+          'shrink-0 rounded-full object-cover ring-[1.5px] ring-gold ring-offset-2 ring-offset-transparent',
+        )}
+        style={{ objectPosition: photo.position ?? 'center 20%' }}
       />
     )
   }

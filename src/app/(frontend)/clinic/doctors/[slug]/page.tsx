@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
 import { BranchCard } from '@/components/clinic/BranchCard'
@@ -16,6 +17,7 @@ import { credentials, Portrait } from '@/components/ui/Portrait'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
 import { getClinicDoctors, getSiteSettings, getTreatments } from '@/lib/payload'
+import { doctorPhoto } from '@/lib/images'
 import { relationId } from '@/lib/relation'
 import { siteUrl } from '@/lib/site'
 import { clinicMessages } from '@/lib/whatsapp'
@@ -53,10 +55,12 @@ export default async function DoctorPage({ params }: Props) {
   const performs = treatments.filter((t) =>
     (t.doctors ?? []).some((d) => relationId(d) === doctor.id),
   )
-  const photo =
+  const own = doctorPhoto(doctor.slug)
+  const picture =
     doctor.photoConsent && doctor.photo && typeof doctor.photo === 'object' && doctor.photo.url
-      ? doctor.photo.url
-      : null
+      ? { src: doctor.photo.url, alt: doctor.photo.alt, position: 'center 20%' }
+      : own
+  const photo = picture?.src ?? null
 
   // Person, not Physician: the team includes a physical therapist, and titles stay as documented.
   const jsonLd = {
@@ -115,7 +119,21 @@ export default async function DoctorPage({ params }: Props) {
         }
         aside={
           <div className="flex flex-col items-start gap-8 border border-hairline bg-surface p-7 sm:p-9">
-            <Portrait person={doctor} size="lg" />
+            {picture ? (
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl">
+                <Image
+                  src={picture.src}
+                  alt={picture.alt}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 420px, 90vw"
+                  className="object-cover"
+                  style={{ objectPosition: picture.position ?? 'center 20%' }}
+                />
+              </div>
+            ) : (
+              <Portrait person={doctor} size="lg" />
+            )}
             {details.length > 0 && (
               <dl className="w-full divide-y divide-hairline border-y border-hairline">
                 {details.map(([label, value]) => (
