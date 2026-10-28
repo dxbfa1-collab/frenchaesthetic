@@ -2,8 +2,10 @@ import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Nunito_Sans } from 'next/font/google'
 import type { ReactNode } from 'react'
 
+import { Consent } from '@/components/analytics/Consent'
 import { TrackClicks } from '@/components/analytics/TrackClicks'
 import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
+import { getSiteSettings } from '@/lib/payload'
 import { isStaging, siteUrl } from '@/lib/site'
 
 import './globals.css'
@@ -32,6 +34,20 @@ export const metadata: Metadata = {
   description:
     'Doctor-led aesthetic treatments in Lahore and Karachi, and hands-on aesthetics training in Lahore with a supervised internship.',
   robots: isStaging ? { index: false, follow: false } : undefined,
+  // Shared pages carry neither logo, so their share image sets the two names in type.
+  openGraph: {
+    type: 'website',
+    locale: 'en_PK',
+    images: [
+      {
+        url: '/og/site.png',
+        width: 1200,
+        height: 630,
+        alt: 'French Medical Aesthetics and French Aesthetics Academy',
+      },
+    ],
+  },
+  twitter: { card: 'summary_large_image' },
   formatDetection: { telephone: false, email: false, address: false },
 }
 
@@ -39,7 +55,9 @@ export const viewport: Viewport = {
   themeColor: '#0d0d0d',
 }
 
-export default function FrontendLayout({ children }: { children: ReactNode }) {
+export default async function FrontendLayout({ children }: { children: ReactNode }) {
+  const settings = await getSiteSettings()
+
   return (
     <html
       lang="en"
@@ -60,6 +78,7 @@ export default function FrontendLayout({ children }: { children: ReactNode }) {
         {children}
         <RevealOnScroll />
         <TrackClicks />
+        <Consent ga4Id={settings.ga4Id} metaPixelId={settings.metaPixelId} />
       </body>
     </html>
   )

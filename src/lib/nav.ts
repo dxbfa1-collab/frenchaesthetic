@@ -20,6 +20,24 @@ export const clinicMoreNav: NavItem[] = [
   { label: 'Contact', href: '/contact' },
 ]
 
+/** Clinic sections that link only when they have something to show (see getClinicSections). */
+const CLINIC_SECTION_PAGES: Record<string, 'treatments' | 'concerns' | 'doctors' | 'technology'> = {
+  '/clinic/treatments': 'treatments',
+  '/clinic/concerns': 'concerns',
+  '/clinic/doctors': 'doctors',
+  '/clinic/technology': 'technology',
+}
+
+export function withContent(
+  items: NavItem[],
+  sections: Record<'treatments' | 'concerns' | 'doctors' | 'technology', boolean>,
+): NavItem[] {
+  return items.filter((item) => {
+    const section = CLINIC_SECTION_PAGES[item.href]
+    return !section || sections[section]
+  })
+}
+
 export const academyNav: NavItem[] = [
   { label: 'Courses', href: '/academy/courses' },
   { label: 'Internship', href: '/academy/internship' },

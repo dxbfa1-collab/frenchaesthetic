@@ -13,14 +13,29 @@ type Props = {
   actions?: ReactNode
   /** Right-hand column on large screens, e.g. an offer panel. */
   aside?: ReactNode
+  /** Shown above the headline, e.g. <Breadcrumbs />. */
+  breadcrumbs?: ReactNode
+  /** Small print under the actions, e.g. the treatment disclaimer. */
+  note?: ReactNode
 }
 
-export function PageHero({ eyebrow, title, accent, intro, actions, aside }: Props) {
+export function PageHero({
+  eyebrow,
+  title,
+  accent,
+  intro,
+  actions,
+  aside,
+  breadcrumbs,
+  note,
+}: Props) {
   return (
     <section>
+      {breadcrumbs && <Container className="pt-6 sm:pt-8">{breadcrumbs}</Container>}
       <Container
         className={cn(
-          'grid gap-14 pb-16 pt-14 sm:pt-20 lg:pb-24 lg:pt-24',
+          'grid gap-14 pb-16 lg:pb-24',
+          breadcrumbs ? 'pt-10 sm:pt-14 lg:pt-16' : 'pt-14 sm:pt-20 lg:pt-24',
           aside ? 'lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-16' : null,
         )}
       >
@@ -34,6 +49,7 @@ export function PageHero({ eyebrow, title, accent, intro, actions, aside }: Prop
           {actions && (
             <div className="rise rise-3 mt-10 flex flex-wrap items-center gap-4">{actions}</div>
           )}
+          {note && <p className="rise rise-3 mt-6 max-w-xl text-sm text-muted">{note}</p>}
         </div>
         {aside && <div className="rise rise-3">{aside}</div>}
       </Container>

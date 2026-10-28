@@ -6,26 +6,14 @@ import type {
 
 import { ownerOr } from '../access/roles'
 import { sourceField } from '../fields/shared'
+import { GENDERS, HEARD_FROM, TIME_SLOTS } from '../lib/bookingOptions'
 import { sendStaffAlert } from '../lib/notify'
 import { newReference } from '../lib/reference'
 import { relationId } from '../lib/relation'
 import { siteUrl } from '../lib/site'
 
-export const TIME_SLOTS = [
-  { label: 'Any time', value: 'any' },
-  { label: 'Afternoon', value: 'afternoon' },
-  { label: 'Late afternoon', value: 'lateAfternoon' },
-  { label: 'Evening', value: 'evening' },
-]
-
-export const HEARD_FROM = [
-  { label: 'Instagram', value: 'instagram' },
-  { label: 'Facebook', value: 'facebook' },
-  { label: 'Google', value: 'google' },
-  { label: 'A friend', value: 'friend' },
-  { label: 'Walked past a branch', value: 'walkIn' },
-  { label: 'Other', value: 'other' },
-]
+const labelOf = (options: readonly { label: string; value: string }[], value?: string | null) =>
+  options.find((o) => o.value === value)?.label
 
 const setReference: CollectionBeforeChangeHook = ({ data, operation }) => {
   if (operation === 'create') data.reference = newReference('FMA')
@@ -58,12 +46,12 @@ const alertOnCreate: CollectionAfterChangeHook = async ({ doc, operation, req })
       `Reference: ${doc.reference}`,
       `Branch: ${branch?.name ?? '-'}`,
       `Treatment: ${treatment?.name ?? (doc.concern || '-')}`,
-      `Preferred date: ${doc.preferredDate ? String(doc.preferredDate).slice(0, 10) : '-'} (${doc.timeSlot ?? 'any'})`,
+      `Preferred date: ${doc.preferredDate ? String(doc.preferredDate).slice(0, 10) : '-'} (${labelOf(TIME_SLOTS, doc.timeSlot) ?? 'any time'})`,
       `Name: ${doc.name}`,
       `WhatsApp: ${doc.phone}`,
       `Email: ${doc.email || '-'}`,
       `Notes: ${doc.notes || '-'}`,
-      `Heard from: ${doc.heardFrom || '-'}`,
+      `Heard from: ${labelOf(HEARD_FROM, doc.heardFrom) ?? '-'}`,
       `Came from: ${doc.source?.code || doc.source?.page || '-'}`,
       '',
       `Open in the admin: ${siteUrl}/admin/collections/bookings/${doc.id}`,
@@ -157,7 +145,7 @@ export const Bookings: CollectionConfig = {
           name: 'timeSlot',
           type: 'select',
           defaultValue: 'any',
-          options: TIME_SLOTS,
+          options: [...TIME_SLOTS],
           admin: { width: '50%' },
         },
       ],
@@ -182,18 +170,19 @@ export const Bookings: CollectionConfig = {
         {
           name: 'gender',
           type: 'select',
-          options: [
-            { label: 'Female', value: 'female' },
-            { label: 'Male', value: 'male' },
-            { label: 'Prefer not to say', value: 'preferNot' },
-          ],
+          options: [...GENDERS],
           admin: { width: '25%' },
         },
         { name: 'age', type: 'number', min: 12, max: 100, admin: { width: '25%' } },
       ],
     },
     { name: 'notes', type: 'textarea' },
-    { name: 'heardFrom', label: 'How they heard about us', type: 'select', options: HEARD_FROM },
+    {
+      name: 'heardFrom',
+      label: 'How they heard about us',
+      type: 'select',
+      options: [...HEARD_FROM],
+    },
     {
       name: 'whatsappConsent',
       label: 'Agreed to be contacted on WhatsApp',

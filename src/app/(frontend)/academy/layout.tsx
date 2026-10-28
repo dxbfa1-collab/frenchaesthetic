@@ -14,6 +14,13 @@ import { telHref } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
   title: { default: 'French Aesthetics Academy', template: '%s · French Aesthetics Academy' },
+  openGraph: {
+    type: 'website',
+    siteName: 'French Aesthetics Academy',
+    images: [
+      { url: '/og/academy.png', width: 1200, height: 630, alt: 'French Aesthetics Academy' },
+    ],
+  },
 }
 
 /**

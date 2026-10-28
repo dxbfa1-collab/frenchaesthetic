@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+import { CookieSettingsButton } from '@/components/analytics/Consent'
 import { FacebookIcon, InstagramIcon } from '@/components/icons'
 import { Container } from '@/components/ui/Container'
 import type { NavItem } from '@/lib/nav'
@@ -71,10 +72,13 @@ export function FooterBase({
   disclaimer,
   copyright,
   links,
+  cookieSettings = false,
 }: {
   disclaimer: string
   copyright: string
   links: NavItem[]
+  /** Shows "Cookie settings" when analytics tags are configured. */
+  cookieSettings?: boolean
 }) {
   return (
     <div className="border-t border-hairline">
@@ -92,6 +96,11 @@ export function FooterBase({
                 </Link>
               </li>
             ))}
+            {cookieSettings && (
+              <li>
+                <CookieSettingsButton />
+              </li>
+            )}
           </ul>
         </div>
       </Container>

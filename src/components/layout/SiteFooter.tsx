@@ -72,6 +72,7 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
         </div>
       </Container>
       <FooterBase
+        cookieSettings={Boolean(settings.ga4Id || settings.metaPixelId)}
         disclaimer={settings.medicalDisclaimer}
         copyright="French Medical Aesthetics · French Aesthetics Academy"
         links={[

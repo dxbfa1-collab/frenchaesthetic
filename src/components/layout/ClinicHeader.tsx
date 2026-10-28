@@ -5,13 +5,23 @@ import { PhoneIcon, WhatsAppIcon } from '@/components/icons'
 import { buttonClass } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
-import { clinicMoreNav, clinicNav } from '@/lib/nav'
+import type { NavItem } from '@/lib/nav'
 import { clinicMessages, telHref } from '@/lib/whatsapp'
 
 import { MobileMenu } from './MobileMenu'
 import { NavLinks } from './NavLinks'
 
-export function ClinicHeader({ phone, whatsapp }: { phone: string; whatsapp: string }) {
+export function ClinicHeader({
+  phone,
+  whatsapp,
+  nav,
+  moreNav,
+}: {
+  phone: string
+  whatsapp: string
+  nav: NavItem[]
+  moreNav: NavItem[]
+}) {
   return (
     <header className="tone-dark sticky top-0 z-40 border-b border-hairline bg-bg/95 backdrop-blur-md">
       <Container className="flex h-[4.5rem] items-center justify-between gap-6">
@@ -23,7 +33,7 @@ export function ClinicHeader({ phone, whatsapp }: { phone: string; whatsapp: str
           <FmaLogo variant="horizontal-no-tagline" width={260} preload />
         </Link>
         <nav aria-label="Clinic" className="hidden xl:block">
-          <NavLinks items={clinicNav} className="flex items-center gap-8" />
+          <NavLinks items={nav} className="flex items-center gap-8" />
         </nav>
         <div className="flex items-center gap-2">
           <WhatsAppLink
@@ -38,8 +48,8 @@ export function ClinicHeader({ phone, whatsapp }: { phone: string; whatsapp: str
           </WhatsAppLink>
           <MobileMenu
             label="Clinic"
-            items={clinicNav}
-            moreItems={clinicMoreNav}
+            items={nav}
+            moreItems={moreNav}
             logo={<FmaLogo variant="horizontal-no-tagline" width={240} />}
           >
             <WhatsAppLink

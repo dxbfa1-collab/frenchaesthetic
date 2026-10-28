@@ -9,6 +9,7 @@ import { buttonClass } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { CtaBand } from '@/components/ui/CtaBand'
 import { FaqList } from '@/components/ui/FaqList'
+import { JsonLd } from '@/components/ui/JsonLd'
 import { OfferPanel } from '@/components/ui/OfferPanel'
 import { Pending } from '@/components/ui/Pending'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -21,7 +22,8 @@ import {
   getTrainers,
   getUpcomingBatches,
 } from '@/lib/payload'
-import { academyMessages } from '@/lib/whatsapp'
+import { siteUrl } from '@/lib/site'
+import { academyMessages, telHref } from '@/lib/whatsapp'
 
 // Meta title and description from the FAA brief's SEO starter pack (§14).
 export const metadata: Metadata = {
@@ -68,8 +70,22 @@ export default async function AcademyHome() {
   const campus = nextByCourse.map(campusName).find(Boolean)
   const generalFaqs = faqs.filter((f) => !f.course).slice(0, 4)
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'EducationalOrganization',
+    name: 'French Aesthetics Academy',
+    url: `${siteUrl}/academy`,
+    logo: `${siteUrl}/brand/faa/stacked-white.png`,
+    telephone: telHref(whatsapp).replace('tel:', ''),
+    ...(settings.academyEmail ? { email: settings.academyEmail } : {}),
+    sameAs: [settings.academyInstagram, settings.academyFacebook].filter(Boolean),
+    address: { '@type': 'PostalAddress', addressLocality: 'Lahore', addressCountry: 'PK' },
+    parentOrganization: { '@type': 'MedicalOrganization', name: 'French Medical Aesthetics' },
+  }
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       {/* Hero */}
       <section>
         <Container className="grid gap-14 pb-20 pt-14 sm:pt-20 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-16 lg:pb-28 lg:pt-28">

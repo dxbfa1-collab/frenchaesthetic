@@ -26,6 +26,10 @@ export const clinicMessages = {
     `Hi, I want to book a consultation${branch ? ` at ${branch}` : ''}. (Website)`,
   photo: 'Hi, I would like to send a photo for a free assessment. (Website)',
   treatment: (treatment: string) => `Hi, I want to know more about ${treatment}. (Website)`,
+  concern: (concern: string) => `Hi, I would like advice about ${concern}. (Website)`,
+  doctor: (doctor: string) => `Hi, I would like a consultation with ${doctor}. (Website)`,
+  booked: (reference: string, branch: string) =>
+    `Hi, I just sent a booking request for ${branch} (reference ${reference}). (Website)`,
 }
 
 /**

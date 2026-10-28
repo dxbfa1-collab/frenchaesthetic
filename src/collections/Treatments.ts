@@ -188,6 +188,10 @@ export const Treatments: CollectionConfig = {
               type: 'relationship',
               relationTo: 'doctors',
               hasMany: true,
+              admin: {
+                description:
+                  'Only doctors who perform it. A physical therapist is never listed for a medical procedure.',
+              },
             },
             {
               name: 'branches',

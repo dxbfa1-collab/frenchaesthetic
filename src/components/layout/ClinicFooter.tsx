@@ -4,7 +4,7 @@ import { FmaLogo } from '@/components/brand/Logo'
 import { MailIcon, PhoneIcon, WhatsAppIcon } from '@/components/icons'
 import { Container } from '@/components/ui/Container'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
-import { clinicMoreNav, clinicNav, policyNav } from '@/lib/nav'
+import { type NavItem, policyNav } from '@/lib/nav'
 import { clinicMessages, telHref } from '@/lib/whatsapp'
 import type { Branch, SiteSettings } from '@/payload-types'
 
@@ -15,9 +15,11 @@ const contactLink = 'inline-flex items-center gap-3 text-fg transition-colors ho
 export function ClinicFooter({
   settings,
   branches,
+  nav,
 }: {
   settings: SiteSettings
   branches: Branch[]
+  nav: NavItem[]
 }) {
   const whatsapp = settings.clinicWhatsApp || settings.clinicPhone
 
@@ -35,7 +37,7 @@ export function ClinicFooter({
           <p className="mt-12 max-w-xs text-muted">Premium care, priced with fairness.</p>
         </div>
 
-        <FooterColumn title="Clinic" items={[...clinicNav, ...clinicMoreNav.slice(0, 2)]} />
+        <FooterColumn title="Clinic" items={nav} />
 
         <div>
           <p className="label text-accent">Branches</p>
@@ -97,6 +99,7 @@ export function ClinicFooter({
         </div>
       </Container>
       <FooterBase
+        cookieSettings={Boolean(settings.ga4Id || settings.metaPixelId)}
         disclaimer={settings.medicalDisclaimer}
         copyright="French Medical Aesthetics"
         links={policyNav}

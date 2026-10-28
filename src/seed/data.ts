@@ -1,5 +1,5 @@
 import { DEFAULT_ACADEMY_FILTER_LINE, DEFAULT_MEDICAL_DISCLAIMER } from '../lib/site'
-import type { Branch, SiteSettings } from '../payload-types'
+import type { Branch, Policies, SiteSettings } from '../payload-types'
 
 /**
  * Starting content, taken only from the owner's briefs and answers (see CLAUDE.md).
@@ -89,3 +89,39 @@ export const branches: BranchSeed[] = [
       'Short address is confirmed; older full form: 30-C, 1st Floor, Qazi Court, above Soneri Bank, BMCHS Sharafabad, Bahadurabad. Confirm the full address.',
   },
 ]
+
+type PoliciesSeed = Omit<Policies, 'id' | 'createdAt' | 'updatedAt' | 'globalType'>
+
+// A draft for the owner to review (FMA brief §9 requires a privacy policy covering form, upload
+// and WhatsApp data). It stays off the live site until its status is set to confirmed.
+export const policies: PoliciesSeed = {
+  privacyStatus: 'confirm',
+  privacy: [
+    'This policy explains what information French Medical Aesthetics (the clinic) and French Aesthetics Academy (the academy) collect through this website, how it is used and who can see it. [CONFIRM: legal name and address of each business.]',
+    '## What we collect',
+    [
+      '- Booking requests: your name, WhatsApp number, optional email, branch, the treatment or concern you chose, your preferred date and time, and any notes, gender or age you choose to share.',
+      '- Course applications: your name, WhatsApp number, optional email, city, profession and chosen batch. For the invasive course, also your PMDC number and the registration documents you upload.',
+      '- Payment proofs: the receipt or screenshot you upload after paying a course fee.',
+      '- Contact messages: your name, WhatsApp number, optional email and your message.',
+      '- Where you came from: the page you sent a form from and, if you arrived from an advert, the campaign tags in the link.',
+    ].join('\n'),
+    '## How we use it',
+    'We use your details only to answer your request: to confirm your consultation, to process your course application, or to reply to your message. We do not sell your information.',
+    '## WhatsApp',
+    "When you message us on WhatsApp, or ask us to contact you there, the conversation runs through WhatsApp, a service of Meta, under WhatsApp's own terms and privacy policy. Our team reads it on the clinic's or the academy's business account.",
+    '## Who can see your information',
+    'Only authorised staff: the clinic team sees bookings, and admissions see course applications. Uploaded documents and payment proofs are stored privately and are never published on the website.',
+    '## Cookies and analytics',
+    'The website remembers your light or dark theme on your own device. If you arrive from an advert, a small cookie keeps its campaign tags for 30 days, so we can see which adverts help people find us. Analytics and advertising tags (Google Analytics and the Meta Pixel) load only if you accept them in the cookie notice.',
+    '## How long we keep it',
+    '[CONFIRM: how long bookings, applications, documents and payment proofs are kept.]',
+    '## Your choices',
+    'You can ask to see, correct or delete the information you have sent us. Message the clinic or academy admissions on WhatsApp, or email info@frenchaesthetic.com.',
+    '## Changes',
+    'If this policy changes, the new version is published on this page.',
+  ].join('\n\n'),
+  termsStatus: 'confirm',
+  refundsStatus: 'confirm',
+  cancellationsStatus: 'confirm',
+}

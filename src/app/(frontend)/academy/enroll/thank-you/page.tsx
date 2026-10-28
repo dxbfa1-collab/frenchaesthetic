@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { TrackLead } from '@/components/analytics/TrackLead'
 import { WhatsAppIcon } from '@/components/icons'
 import { buttonClass } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
@@ -33,6 +34,7 @@ export default async function ThankYouPage({ searchParams }: Props) {
 
   return (
     <>
+      {ref && <TrackLead side="academy" label="enrollment" />}
       <PageHero
         eyebrow="Application received"
         title="Shukriya."

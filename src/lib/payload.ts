@@ -2,10 +2,25 @@ import config from '@payload-config'
 import { getPayload } from 'payload'
 import { cache } from 'react'
 
-import type { Batch, Branch, Course, Doctor, Faq } from '@/payload-types'
+import type {
+  Batch,
+  Branch,
+  Concern,
+  Course,
+  Doctor,
+  Faq,
+  Media,
+  Post,
+  Result,
+  Review,
+  Treatment,
+  TreatmentCategory,
+} from '@/payload-types'
 
 import { pktDateKey } from './batches'
+import { relationId } from './relation'
 import { isStaging } from './site'
+import { TECHNOLOGIES, treatmentIsLive } from './treatments'
 
 /*
   Public pages read with overrideAccess: false, so staff-only fields (alert emails, payment details,
@@ -26,12 +41,16 @@ export const getPrivateSettings = cache(async () =>
   (await client()).findGlobal({ slug: 'site-settings', depth: 0 }),
 )
 
+export const getPolicies = cache(async () =>
+  (await client()).findGlobal({ slug: 'policies', depth: 0, overrideAccess: false }),
+)
+
 export const getBranches = cache(async (): Promise<Branch[]> => {
   const { docs } = await (
     await client()
   ).find({
     collection: 'branches',
-    depth: 0,
+    depth: 1,
     overrideAccess: false,
     pagination: false,
     sort: 'order',
@@ -88,7 +107,8 @@ export const getUpcomingBatches = cache(async (): Promise<BatchView[]> => {
   )
 })
 
-export const getTrainers = cache(async (): Promise<Doctor[]> => {
+/** Doctors and trainers whose details may be shown (a photo still needs its own consent). */
+export const getPeople = cache(async (): Promise<Doctor[]> => {
   const { docs } = await (
     await client()
   ).find({
@@ -97,12 +117,19 @@ export const getTrainers = cache(async (): Promise<Doctor[]> => {
     overrideAccess: false,
     pagination: false,
     sort: 'order',
-    where: { isTrainer: { equals: true } },
   })
   return docs.filter((d) => visible(d.status))
 })
 
-export const getAcademyFaqs = cache(async (): Promise<Faq[]> => {
+export async function getTrainers(): Promise<Doctor[]> {
+  return (await getPeople()).filter((d) => d.isTrainer)
+}
+
+export async function getClinicDoctors(): Promise<Doctor[]> {
+  return (await getPeople()).filter((d) => d.clinicTeam !== false)
+}
+
+const getFaqs = cache(async (business: 'clinic' | 'academy'): Promise<Faq[]> => {
   const { docs } = await (
     await client()
   ).find({
@@ -111,7 +138,182 @@ export const getAcademyFaqs = cache(async (): Promise<Faq[]> => {
     overrideAccess: false,
     pagination: false,
     sort: 'order',
-    where: { business: { equals: 'academy' } },
+    where: { business: { equals: business } },
   })
   return docs.filter((f) => visible(f.status))
+})
+
+export const getAcademyFaqs = () => getFaqs('academy')
+
+/** General clinic questions, plus questions about treatments that are shown. */
+export async function getClinicFaqs(): Promise<Faq[]> {
+  const [faqs, treatments] = await Promise.all([getFaqs('clinic'), getTreatments()])
+  const shown = new Set(treatments.map((t) => t.id))
+  return faqs.filter((f) => !f.treatment || shown.has(relationId(f.treatment) ?? ''))
+}
+
+// Clinic treatments
+
+export type TreatmentView = Treatment & { category: TreatmentCategory }
+
+const getAllTreatments = cache(async (): Promise<TreatmentView[]> => {
+  const { docs } = await (
+    await client()
+  ).find({
+    collection: 'treatments',
+    depth: 1,
+    overrideAccess: false,
+    pagination: false,
+    sort: 'order',
+  })
+  return docs
+    .filter((t): t is TreatmentView => typeof t.category === 'object' && t.category !== null)
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || a.name.localeCompare(b.name))
+})
+
+/** Treatments that may be shown: live ones, plus (on staging only) the rest, with a marker. */
+export const getTreatments = cache(async (): Promise<TreatmentView[]> =>
+  (await getAllTreatments()).filter((t) => treatmentIsLive(t) || isStaging),
+)
+
+/** Any treatment with this slug, shown or not, so a hidden page can redirect to its category. */
+export async function findTreatment(slug: string): Promise<TreatmentView | null> {
+  return (await getAllTreatments()).find((t) => t.slug === slug) ?? null
+}
+
+export const getTreatmentCategories = cache(async (): Promise<TreatmentCategory[]> => {
+  const { docs } = await (
+    await client()
+  ).find({
+    collection: 'treatment-categories',
+    depth: 1,
+    overrideAccess: false,
+    pagination: false,
+    sort: 'order',
+  })
+  return docs
+})
+
+export type CategoryView = TreatmentCategory & { treatments: TreatmentView[] }
+
+/** Categories with at least one treatment to show, each with its treatments. */
+export async function getTreatmentMenu(): Promise<CategoryView[]> {
+  const [categories, treatments] = await Promise.all([getTreatmentCategories(), getTreatments()])
+  return categories
+    .map((category) => ({
+      ...category,
+      treatments: treatments.filter((t) => t.category.id === category.id),
+    }))
+    .filter((category) => category.treatments.length > 0)
+}
+
+export const getConcerns = cache(async (): Promise<Concern[]> => {
+  const { docs } = await (
+    await client()
+  ).find({
+    collection: 'concerns',
+    depth: 1,
+    overrideAccess: false,
+    pagination: false,
+    sort: 'order',
+  })
+  return docs.filter((c) => visible(c.status))
+})
+
+/** Shown treatments that list this concern. */
+export async function getTreatmentsFor(concern: Concern): Promise<TreatmentView[]> {
+  return (await getTreatments()).filter((t) =>
+    (t.concerns ?? []).some((c) => relationId(c) === concern.id),
+  )
+}
+
+/** Before and afters with written consent and both photos, for treatments that are shown. */
+export const getResults = cache(async (): Promise<Result[]> => {
+  const [{ docs }, treatments] = await Promise.all([
+    (await client()).find({
+      collection: 'results',
+      depth: 1,
+      overrideAccess: false,
+      pagination: false,
+      where: { consentOnFile: { equals: true } },
+    }),
+    getTreatments(),
+  ])
+  const shown = new Set(treatments.map((t) => t.id))
+  return docs.filter(
+    (r) =>
+      typeof r.before === 'object' &&
+      typeof r.after === 'object' &&
+      Boolean(r.before?.url && r.after?.url) &&
+      shown.has(relationId(r.treatment) ?? ''),
+  )
+})
+
+/** Reviews the person agreed to show. */
+export const getReviews = cache(async (): Promise<Review[]> => {
+  const { docs } = await (
+    await client()
+  ).find({
+    collection: 'reviews',
+    depth: 0,
+    overrideAccess: false,
+    pagination: false,
+    sort: '-createdAt',
+    where: { consent: { equals: true } },
+  })
+  return docs
+})
+
+/** What the clinic menu may link to: a section with nothing to show stays out of the menu. */
+export async function getClinicSections() {
+  const [treatments, concerns, doctors] = await Promise.all([
+    getTreatments(),
+    getConcerns(),
+    getClinicDoctors(),
+  ])
+  const shown = new Set(treatments.map((t) => t.slug))
+  return {
+    treatments: treatments.length > 0,
+    concerns: concerns.length > 0 && treatments.length > 0,
+    doctors: doctors.length > 0,
+    technology: TECHNOLOGIES.some((tech) => tech.treatments.some((slug) => shown.has(slug))),
+  }
+}
+
+export type ClinicSections = Awaited<ReturnType<typeof getClinicSections>>
+
+/** Gallery photos with no identifiable person, or with written consent for everyone shown. */
+export const getGallery = cache(async (): Promise<Media[]> => {
+  const { docs } = await (
+    await client()
+  ).find({
+    collection: 'media',
+    depth: 0,
+    overrideAccess: false,
+    pagination: false,
+    sort: '-createdAt',
+    where: {
+      and: [
+        { gallery: { in: ['clinic', 'academy'] } },
+        { peopleConsent: { not_equals: 'missing' } },
+      ],
+    },
+  })
+  return docs.filter((m) => Boolean(m.url))
+})
+
+// Blog
+
+export const getPosts = cache(async (): Promise<Post[]> => {
+  const { docs } = await (
+    await client()
+  ).find({
+    collection: 'posts',
+    depth: 1,
+    overrideAccess: false,
+    pagination: false,
+    sort: '-publishedAt',
+    where: { status: { equals: 'published' } },
+  })
+  return docs
 })
