@@ -33,8 +33,9 @@ export const trainers: DoctorSeed[] = [
   {
     name: 'Dr. Maria',
     slug: 'dr-maria',
-    // Owner, 28 Oct 2026 (as in the FMA brand guide). Her degree (MBBS or BDS) is not confirmed.
+    // Owner, 28 Oct 2026 (title) and 29 Oct 2026 (BDS).
     title: 'Aesthetic Physician',
+    degrees: 'BDS',
     isTrainer: true,
     order: 2,
     status: 'confirmed',
