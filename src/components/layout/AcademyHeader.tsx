@@ -4,14 +4,14 @@ import { FaaLogo } from '@/components/brand/Logo'
 import { WhatsAppIcon } from '@/components/icons'
 import { buttonClass } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
-import { academyMoreNav, academyNav } from '@/lib/nav'
+import { academyMoreNav, academyNav, type NavItem } from '@/lib/nav'
 
 import { AcademyWhatsApp } from './AcademyWhatsApp'
 import { MobileMenu } from './MobileMenu'
 import { NavLinks } from './NavLinks'
 
 /** FAA brief §2: horizontal logo left, menu, gold "Chat on WhatsApp" button. */
-export function AcademyHeader({ whatsapp }: { whatsapp: string }) {
+export function AcademyHeader({ whatsapp, nav }: { whatsapp: string; nav: NavItem[] }) {
   return (
     <header className="tone-dark sticky top-0 z-40 border-b border-hairline bg-bg/95 backdrop-blur-md">
       <Container className="flex h-[4.5rem] items-center justify-between gap-6">
@@ -23,7 +23,7 @@ export function AcademyHeader({ whatsapp }: { whatsapp: string }) {
           <FaaLogo variant="horizontal" width={228} preload />
         </Link>
         <nav aria-label="Academy" className="hidden xl:block">
-          <NavLinks items={academyNav} className="flex items-center gap-8" />
+          <NavLinks items={nav} className="flex items-center gap-8" />
         </nav>
         <div className="flex items-center gap-2">
           <AcademyWhatsApp

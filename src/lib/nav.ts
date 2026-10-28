@@ -1,4 +1,18 @@
-export type NavItem = { label: string; href: string }
+export type MenuLink = {
+  label: string
+  href: string
+  topic?: string
+  text?: string
+  image?: string
+}
+export type MenuColumn = { heading?: string; href?: string; topic?: string; items: MenuLink[] }
+
+/** A menu link; with `menu`, the desktop header opens a dropdown panel on hover or focus. */
+export type NavItem = {
+  label: string
+  href: string
+  menu?: { columns: MenuColumn[]; footer?: MenuLink }
+}
 
 /*
   Menus for each side. Several targets are built in later phases (treatments, doctors and branches

@@ -9,7 +9,8 @@ import { FilterLine } from '@/components/layout/FilterLine'
 import { MobileStickyBar } from '@/components/layout/MobileStickyBar'
 import { TopBar } from '@/components/layout/TopBar'
 import { buttonClass, ButtonLink } from '@/components/ui/Button'
-import { getAcademyCampuses, getSiteSettings } from '@/lib/payload'
+import { academyNav, type NavItem } from '@/lib/nav'
+import { getAcademyCampuses, getCourses, getSiteSettings } from '@/lib/payload'
 import { telHref } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
@@ -28,7 +29,46 @@ export const metadata: Metadata = {
  * WhatsApp + Enroll bar on phones. The clinic appears only through the endorsement line.
  */
 export default async function AcademyLayout({ children }: { children: ReactNode }) {
-  const [settings, campuses] = await Promise.all([getSiteSettings(), getAcademyCampuses()])
+  const [settings, campuses, courses] = await Promise.all([
+    getSiteSettings(),
+    getAcademyCampuses(),
+    getCourses(),
+  ])
+  // Dropdown under "Courses" (owner, 29 Oct 2026).
+  const nav: NavItem[] = academyNav.map((item) =>
+    item.href === '/academy/courses'
+      ? {
+          ...item,
+          menu: {
+            columns: [
+              {
+                items: [
+                  ...courses.map((c) => ({
+                    label: c.name,
+                    href: `/academy/${c.slug}`,
+                    topic: 'training',
+                    text: c.hero.label ?? undefined,
+                  })),
+                  {
+                    label: 'Internship',
+                    href: '/academy/internship',
+                    topic: 'internship',
+                    text: '2 weeks supervised, included',
+                  },
+                  {
+                    label: 'Batches',
+                    href: '/academy/batches',
+                    topic: 'calendar',
+                    text: 'Next start dates',
+                  },
+                ],
+              },
+            ],
+            footer: { label: 'Apply to enroll', href: '/academy/enroll' },
+          },
+        }
+      : item,
+  )
   const whatsapp = settings.admissionsWhatsApp
 
   return (
@@ -37,7 +77,7 @@ export default async function AcademyLayout({ children }: { children: ReactNode 
         side="academy"
         contact={{ label: `Admissions WhatsApp ${whatsapp}`, href: telHref(whatsapp) }}
       />
-      <AcademyHeader whatsapp={whatsapp} />
+      <AcademyHeader whatsapp={whatsapp} nav={nav} />
       <main id="main">{children}</main>
       <FilterLine text={settings.academyFilterLine} />
       <AcademyFooter settings={settings} campuses={campuses} />

@@ -8,8 +8,18 @@ import { MobileStickyBar } from '@/components/layout/MobileStickyBar'
 import { TopBar } from '@/components/layout/TopBar'
 import { buttonClass, ButtonLink } from '@/components/ui/Button'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
-import { clinicMoreNav, clinicNav, withContent } from '@/lib/nav'
-import { getClinicBranches, getClinicSections, getSiteSettings } from '@/lib/payload'
+import { credentials } from '@/components/ui/Portrait'
+import { doctorPhoto } from '@/lib/images'
+import { clinicMoreNav, clinicNav, type NavItem, withContent } from '@/lib/nav'
+import {
+  getClinicBranches,
+  getClinicDoctors,
+  getClinicSections,
+  getConcerns,
+  getSiteSettings,
+  getTreatmentMenu,
+} from '@/lib/payload'
+import { consultationNote, treatmentHref } from '@/lib/treatments'
 import { clinicMessages, telHref } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
@@ -23,14 +33,71 @@ export const metadata: Metadata = {
 
 /** Clinic chrome: FMA logo, clinic menu, the UAN only, and a Book + WhatsApp bar on phones. */
 export default async function ClinicLayout({ children }: { children: ReactNode }) {
-  const [settings, branches, sections] = await Promise.all([
+  const [settings, branches, sections, menu, concerns, doctors] = await Promise.all([
     getSiteSettings(),
     getClinicBranches(),
     getClinicSections(),
+    getTreatmentMenu(),
+    getConcerns(),
+    getClinicDoctors(),
   ])
   const whatsapp = settings.clinicWhatsApp || settings.clinicPhone
+
+  // Dropdown panels for the desktop header (owner, 29 Oct 2026).
+  const menus: Record<string, NavItem['menu']> = {
+    '/clinic/treatments': {
+      columns: menu.map((category) => ({
+        heading: category.name,
+        href: `/clinic/treatments/${category.slug}`,
+        topic: category.slug,
+        items: category.treatments
+          .slice(0, 5)
+          .map((t) => ({ label: t.name, href: treatmentHref(t) })),
+      })),
+      footer: { label: 'All treatments', href: '/clinic/treatments' },
+    },
+    '/clinic/concerns': {
+      columns: [
+        {
+          items: concerns.map((c) => ({
+            label: c.name,
+            href: `/clinic/concerns/${c.slug}`,
+            topic: 'treatment',
+          })),
+        },
+      ],
+      footer: { label: 'All concerns', href: '/clinic/concerns' },
+    },
+    '/clinic/doctors': {
+      columns: [
+        {
+          items: doctors.map((d) => ({
+            label: d.name,
+            href: `/clinic/doctors/${d.slug}`,
+            topic: 'doctor',
+            text: credentials(d),
+            image: doctorPhoto(d.slug)?.src,
+          })),
+        },
+      ],
+      footer: { label: 'Meet the team', href: '/clinic/doctors' },
+    },
+    '/clinic/branches': {
+      columns: [
+        {
+          items: branches.map((b) => ({
+            label: b.name,
+            href: `/clinic/branches/${b.slug}`,
+            topic: 'branches',
+            text: [b.city, consultationNote(b)].filter(Boolean).join(' · '),
+          })),
+        },
+      ],
+      footer: { label: 'All branches', href: '/clinic/branches' },
+    },
+  }
   // A section with nothing to show yet (e.g. no treatment signed off) stays out of the menus.
-  const nav = withContent(clinicNav, sections)
+  const nav = withContent(clinicNav, sections).map((item) => ({ ...item, menu: menus[item.href] }))
   const moreNav = withContent(clinicMoreNav, sections)
 
   return (
