@@ -25,8 +25,8 @@ const sans = Nunito_Sans({
   display: 'swap',
 })
 
-// Runs before first paint so a saved light theme never flashes dark. Dark is the brand default.
-const themeScript = `try{document.documentElement.dataset.theme=localStorage.getItem('fa-theme')==='light'?'light':'dark'}catch(e){}`
+// Light is the default (owner, 29 Oct 2026); dark stays one click away and the choice is remembered.
+const themeScript = `try{document.documentElement.dataset.theme=localStorage.getItem('fa-theme')==='dark'?'dark':'light'}catch(e){}`
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -61,7 +61,7 @@ export default async function FrontendLayout({ children }: { children: ReactNode
   return (
     <html
       lang="en"
-      data-theme="dark"
+      data-theme="light"
       className={`${display.variable} ${sans.variable}`}
       suppressHydrationWarning
     >

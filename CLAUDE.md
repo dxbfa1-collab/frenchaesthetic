@@ -676,3 +676,5 @@ DNS and email are already on Hostinger (nameservers `*.dns-parking.com`, MX `mx1
 5. Check: home, /clinic, /academy, a treatment page, /clinic/book (send a test booking and delete it in /admin), /admin login, an old address such as /service/botox, /robots.txt (should allow indexing) and /sitemap.xml.
 6. Google Search Console: add the domain, submit `https://frenchaesthetic.com/sitemap.xml`.
 7. Later: Cloudinary keys (photo uploads), SMTP for alert emails, opening hours, GA4/Pixel IDs, terms/refund/cancellation texts.
+- 2026-10-29: **Light is the default theme** (owner); dark stays available with the toggle, and a visitor's choice is remembered. Header, footer, sticky bars and offer panels stay charcoal in both.
+
