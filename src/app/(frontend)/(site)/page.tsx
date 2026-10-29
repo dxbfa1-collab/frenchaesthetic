@@ -116,10 +116,11 @@ function Door({
       </h2>
       <p className="mt-4 max-w-sm text-lg text-ivory/85 rise rise-3">{text}</p>
       <div className="relative z-10 mt-9 flex flex-wrap items-center gap-x-7 gap-y-4 rise rise-3">
-        <span aria-hidden="true" className="btn btn-primary btn-lg door-cta">
+        {/* Sits above the card's stretched link, so it needs its own link; the heading link stays the one tab stop. */}
+        <Link href={href} tabIndex={-1} aria-hidden="true" className="btn btn-primary btn-lg door-cta">
           {cta}
           <ArrowRightIcon size={18} />
-        </span>
+        </Link>
         {whatsapp}
       </div>
     </article>
