@@ -44,8 +44,7 @@ export const trainers: DoctorSeed[] = [
   {
     name: 'Dr. Sadaf',
     slug: 'dr-sadaf',
-    // "Physical Therapist" in the FMA brand guide. Owner, 29 Oct 2026: show MS in Gyne only, not DPT.
-    title: 'Physical Therapist',
+    // Owner, 29 Oct 2026: show MS in Gyne only (no DPT, no "Physical Therapist" title).
     degrees: 'MS in Gyne',
     isTrainer: true,
     order: 3,
