@@ -33,9 +33,8 @@ export const trainers: DoctorSeed[] = [
   {
     name: 'Dr. Maria',
     slug: 'dr-maria',
-    // Owner, 28 Oct 2026 (title) and 29 Oct 2026 (BDS).
+    // Owner, 28 Oct 2026 (title). 29 Oct 2026: show no degree.
     title: 'Aesthetic Physician',
-    degrees: 'BDS',
     isTrainer: true,
     order: 2,
     status: 'confirmed',
@@ -45,9 +44,9 @@ export const trainers: DoctorSeed[] = [
   {
     name: 'Dr. Sadaf',
     slug: 'dr-sadaf',
-    // Owner, 28 Oct 2026: DPT (Doctor of Physical Therapy); "Physical Therapist" in the FMA brand guide.
+    // "Physical Therapist" in the FMA brand guide. Owner, 29 Oct 2026: show MS in Gyne only, not DPT.
     title: 'Physical Therapist',
-    degrees: 'DPT, MS in Gyne',
+    degrees: 'MS in Gyne',
     isTrainer: true,
     order: 3,
     status: 'confirmed',

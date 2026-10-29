@@ -678,3 +678,4 @@ DNS and email are already on Hostinger (nameservers `*.dns-parking.com`, MX `mx1
 7. Later: Cloudinary keys (photo uploads), SMTP for alert emails, opening hours, GA4/Pixel IDs, terms/refund/cancellation texts.
 - 2026-10-29: **Light is the default theme** (owner); dark stays available with the toggle, and a visitor's choice is remembered. Header, footer, sticky bars and offer panels stay charcoal in both.
 
+- 2026-10-29: **Credentials shown on the site (owner):** Dr. Maria shows **no degree**, only "Aesthetic Physician" (BDS removed). Dr. Sadaf shows **"MS in Gyne · Physical Therapist"** (DPT removed). This replaces the earlier "BDS · Aesthetic Physician" and "DPT, MS in Gyne · Physical Therapist".
