@@ -15,6 +15,7 @@ import { OfferPanel } from '@/components/ui/OfferPanel'
 import { PageHero } from '@/components/ui/PageHero'
 import { Pending } from '@/components/ui/Pending'
 import { SectionHeading } from '@/components/ui/SectionHeading'
+import { TopicOverview, type TopicPoint } from '@/components/ui/TopicOverview'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
 import { formatBatchDate, pktDateKey } from '@/lib/batches'
 import {
@@ -28,7 +29,7 @@ import {
 import { relationId } from '@/lib/relation'
 import { siteUrl } from '@/lib/site'
 import { webCode } from '@/lib/whatsapp'
-import type { Doctor } from '@/payload-types'
+import type { Course, Doctor } from '@/payload-types'
 
 // Batches move from "upcoming" to past by date, so the page refreshes hourly as well as on edits.
 export const revalidate = 3600
@@ -47,6 +48,39 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: course.metaDescription || course.summary || undefined,
     alternates: { canonical: `/academy/${course.slug}` },
   }
+}
+
+function courseOverview(course: Course): TopicPoint[] {
+  const audience = (course.audience ?? []).join(', ').toLowerCase()
+  return course.track === 'invasive'
+    ? [
+        {
+          heading: 'What the course is',
+          text: 'A 3-week, in-person aesthetic medicine course in Lahore: 1 week of intensive training, then a 2-week clinical internship with procedures on real patients, under supervision.',
+        },
+        {
+          heading: 'Who it is for',
+          text: 'PMDC-registered MBBS and BDS doctors, including house officers, medical officers, GPs, dentists, clinic owners and doctors returning after a career break. Non-medical candidates can join the Non-Invasive course instead.',
+        },
+        {
+          heading: 'What sets it apart',
+          text: 'You perform procedures yourself. The internship is included at no extra fee, each batch has a maximum of 20 doctors, and timing is flexible.',
+        },
+      ]
+    : [
+        {
+          heading: 'What the course is',
+          text: 'A 3-week, in-person aesthetics course in Lahore: 1 week of hands-on training, then a 2-week internship on live clients, supervised by doctors.',
+        },
+        {
+          heading: 'Who it is for',
+          text: `Beauty professionals and beginners, including ${audience}. You need no experience and no PMDC registration.`,
+        },
+        {
+          heading: 'What sets it apart',
+          text: 'The internship is included at no extra fee, each batch has a maximum of 20 students, and the academy belongs to a working clinic.',
+        },
+      ]
 }
 
 export default async function CoursePage({ params }: Props) {
@@ -352,6 +386,8 @@ export default async function CoursePage({ params }: Props) {
       </section>
 
       {/* Fee and FAQ */}
+      <TopicOverview title={course.name} accent="at a glance." points={courseOverview(course)} />
+
       <section className="border-t border-hairline">
         <Container className="grid gap-16 py-20 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:py-28">
           <div data-reveal="">

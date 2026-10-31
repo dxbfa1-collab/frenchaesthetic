@@ -14,6 +14,7 @@ import { Container } from '@/components/ui/Container'
 import { FaqList } from '@/components/ui/FaqList'
 import { JsonLd } from '@/components/ui/JsonLd'
 import { SectionHeading } from '@/components/ui/SectionHeading'
+import { TopicOverview } from '@/components/ui/TopicOverview'
 import { IconBadge, TopicIcon } from '@/components/ui/TopicIcon'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
 import { categoryPhoto, SITE_PHOTOS, treatmentPhoto } from '@/lib/images'
@@ -423,6 +424,25 @@ export default async function ClinicHome() {
           </Container>
         </section>
       )}
+
+      <TopicOverview
+        title="French Medical Aesthetics"
+        accent="at a glance."
+        points={[
+          {
+            heading: 'Who we are',
+            text: `A doctor-led medical aesthetics clinic with ${branches.length} branches in Lahore and Karachi. Every treatment plan starts with an in-person assessment of your skin and your goals.`,
+          },
+          {
+            heading: 'What we treat',
+            text: `Our treatments cover ${listFormat.format(menu.map((c) => c.name.toLowerCase()))}. Each treatment page explains how it works, who it may suit and when to avoid it.`,
+          },
+          {
+            heading: 'Your first visit',
+            text: 'Your skin is assessed in person, your options are explained, and you get a clear quote before any treatment.',
+          },
+        ]}
+      />
 
       {/* Questions */}
       {questions.length > 0 && (

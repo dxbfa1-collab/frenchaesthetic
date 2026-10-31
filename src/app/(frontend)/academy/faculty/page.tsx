@@ -11,7 +11,7 @@ import { getSiteSettings, getTrainers } from '@/lib/payload'
 import { academyMessages } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
-  title: 'Faculty',
+  title: 'Aesthetics Course Faculty',
   description:
     'A dermatologist-led team teaches every course at French Aesthetics Academy, inside a working clinic in Lahore.',
   alternates: { canonical: '/academy/faculty' },

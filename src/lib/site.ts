@@ -10,6 +10,14 @@ export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:30
   '',
 )
 
+/** The site's own address with and without www, for Payload's CORS and CSRF lists. */
+export const siteOrigins = [
+  siteUrl,
+  siteUrl.includes('://www.')
+    ? siteUrl.replace('://www.', '://')
+    : siteUrl.replace('://', '://www.'),
+]
+
 /** Required on every page (FMA brief §9). The CMS copy in Site settings wins when it is filled in. */
 export const DEFAULT_MEDICAL_DISCLAIMER =
   'Information on this website is general and not medical advice. All treatments are subject to an in-person medical assessment. Results vary from person to person.'

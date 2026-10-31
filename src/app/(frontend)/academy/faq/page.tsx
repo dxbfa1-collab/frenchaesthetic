@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 
 import { WhatsAppIcon } from '@/components/icons'
 import { buttonClass } from '@/components/ui/Button'
@@ -7,15 +8,16 @@ import { CtaBand } from '@/components/ui/CtaBand'
 import { FaqList, faqJsonLd } from '@/components/ui/FaqList'
 import { JsonLd } from '@/components/ui/JsonLd'
 import { PageHero } from '@/components/ui/PageHero'
+import { TopicOverview } from '@/components/ui/TopicOverview'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
 import { getAcademyFaqs, getCourses, getSiteSettings } from '@/lib/payload'
 import { relationId } from '@/lib/relation'
 import { academyMessages } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
-  title: 'FAQ',
+  title: 'Aesthetics Course FAQ: Lahore',
   description:
-    'Answers about the internship, batch size, campuses, eligibility and the training at French Aesthetics Academy, Lahore.',
+    'Clear answers on eligibility, the internship, batch size, campuses and training at French Aesthetics Academy in Lahore.',
   alternates: { canonical: '/academy/faq' },
 }
 
@@ -38,6 +40,32 @@ export default async function AcademyFaqPage() {
     <>
       <JsonLd data={faqJsonLd(faqs)} />
       <PageHero eyebrow="FAQ" title="Questions," accent="answered." />
+      <TopicOverview
+        title="The academy,"
+        accent="in brief."
+        points={[
+          {
+            heading: 'One format, two courses',
+            text: 'Both courses at French Aesthetics Academy in Lahore run for 3 weeks: 1 week of training, then a 2-week supervised internship included in the course.',
+          },
+          {
+            heading: 'Who each course is for',
+            text: 'The Non-Invasive course is open to beauty professionals and beginners. The Invasive course is for PMDC-registered MBBS and BDS doctors.',
+          },
+          {
+            heading: 'How to join',
+            text: (
+              <>
+                <Link href="/academy/enroll" className="underline underline-offset-4">
+                  Apply online
+                </Link>{' '}
+                for a batch. Admissions verify your details, then share the fee and payment details
+                on WhatsApp.
+              </>
+            ),
+          },
+        ]}
+      />
       <section className="border-t border-hairline">
         <Container className="space-y-16 py-16 lg:py-24">
           {groups.map((group) => (

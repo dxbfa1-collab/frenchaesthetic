@@ -24,7 +24,8 @@ import { TECHNOLOGIES, treatmentIsLive } from './treatments'
 
 /*
   Public pages read with overrideAccess: false, so staff-only fields (alert emails, payment details,
-  internal notes) never reach a page or its HTML. Server-only code uses getPrivateSettings().
+  internal notes) never reach a page or its HTML. Server-only code uses getPrivateSettings(), and
+  findTreatment() reads hidden treatments only to redirect, never to show them.
 */
 
 const client = () => getPayload({ config })
@@ -178,7 +179,18 @@ export const getTreatments = cache(async (): Promise<TreatmentView[]> =>
 
 /** Any treatment with this slug, shown or not, so a hidden page can redirect to its category. */
 export async function findTreatment(slug: string): Promise<TreatmentView | null> {
-  return (await getAllTreatments()).find((t) => t.slug === slug) ?? null
+  const { docs } = await (
+    await client()
+  ).find({
+    collection: 'treatments',
+    depth: 1,
+    limit: 1,
+    where: { slug: { equals: slug } },
+  })
+  const treatment = docs[0]
+  return treatment && typeof treatment.category === 'object' && treatment.category
+    ? (treatment as TreatmentView)
+    : null
 }
 
 export const getTreatmentCategories = cache(async (): Promise<TreatmentCategory[]> => {

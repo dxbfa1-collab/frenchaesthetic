@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone, ownerOr, staffField } from '../access/roles'
 import { FACT_STATUS_OPTIONS as FACT_STATUS, internalNoteField, slugField } from '../fields/shared'
 import { revalidateSite } from '../hooks/revalidate'
+import { isStaging } from '../lib/site'
 
 /**
  * Clinic branches and academy campuses (one record when they share a building).
@@ -186,6 +187,11 @@ export const Branches: CollectionConfig = {
         {
           name: 'hours',
           type: 'array',
+          // Unconfirmed hours stay out of the public API, as they stay off the live pages.
+          access: {
+            read: ({ doc, req }) =>
+              Boolean(req.user) || isStaging || doc?.hoursStatus === 'confirmed',
+          },
           labels: { singular: 'Line', plural: 'Lines' },
           fields: [
             {

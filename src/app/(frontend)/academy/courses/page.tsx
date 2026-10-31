@@ -7,9 +7,9 @@ import { batchRuleSentence } from '@/lib/batches'
 import { getCourses, getSiteSettings, getUpcomingBatches } from '@/lib/payload'
 
 export const metadata: Metadata = {
-  title: 'Courses',
+  title: 'Aesthetics Courses in Lahore',
   description:
-    'Two aesthetics courses in Lahore, each with 1 week of training and a 2-week supervised internship: Non-Invasive for beauty professionals, Invasive for MBBS & BDS doctors.',
+    'Two aesthetics courses in Lahore, with 1 week of training and a 2-week supervised internship: Non-Invasive for beauty professionals, Invasive for MBBS & BDS doctors.',
   alternates: { canonical: '/academy/courses' },
 }
 

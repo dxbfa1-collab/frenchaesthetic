@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone, ownerOr } from '../access/roles'
+import { confirmedOrStaff, ownerOr } from '../access/roles'
 import { factStatusField } from '../fields/shared'
 import { revalidateSite } from '../hooks/revalidate'
 
@@ -14,7 +14,7 @@ export const Faqs: CollectionConfig = {
     group: 'Content',
   },
   access: {
-    read: anyone,
+    read: confirmedOrStaff(),
     create: ownerOr('clinicCoordinator', 'academyCoordinator', 'editor'),
     update: ownerOr('clinicCoordinator', 'academyCoordinator', 'editor'),
     delete: ownerOr('clinicCoordinator', 'academyCoordinator'),

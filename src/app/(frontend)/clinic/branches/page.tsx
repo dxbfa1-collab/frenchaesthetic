@@ -40,8 +40,8 @@ export default async function BranchesPage() {
         accent="and Karachi."
         intro={
           <p>
-            Consultation terms, doctors on duty and treatments differ by branch. Each branch page
-            shows what applies there, or ask us on WhatsApp.
+            Every treatment is available at all four branches. Consultation terms and timings
+            differ, so each branch page shows what applies there, or ask us on WhatsApp.
           </p>
         }
       />

@@ -25,6 +25,7 @@ import { Treatments } from './collections/Treatments'
 import { Users } from './collections/Users'
 import { Policies } from './globals/Policies'
 import { SiteSettings } from './globals/SiteSettings'
+import { siteOrigins } from './lib/site'
 import { cloudinaryStorage } from './storage/cloudinary'
 
 const filename = fileURLToPath(import.meta.url)
@@ -77,6 +78,11 @@ export default buildConfig({
     Users,
   ],
   globals: [SiteSettings, Policies],
+  // Only this site's own pages may call the API with a staff session.
+  cors: siteOrigins,
+  csrf: siteOrigins,
+  // The site and the admin both use the REST and local APIs.
+  graphQL: { disable: true },
   editor: lexicalEditor(),
   email,
   secret: process.env.PAYLOAD_SECRET || '',

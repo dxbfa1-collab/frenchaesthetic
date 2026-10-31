@@ -12,7 +12,7 @@ import { getCourses, getSiteSettings, getUpcomingBatches } from '@/lib/payload'
 import { academyMessages } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
-  title: 'Enroll',
+  title: 'Enroll in an Aesthetics Course',
   description:
     'Apply online for the Non-Invasive or Invasive aesthetics course in Lahore. Admissions verify your details, then share the fee and payment details on WhatsApp.',
   alternates: { canonical: '/academy/enroll' },

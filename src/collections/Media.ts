@@ -20,7 +20,8 @@ export const Media: CollectionConfig = {
     delete: ownerOr('clinicCoordinator', 'academyCoordinator'),
   },
   upload: {
-    mimeTypes: ['image/*'],
+    // Raster images only: an SVG can carry scripts.
+    mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/avif'],
     focalPoint: true,
   },
   fields: [

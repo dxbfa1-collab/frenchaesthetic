@@ -15,6 +15,7 @@ import { FaqList } from '@/components/ui/FaqList'
 import { JsonLd } from '@/components/ui/JsonLd'
 import { Pending } from '@/components/ui/Pending'
 import { SectionHeading } from '@/components/ui/SectionHeading'
+import { TopicOverview } from '@/components/ui/TopicOverview'
 import { TopicIcon } from '@/components/ui/TopicIcon'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
 import { batchRuleSentence, formatBatchDate } from '@/lib/batches'
@@ -310,6 +311,25 @@ export default async function AcademyHome() {
           </div>
         </Container>
       </section>
+
+      <TopicOverview
+        title="French Aesthetics Academy"
+        accent="at a glance."
+        points={[
+          {
+            heading: 'Who we are',
+            text: 'French Aesthetics Academy is the training academy of French Medical Aesthetics clinic, based in Lahore. Training is hands-on and taught by a dermatologist-led team.',
+          },
+          {
+            heading: 'Which course to choose',
+            text: 'Choose Non-Invasive if you work in beauty or are starting out: no experience or PMDC registration is needed. Choose Invasive if you are a PMDC-registered MBBS or BDS doctor.',
+          },
+          {
+            heading: 'How training is structured',
+            text: 'Each course is 1 week of training followed by a 2-week supervised internship, 3 weeks in all. There is no training on Sundays.',
+          },
+        ]}
+      />
 
       {/* FAQ preview */}
       {generalFaqs.length > 0 && (

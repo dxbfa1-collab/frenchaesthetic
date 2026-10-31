@@ -118,6 +118,35 @@ const legacyRedirects = [
   ...OLD_TEMPLATE_PAGES.map((page) => ({ source: `/${page}`, destination: '/', permanent: true })),
 ]
 
+const dev = process.env.NODE_ENV !== 'production'
+const publicUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? '').replace(/\/$/, '')
+const https = publicUrl.startsWith('https://')
+const wwwHost = https && !publicUrl.includes('://www.') ? `www.${new URL(publicUrl).host}` : null
+
+// Next.js writes inline bootstrap scripts, so scripts stay 'unsafe-inline' without per-request nonces.
+const baseCsp = ["base-uri 'self'", "frame-ancestors 'self'", "object-src 'none'"]
+const siteCsp = [
+  ...baseCsp,
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self'",
+  "connect-src 'self' https://*.google-analytics.com https://www.googletagmanager.com https://www.facebook.com",
+  "frame-src 'none'",
+  "form-action 'self'",
+]
+const csp = (rules: string[]) => [{ key: 'Content-Security-Policy', value: rules.join('; ') }]
+
+const securityHeaders = [
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=()' },
+  // Not on subdomains: some of them may not have a certificate.
+  ...(https ? [{ key: 'Strict-Transport-Security', value: 'max-age=31536000' }] : []),
+]
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
@@ -149,8 +178,30 @@ const nextConfig: NextConfig = {
     cpus: 1,
     webpackMemoryOptimizations: true,
   },
+  async headers() {
+    return [
+      { source: '/:path*', headers: securityHeaders },
+      ...(dev
+        ? []
+        : [
+            { source: '/((?!admin|api).*)', headers: csp(siteCsp) },
+            { source: '/(admin|api)/:path*', headers: csp(baseCsp) },
+          ]),
+    ]
+  },
   async redirects() {
     return [
+      // One address for search engines: www goes to the main domain.
+      ...(wwwHost
+        ? [
+            {
+              source: '/:path*',
+              has: [{ type: 'host' as const, value: wwwHost }],
+              destination: `${publicUrl}/:path*`,
+              permanent: true,
+            },
+          ]
+        : []),
       // Academy addresses from the original prompt, mapped to the FAA brief's (CLAUDE.md, build decisions).
       { source: '/academy/calendar', destination: '/academy/batches', permanent: true },
       { source: '/academy/trainers', destination: '/academy/faculty', permanent: true },

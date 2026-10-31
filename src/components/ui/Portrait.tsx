@@ -57,6 +57,6 @@ export function Portrait({ person, size = 'md' }: { person: Doctor; size?: 'md' 
   )
 }
 
-/** Credentials exactly as documented: degree and title, e.g. "DPT · Physical Therapist". */
+/** Credentials exactly as documented: degree and title, e.g. "MS in Gyne". */
 export const credentials = (person: Doctor, ...extra: Array<string | null | undefined>) =>
   [person.degrees, person.title, ...extra].filter(Boolean).join(' · ')

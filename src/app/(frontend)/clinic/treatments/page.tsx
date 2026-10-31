@@ -17,7 +17,7 @@ import { clinicMessages } from '@/lib/whatsapp'
 export const metadata: Metadata = {
   title: 'Treatments',
   description:
-    'Face lifting and tightening, facials, lasers and injectables at French Medical Aesthetics in Lahore and Karachi. Doctor-led consultation; your price is given at consultation.',
+    'Face lifting and tightening, facials, lasers and injectables at French Medical Aesthetics in Lahore and Karachi. Your price is given at consultation.',
   alternates: { canonical: '/clinic/treatments' },
 }
 
@@ -113,8 +113,7 @@ export default async function TreatmentsPage() {
         <section className="border-t border-hairline">
           <Container className="py-16">
             <p className="max-w-2xl text-lg">
-              Our treatment pages are being prepared. Ask us on WhatsApp about any treatment, and we
-              will tell you which branch offers it.
+              Our treatment pages are being prepared. Ask us on WhatsApp about any treatment.
             </p>
           </Container>
         </section>

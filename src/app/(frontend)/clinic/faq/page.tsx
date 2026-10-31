@@ -10,6 +10,7 @@ import { FaqList, faqJsonLd } from '@/components/ui/FaqList'
 import { JsonLd } from '@/components/ui/JsonLd'
 import { Numerals } from '@/components/ui/Numerals'
 import { PageHero } from '@/components/ui/PageHero'
+import { TopicOverview } from '@/components/ui/TopicOverview'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
 import { getClinicFaqs, getSiteSettings, getTreatments } from '@/lib/payload'
 import { relationId } from '@/lib/relation'
@@ -17,9 +18,9 @@ import { treatmentHref } from '@/lib/treatments'
 import { clinicMessages } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
-  title: 'Questions and Answers',
+  title: 'Aesthetic Treatment FAQ: Lahore & Karachi',
   description:
-    'Consultations, prices, booking and branches at French Medical Aesthetics in Lahore and Karachi: answers to common questions.',
+    'Clear answers on consultations, prices, booking, branches and results at French Medical Aesthetics in Lahore and Karachi.',
   alternates: { canonical: '/clinic/faq' },
 }
 
@@ -60,6 +61,42 @@ export default async function ClinicFaqPage() {
             will reply.
           </p>
         }
+      />
+
+      <TopicOverview
+        title="Planning your visit,"
+        accent="in brief."
+        points={[
+          {
+            heading: 'How care works',
+            text: 'Treatment at French Medical Aesthetics is doctor-led and starts with an in-person medical assessment. The information on this website is general and is not medical advice.',
+          },
+          {
+            heading: 'Choosing a branch',
+            text: (
+              <>
+                The clinic has branches in Lahore and Karachi, and consultation terms differ by
+                branch.{' '}
+                <Link href="/clinic/branches" className="underline underline-offset-4">
+                  Compare our branches
+                </Link>{' '}
+                to find the address and consultation details for each one.
+              </>
+            ),
+          },
+          {
+            heading: 'Exploring treatments',
+            text: (
+              <>
+                Each treatment page sets out how it works, who it may suit and when to avoid it.{' '}
+                <Link href="/clinic/treatments" className="underline underline-offset-4">
+                  Browse all treatments
+                </Link>{' '}
+                before you book, then bring your questions to your consultation.
+              </>
+            ),
+          },
+        ]}
       />
 
       {general.length > 0 && (

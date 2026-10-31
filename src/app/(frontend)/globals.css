@@ -992,3 +992,84 @@ a.marquee-chip:hover {
     animation: none;
   }
 }
+
+/*
+  Custom cursor (src/components/motion/CustomCursor.tsx). Gold with a dark edge and a light halo,
+  so it reads on ivory, on charcoal and on photos in both themes. The native cursor is hidden only
+  while the script runs on a mouse; form fields keep theirs.
+*/
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+}
+
+.cursor-dot.is-visible,
+.cursor-ring.is-visible {
+  opacity: 1;
+}
+
+.cursor-dot::before,
+.cursor-ring::before {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+.cursor-dot::before {
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  background: #c9a96e;
+  box-shadow:
+    0 0 0 1px #0d0d0d,
+    0 0 0 2px rgb(247 244 239 / 0.75);
+}
+
+.cursor-ring::before {
+  top: -16px;
+  left: -16px;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid #c9a96e;
+  box-shadow:
+    0 0 0 1px rgb(13 13 13 / 0.35),
+    inset 0 0 0 1px rgb(247 244 239 / 0.35);
+  transition: transform 160ms ease;
+}
+
+.cursor-ring.is-active::before {
+  transform: scale(1.45);
+}
+
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
+html.has-custom-cursor input,
+html.has-custom-cursor textarea,
+html.has-custom-cursor [contenteditable='true'] {
+  cursor: auto !important;
+}
+
+html.has-custom-cursor input[type='checkbox'],
+html.has-custom-cursor input[type='radio'],
+html.has-custom-cursor input[type='file'],
+html.has-custom-cursor input[type='date'],
+html.has-custom-cursor select {
+  cursor: pointer !important;
+}
+
+@media print {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}

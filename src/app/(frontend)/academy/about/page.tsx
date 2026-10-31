@@ -12,7 +12,7 @@ import { getAcademyCampuses, getCourses, getSiteSettings } from '@/lib/payload'
 import { academyMessages } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
-  title: 'About',
+  title: 'About the Academy',
   description:
     'French Aesthetics Academy is the training academy of French Medical Aesthetics clinic in Lahore: real practice, named faculty and small batches.',
   alternates: { canonical: '/academy/about' },

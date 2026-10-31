@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone, ownerOr } from '../access/roles'
+import { confirmedOrStaff, ownerOr } from '../access/roles'
 import { factStatusField, slugField } from '../fields/shared'
 import { revalidateSite } from '../hooks/revalidate'
 
@@ -9,7 +9,7 @@ export const Concerns: CollectionConfig = {
   slug: 'concerns',
   admin: { useAsTitle: 'name', defaultColumns: ['name', 'status', 'order'], group: 'Clinic' },
   access: {
-    read: anyone,
+    read: confirmedOrStaff(),
     create: ownerOr('clinicCoordinator'),
     update: ownerOr('clinicCoordinator'),
     delete: ownerOr(),

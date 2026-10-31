@@ -120,7 +120,7 @@ export const SITE_PHOTOS = {
 const DOCTORS: Record<string, SitePhoto> = {
   'dr-iqra-fatima': photo('doctors/dr-iqra-fatima', 'Dr. Iqra Fatima, Dermatologist', 'center 18%'),
   'dr-maria': photo('doctors/dr-maria', 'Dr. Maria, Aesthetic Physician', 'center 18%'),
-  'dr-sadaf': photo('doctors/dr-sadaf', 'Dr. Sadaf, Physical Therapist', 'center 18%'),
+  'dr-sadaf': photo('doctors/dr-sadaf', 'Dr. Sadaf', 'center 18%'),
 }
 
 export const doctorPhoto = (slug: string): SitePhoto | null => DOCTORS[slug] ?? null

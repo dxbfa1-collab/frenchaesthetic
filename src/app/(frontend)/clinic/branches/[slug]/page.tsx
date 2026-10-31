@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const note = consultationNote(branch)
   return {
     title: `Aesthetic Clinic in ${branch.name}, ${branch.city}`,
-    description: `French Medical Aesthetics, ${branch.name}, ${branch.city}.${note ? ` ${note}.` : ''} Doctor-led treatments; book on WhatsApp.`,
+    description: `French Medical Aesthetics, ${branch.name}, ${branch.city}.${note ? ` ${note}.` : ''} Address, consultation details and doctor-led care; book on WhatsApp.`,
     alternates: { canonical: `/clinic/branches/${branch.slug}` },
   }
 }

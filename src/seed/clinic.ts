@@ -475,54 +475,54 @@ export const treatments: TreatmentSeed[] = [...ready, ...later]
 // General answers use only confirmed facts (consultation policy, branches, the no-price decision).
 export const clinicFaqs: FaqSeed[] = [
   {
-    question: 'Is the consultation free?',
+    question: 'Is the consultation free at French Medical Aesthetics?',
     answer:
-      'Consultation with AI skin analysis is free at DHA Phase 4, MM Alam Road and Bahadurabad. At Allama Iqbal Town a consultation fee applies.',
+      'It depends on the branch. A consultation with AI skin analysis is free at DHA Phase 4 and MM Alam Road in Lahore and at Bahadurabad in Karachi. At Allama Iqbal Town a consultation fee applies.',
   },
   {
-    question: 'How much does a treatment cost?',
+    question: 'How much do aesthetic treatments cost?',
     answer:
-      'Your price is given at your consultation, once your doctor has assessed your skin and agreed a plan with you. You can also ask for a quote on WhatsApp.',
+      'The price depends on your treatment plan, so it is given at your consultation once your doctor has assessed your skin. You can also ask for a quote on WhatsApp.',
   },
   {
-    question: 'How do I book?',
+    question: 'How do I book a consultation?',
     answer:
-      'Message us on WhatsApp or use the booking form, and tell us your preferred branch and treatment.',
+      'Message us on WhatsApp or use the booking form, and tell us your preferred branch and treatment. The branch team then confirms a time with you on WhatsApp.',
   },
   {
     question: 'Does every branch offer every treatment?',
     answer:
-      'Not always. Availability differs by branch, so ask us on WhatsApp which branch offers your treatment.',
+      'Yes. Every treatment is available at all four branches, three in Lahore and one in Karachi.',
   },
   {
     question: 'Who decides which treatment is right for me?',
     answer:
-      'Every treatment starts with an in-person medical assessment, and your doctor explains your options.',
+      'You decide with your doctor. Every treatment starts with an in-person medical assessment, where your doctor explains your options.',
   },
   {
     question: 'Will I see results after one session?',
     answer:
-      'Results vary from person to person. Your doctor explains what to expect, and how many sessions they recommend, at your consultation.',
+      'It depends on the treatment, and results vary from person to person. Your doctor explains what to expect, and how many sessions they recommend, at your consultation.',
   },
   {
-    question: 'Can I send a photo first?',
+    question: 'Can I send a photo before my visit?',
     answer:
       'Yes. Send us a photo on WhatsApp for a free assessment. Suitability is always confirmed at an in-person consultation.',
   },
   {
-    question: 'Where are your branches?',
+    question: 'Where are your clinics in Lahore and Karachi?',
     answer:
-      'Three in Lahore (DHA Phase 4, Allama Iqbal Town, and MM Alam Road, Gulberg III) and one in Karachi (Bahadurabad).',
+      'We have four branches: three in Lahore (DHA Phase 4, Allama Iqbal Town, and MM Alam Road, Gulberg III) and one in Karachi (Bahadurabad).',
   },
   {
     treatmentSlug: 'botox',
-    question: 'When will I see the result?',
+    question: 'How long does Botox take to work?',
     answer:
-      'The effect usually starts to show within 3 to 7 days, with the full effect at 10 to 14 days.',
+      'Usually 3 to 7 days. The effect starts to show in that time, with the full effect at 10 to 14 days. Results vary from person to person.',
   },
   {
     treatmentSlug: 'botox',
-    question: 'How long does it last?',
+    question: 'How long does Botox last?',
     answer: 'Typically 3 to 4 months. The treatment can then be repeated.',
   },
 ].map((faq, i) => ({

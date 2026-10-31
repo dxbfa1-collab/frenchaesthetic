@@ -5,7 +5,7 @@ import type {
   FieldHook,
 } from 'payload'
 
-import { anyone, ownerOr } from '../access/roles'
+import { confirmedOrStaff, ownerOr } from '../access/roles'
 import { factStatusField, internalNoteField } from '../fields/shared'
 import { revalidateSite } from '../hooks/revalidate'
 import { followsStartRule, formatBatchDate, normalizeDay, ordinal } from '../lib/batches'
@@ -53,7 +53,7 @@ export const Batches: CollectionConfig = {
     group: 'Academy',
   },
   access: {
-    read: anyone,
+    read: confirmedOrStaff('factStatus'),
     create: ownerOr('academyCoordinator'),
     update: ownerOr('academyCoordinator'),
     delete: ownerOr(),

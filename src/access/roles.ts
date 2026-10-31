@@ -1,5 +1,7 @@
 import type { Access, FieldAccess } from 'payload'
 
+import { isStaging } from '../lib/site'
+
 /** Staff roles from the brief (§8): the owner can do everything; the others see their own area. */
 export const ROLES = ['owner', 'clinicCoordinator', 'academyCoordinator', 'editor'] as const
 export type Role = (typeof ROLES)[number]
@@ -19,6 +21,18 @@ export function hasRole(user: unknown, ...roles: Role[]): boolean {
 export const anyone: Access = () => true
 
 export const isStaff: Access = ({ req }) => Boolean(req.user)
+
+/** The public API serves what the live site shows: unconfirmed records stay with staff (and staging). */
+export const confirmedOrStaff =
+  (field = 'status'): Access =>
+  ({ req }) =>
+    req.user || isStaging ? true : { [field]: { equals: 'confirmed' } }
+
+/** Brief §5 and §9: a treatment is public only when it is Ready and a doctor has signed it off. */
+export const liveTreatmentOrStaff: Access = ({ req }) =>
+  req.user || isStaging
+    ? true
+    : { contentStatus: { equals: 'ready' }, medicalSignOff: { equals: true } }
 
 export const isOwner: Access = ({ req }) => hasRole(req.user, 'owner')
 

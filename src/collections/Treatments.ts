@@ -1,6 +1,6 @@
 import type { CollectionConfig, Field } from 'payload'
 
-import { anyone, ownerOr } from '../access/roles'
+import { liveTreatmentOrStaff, ownerOr } from '../access/roles'
 import { CONTENT_STATUS_OPTIONS, internalNoteField, slugField } from '../fields/shared'
 import { revalidateSite } from '../hooks/revalidate'
 
@@ -27,7 +27,7 @@ export const Treatments: CollectionConfig = {
     description: 'A treatment is on the live site only when it is Ready and has medical sign-off.',
   },
   access: {
-    read: anyone,
+    read: liveTreatmentOrStaff,
     create: ownerOr('clinicCoordinator'),
     update: ownerOr('clinicCoordinator'),
     delete: ownerOr(),

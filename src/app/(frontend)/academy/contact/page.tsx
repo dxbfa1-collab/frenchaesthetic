@@ -13,7 +13,8 @@ import type { Branch } from '@/payload-types'
 
 export const metadata: Metadata = {
   title: 'Contact & Campuses',
-  description: 'French Aesthetics Academy campuses in Lahore and the admissions WhatsApp number.',
+  description:
+    'Find French Aesthetics Academy campuses in Lahore and reach admissions on WhatsApp about courses, batches and enrollment.',
   alternates: { canonical: '/academy/contact' },
 }
 

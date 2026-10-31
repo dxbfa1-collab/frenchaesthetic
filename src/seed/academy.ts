@@ -50,7 +50,7 @@ export const trainers: DoctorSeed[] = [
     order: 3,
     status: 'confirmed',
     internalNote:
-      'Current staff. DPT confirmed by the owner on 28 Oct 2026. A physical therapist: never list her as an injectables trainer or performing doctor.',
+      'Current staff. Shown as MS in Gyne only (owner, 29 Oct 2026). Never list her as an injectables trainer or performing doctor.',
   },
 ]
 
@@ -275,22 +275,23 @@ const inv = 'invasive-aesthetics-course-for-doctors'
 
 export const faqs: FaqSeed[] = [
   {
-    question: 'Is this for treatments?',
+    question: 'Does the academy offer treatments?',
     answer:
-      'No. This is a training academy. For treatments, please contact French Medical Aesthetics clinic.',
+      'No. French Aesthetics Academy is a training academy. For treatments, please contact French Medical Aesthetics clinic.',
   },
   {
     question: 'Is there a separate internship fee?',
-    answer: 'No. The 2-week internship is included in the course.',
+    answer: 'No. The 2-week supervised internship is included in the course at no extra fee.',
   },
-  { question: 'How many students are in a batch?', answer: 'A maximum of 20.' },
+  { question: 'How many students are in a batch?', answer: 'A maximum of 20 students per batch.' },
   {
-    question: 'Where is the academy?',
-    answer: 'Iqbal Town, Lahore. Our DHA Phase 4 campus is also open.',
+    question: 'Where is French Aesthetics Academy?',
+    answer: 'In Lahore. The main campus is in Iqbal Town, and the DHA Phase 4 campus is also open.',
   },
   {
     question: 'Can I join from another city?',
-    answer: 'Yes. Students travel from Gujranwala, Sialkot, Kasur and Daska.',
+    answer:
+      'Yes. Students have joined from Gujranwala, Sialkot, Kasur and Daska. Training takes place in person in Lahore.',
   },
   {
     question: 'What is the fee?',
@@ -299,51 +300,56 @@ export const faqs: FaqSeed[] = [
   },
   {
     courseSlug: ni,
-    question: 'I have no experience. Can I still learn?',
-    answer: 'Yes. Training starts from the basics, step by step.',
+    question: 'Can I join the Non-Invasive course with no experience?',
+    answer: 'Yes. No experience is needed, and training starts from the basics, step by step.',
   },
   {
     courseSlug: ni,
-    question: 'Is it only classes, or will I practise myself?',
+    question: 'Will I practise myself on the Non-Invasive course?',
     answer:
-      '1 week of hands-on training, then a 2-week internship on live clients, supervised by doctors.',
+      'Yes. You get 1 week of hands-on training, then a 2-week internship on live clients, supervised by doctors.',
   },
   {
     courseSlug: ni,
-    question: 'What will I learn?',
+    question: 'What will I learn on the Non-Invasive course?',
     answer:
       'HydraFacial, BB Glow, chemical peels, HIFU, laser hair removal, skin analysis and client consultation.',
   },
   {
     courseSlug: ni,
-    question: 'What if I make a mistake?',
+    question: 'What if I make a mistake during the internship?',
     answer: 'Every step is supervised, so you are never on your own.',
   },
-  { courseSlug: inv, question: 'Who can join?', answer: 'MBBS and BDS doctors only.' },
   {
     courseSlug: inv,
-    question: 'Will I perform procedures myself?',
-    answer: 'Yes. On real patients during the 2-week clinical internship, under supervision.',
+    question: 'Who can join the Invasive course?',
+    answer: 'MBBS and BDS doctors only, and you must be PMDC registered.',
   },
   {
     courseSlug: inv,
-    question: 'Can I do it alongside my job?',
+    question: 'Will I perform procedures myself on the Invasive course?',
+    answer:
+      'Yes. You perform them on real patients during the 2-week clinical internship, under supervision.',
+  },
+  {
+    courseSlug: inv,
+    question: 'Can I do the Invasive course alongside my job?',
     answer: 'Yes. Timing is flexible for doctors.',
   },
   {
     courseSlug: inv,
-    question: 'Is complication management covered?',
+    question: 'Does the Invasive course cover complication management?',
     answer: 'Yes. Complication management and emergency protocols are part of the syllabus.',
   },
   {
     courseSlug: inv,
-    question: 'I have not practised for years. Is that a problem?',
-    answer: 'Training starts with a refresher on facial anatomy and patient assessment.',
+    question: 'Can I join if I have not practised for years?',
+    answer: 'Yes. Training starts with a refresher on facial anatomy and patient assessment.',
   },
   {
     courseSlug: inv,
-    question: 'Who teaches?',
-    answer: 'Dermatologist-led team. Lead Trainer: Dr. Iqra, Dermatologist.',
+    question: 'Who teaches the Invasive course?',
+    answer: 'A dermatologist-led team. The Lead Trainer is Dr. Iqra, Dermatologist.',
   },
 ].map((faq, i) => ({
   business: 'academy' as const,

@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { isOwner, ownerField, ownerOrSelf, ROLE_OPTIONS } from '../access/roles'
+import { siteUrl } from '../lib/site'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -9,7 +10,10 @@ export const Users: CollectionConfig = {
     defaultColumns: ['name', 'email', 'roles'],
     group: 'Admin',
   },
-  auth: true,
+  auth: {
+    // Staff sessions travel over HTTPS only on the live site.
+    cookies: { sameSite: 'Lax', secure: siteUrl.startsWith('https://') },
+  },
   access: {
     // Every signed-in staff account may open /admin; what they can do there depends on their roles.
     admin: ({ req }) => Boolean(req.user),

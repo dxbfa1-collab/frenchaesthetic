@@ -18,6 +18,7 @@ import { Numerals } from '@/components/ui/Numerals'
 import { OfferPanel } from '@/components/ui/OfferPanel'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
+import { TopicOverview } from '@/components/ui/TopicOverview'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
 import { treatmentPhoto } from '@/lib/images'
 import { publicImage } from '@/lib/media'
@@ -54,13 +55,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const treatment = await shownTreatment((await params).slug)
   if (!treatment) return {}
   const image = publicImage(treatment.heroImage)
+  const name = shortName(treatment.name)
   return {
-    title: treatment.metaTitle || treatment.name,
-    description: treatment.metaDescription || treatment.promise || treatment.summary || undefined,
+    title: treatment.metaTitle || `${name} in Lahore & Karachi`,
+    description:
+      treatment.metaDescription ||
+      `${treatment.promise || name} Doctor-led consultation at French Medical Aesthetics; price given at consultation.`,
     alternates: { canonical: treatmentHref(treatment) },
     openGraph: image ? { images: [{ url: image.url!, alt: image.alt }] } : undefined,
   }
 }
+
+/** The name without its bracketed explanation, for titles and sentences. */
+const shortName = (name: string) => name.replace(/\s*\(.*\)$/, '')
+
+const listFormat = new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' })
 
 const ids = (values?: unknown[] | null) =>
   new Set((values ?? []).map(relationId).filter((id): id is string => Boolean(id)))
@@ -142,6 +151,29 @@ export default async function TreatmentPage({ params }: Props) {
           ? { url: p.src, alt: p.alt, focal: { objectPosition: p.position ?? 'center' } }
           : null
       })()
+
+  const name = shortName(treatment.name)
+  const suitsFor = suits.map((s) => s.text.toLowerCase())
+  // A treatment's own questions already answer when results show and how long they last.
+  const expected =
+    ownFaqs.length > 0 ? facts.filter(([label]) => !label.startsWith('Results')) : facts
+  const overview = [
+    {
+      heading: 'Where it is offered',
+      text: `${name} is part of the ${treatment.category.name.toLowerCase()} range at French Medical Aesthetics, a doctor-led clinic with branches in Lahore and Karachi. ${offeredAt.length > 0 ? `It is available at ${listFormat.format(offeredAt.map((b) => b.shortName || b.name))}.` : 'Availability differs by branch, so check before you travel.'}`,
+    },
+    {
+      heading: 'Who it may suit',
+      text: `${suitsFor.length > 0 ? `It is commonly considered for: ${listFormat.format(suitsFor)}. ` : ''}Your doctor confirms whether it suits you at an in-person assessment, and explains any reason to avoid it.`,
+    },
+    {
+      heading: 'What to expect',
+      text:
+        expected.length > 0
+          ? expected.map(([label, value]) => `${label}: ${value.toLowerCase()}.`).join(' ')
+          : 'Your doctor explains the sessions, downtime and results you can expect once your skin has been assessed.',
+    },
+  ]
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -515,6 +547,8 @@ export default async function TreatmentPage({ params }: Props) {
           </Container>
         </section>
       )}
+
+      <TopicOverview title={`${name}:`} accent="the essentials." points={overview} />
 
       {/* Questions, and related treatments */}
       <section className="border-t border-hairline">

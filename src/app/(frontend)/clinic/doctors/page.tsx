@@ -13,7 +13,7 @@ import { getClinicDoctors, getSiteSettings } from '@/lib/payload'
 import { clinicMessages } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
-  title: 'Our Doctors',
+  title: 'Our Doctors in Lahore & Karachi',
   description:
     'Meet the medical team at French Medical Aesthetics in Lahore and Karachi. Every treatment starts with an in-person assessment.',
   alternates: { canonical: '/clinic/doctors' },

@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 
 import { Consent } from '@/components/analytics/Consent'
 import { TrackClicks } from '@/components/analytics/TrackClicks'
+import { CustomCursor } from '@/components/motion/CustomCursor'
 import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
 import { getSiteSettings } from '@/lib/payload'
 import { isStaging, siteUrl } from '@/lib/site'
@@ -77,6 +78,7 @@ export default async function FrontendLayout({ children }: { children: ReactNode
         </a>
         {children}
         <RevealOnScroll />
+        <CustomCursor />
         <TrackClicks />
         <Consent ga4Id={settings.ga4Id} metaPixelId={settings.metaPixelId} />
       </body>
