@@ -4,7 +4,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { BranchCard } from '@/components/clinic/BranchCard'
-import { InsideClinic } from '@/components/clinic/InsideClinic'
 import { DoctorCard } from '@/components/clinic/DoctorCard'
 import { TreatmentCard } from '@/components/clinic/TreatmentCard'
 import { ArrowRightIcon, WhatsAppIcon } from '@/components/icons'
@@ -425,8 +424,6 @@ export default async function ClinicHome() {
           </Container>
         </section>
       )}
-
-      <InsideClinic />
 
       <TopicOverview
         title="French Medical Aesthetics"

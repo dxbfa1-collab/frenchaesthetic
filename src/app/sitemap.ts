@@ -7,6 +7,7 @@ import {
   getClinicSections,
   getConcerns,
   getCourses,
+  getGallery,
   getPolicies,
   getPosts,
   getResults,
@@ -22,7 +23,6 @@ const STATIC_PAGES = [
   '/',
   '/about',
   '/contact',
-  '/gallery',
   '/clinic',
   '/clinic/branches',
   '/clinic/faq',
@@ -40,7 +40,7 @@ const STATIC_PAGES = [
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [menu, sections, concerns, doctors, branches, results, courses, posts, policies] =
+  const [menu, sections, concerns, doctors, branches, results, courses, posts, gallery, policies] =
     await Promise.all([
       getTreatmentMenu(),
       getClinicSections(),
@@ -50,6 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       getResults(),
       getCourses(),
       getPosts(),
+      getGallery(),
       getPolicies(),
     ])
 
@@ -84,6 +85,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...(posts.length > 0
       ? [entry('/blog'), ...posts.map((p) => entry(`/blog/${p.slug}`, p.updatedAt))]
       : []),
+    ...(gallery.length > 0 ? [entry('/gallery')] : []),
     ...POLICIES.filter((p) => policies[`${p.key}Status`] === 'confirmed').map((p) =>
       entry(`/policies/${p.key}`),
     ),

@@ -1,16 +1,15 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import { notFound } from 'next/navigation'
 
 import { Container } from '@/components/ui/Container'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { CLINIC_GALLERY } from '@/lib/images'
 import { getGallery } from '@/lib/payload'
 
 export const metadata: Metadata = {
   title: 'Gallery',
-  description:
-    'Real photos inside French Medical Aesthetics: the lounge, reception and treatment corridor.',
+  description: 'Inside French Medical Aesthetics and French Aesthetics Academy.',
   alternates: { canonical: '/gallery' },
 }
 
@@ -21,16 +20,8 @@ const SECTIONS = [
 
 /** Real photos only, each with consent from every identifiable person (brief §3). */
 export default async function GalleryPage() {
-  const uploaded = await getGallery()
-  const photos = [
-    ...CLINIC_GALLERY.map(({ src, alt, position }) => ({ src, alt, position, gallery: 'clinic' })),
-    ...uploaded.map((m) => ({
-      src: m.url!,
-      alt: m.alt,
-      position: m.focalX != null && m.focalY != null ? `${m.focalX}% ${m.focalY}%` : undefined,
-      gallery: m.gallery,
-    })),
-  ]
+  const photos = await getGallery()
+  if (photos.length === 0) notFound()
 
   return (
     <>
@@ -44,14 +35,18 @@ export default async function GalleryPage() {
               <SectionHeading title={title} accent={accent} />
               <ul className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {items.map((photo) => (
-                  <li key={photo.src} className="relative aspect-[4/3] overflow-hidden">
+                  <li key={photo.id} className="relative aspect-[4/3] overflow-hidden">
                     <Image
-                      src={photo.src}
+                      src={photo.url!}
                       alt={photo.alt}
                       fill
                       sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
                       className="object-cover"
-                      style={{ objectPosition: photo.position ?? 'center' }}
+                      style={
+                        photo.focalX != null && photo.focalY != null
+                          ? { objectPosition: `${photo.focalX}% ${photo.focalY}%` }
+                          : undefined
+                      }
                     />
                   </li>
                 ))}

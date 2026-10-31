@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 
 import { BranchCard } from '@/components/clinic/BranchCard'
-import { InsideClinic } from '@/components/clinic/InsideClinic'
 import { WhatsAppIcon } from '@/components/icons'
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs'
 import { buttonClass } from '@/components/ui/Button'
@@ -63,8 +62,6 @@ export default async function BranchesPage() {
           </Container>
         </section>
       ))}
-
-      <InsideClinic />
 
       <CtaBand
         title="Which branch"
