@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { InsideClinic } from '@/components/clinic/InsideClinic'
 import { ArrowRightIcon } from '@/components/icons'
 import { ButtonLink } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
@@ -77,6 +78,8 @@ export default function AboutPage() {
           </div>
         </Container>
       </section>
+
+      <InsideClinic />
 
       <section className="tone-inverse">
         <Container className="grid gap-12 py-20 lg:grid-cols-[1fr_1.5fr] lg:gap-20 lg:py-28">

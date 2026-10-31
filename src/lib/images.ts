@@ -88,14 +88,22 @@ export const treatmentPhoto = (slug: string): SitePhoto | null => TREATMENTS[slu
 export const categoryPhoto = (slug: string): SitePhoto | null => CATEGORIES[slug] ?? null
 
 export const SITE_PHOTOS = {
-  consultation: photo(
-    'clinic/consultation',
-    'Doctor assessing a patient’s skin at consultation',
-    'center 30%',
+  // Our own clinic (owner, 31 Oct 2026: real photos, never named by branch).
+  lounge: photo(
+    'clinic/lounge',
+    'French Medical Aesthetics lounge with a crystal chandelier and curved sofas',
+    'center 45%',
   ),
-  reception: photo('clinic/reception', 'Bright, modern clinic reception', 'center 60%'),
-  waitingRoom: photo('clinic/waiting-room', 'Calm clinic waiting room'),
-  facial: photo('clinic/facial', 'Facial treatment in a clinic'),
+  loungeFromEntrance: photo(
+    'clinic/lounge-from-entrance',
+    'The French Medical Aesthetics lounge seen through the glass entrance',
+    'center 40%',
+  ),
+  reception: photo(
+    'clinic/reception',
+    'French Medical Aesthetics logo above the reception desk',
+    '24% center',
+  ),
   supervisedPractice: photo(
     'academy/supervised-practice',
     'Trainees watching a supervised procedure on a patient',
@@ -112,6 +120,32 @@ export const SITE_PHOTOS = {
   vial: photo('academy/skin-booster-vial', 'Vial and syringe for a skin booster treatment'),
   facialPractice: photo('academy/facial-practice', 'Hydrating facial practised in a clinic'),
 }
+
+/** Real photos of our clinic, widest choice first. None is tied to a branch. */
+export const CLINIC_GALLERY: SitePhoto[] = [
+  SITE_PHOTOS.lounge,
+  SITE_PHOTOS.reception,
+  photo(
+    'clinic/corridor',
+    'Corridor of glass-fronted treatment rooms at French Medical Aesthetics',
+    'center 60%',
+  ),
+  SITE_PHOTOS.loungeFromEntrance,
+  photo(
+    'clinic/art-lounge',
+    'Waiting area with a large horse painting and dark sofas',
+    'center 70%',
+  ),
+  photo(
+    'clinic/reception-desk',
+    'Reception desk with gold accents and the clinic logo on the wall',
+    'center 45%',
+  ),
+  photo('clinic/lounge-gold', 'Curved sofa and marble-pattern rug in a clinic waiting area'),
+  photo('clinic/sofa-seating', 'Gold-toned waiting area with curved sofas', 'center 70%'),
+  photo('clinic/art-lounge-day', 'Waiting area in daylight, with the horse painting', 'center 60%'),
+  photo('clinic/entrance', 'Clinic entrance with the French Medical Aesthetics backdrop'),
+]
 
 /*
   Our own doctors (owner, 29 Oct 2026: real photos from the previous site, not AI-made). A photo

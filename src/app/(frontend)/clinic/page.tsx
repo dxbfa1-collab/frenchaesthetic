@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { BranchCard } from '@/components/clinic/BranchCard'
+import { InsideClinic } from '@/components/clinic/InsideClinic'
 import { DoctorCard } from '@/components/clinic/DoctorCard'
 import { TreatmentCard } from '@/components/clinic/TreatmentCard'
 import { ArrowRightIcon, WhatsAppIcon } from '@/components/icons'
@@ -157,7 +158,7 @@ export default async function ClinicHome() {
         freeAt.length > 0
           ? `A doctor-led assessment and a clear quote before any treatment. Free consultation at ${listFormat.format(freeAt)}.`
           : 'A doctor-led assessment and a clear quote before any treatment.',
-      image: SITE_PHOTOS.consultation,
+      image: SITE_PHOTOS.loungeFromEntrance,
       badge: { icon: <HeartHandshake size={22} />, label: 'A clear quote before treatment' },
       actions: (
         <>
@@ -425,6 +426,8 @@ export default async function ClinicHome() {
         </section>
       )}
 
+      <InsideClinic />
+
       <TopicOverview
         title="French Medical Aesthetics"
         accent="at a glance."
@@ -464,7 +467,7 @@ export default async function ClinicHome() {
       {/* Closing CTA over a photo */}
       <section className="tone-dark relative isolate overflow-hidden border-t border-hairline bg-charcoal">
         <Image
-          src={SITE_PHOTOS.waitingRoom.src}
+          src={SITE_PHOTOS.lounge.src}
           alt=""
           fill
           sizes="100vw"

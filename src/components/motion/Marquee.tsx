@@ -16,7 +16,7 @@ export function Marquee({ items, label }: { items: MarqueeItem[]; label: string 
       {items.map((item) => {
         const content = (
           <>
-            <TopicIcon topic={item.topic} size={18} className="text-gold" />
+            <TopicIcon topic={item.topic} size={18} className="text-accent" />
             {item.label}
           </>
         )

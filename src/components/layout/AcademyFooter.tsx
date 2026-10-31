@@ -65,14 +65,14 @@ export function AcademyFooter({
                 label="footer"
                 className={contactLink}
               >
-                <WhatsAppIcon className="text-gold" />
+                <WhatsAppIcon className="text-accent" />
                 WhatsApp {settings.admissionsWhatsApp}
               </AcademyWhatsApp>
             </li>
             {settings.academyEmail && (
               <li>
                 <a href={`mailto:${settings.academyEmail}`} className={contactLink}>
-                  <MailIcon className="text-gold" />
+                  <MailIcon className="text-accent" />
                   {settings.academyEmail}
                 </a>
               </li>

@@ -69,7 +69,7 @@ export function ClinicHeader({
               data-label="menu"
               className="mt-5 inline-flex items-center gap-3 text-lg font-semibold text-fg"
             >
-              <PhoneIcon className="text-gold" />
+              <PhoneIcon className="text-accent" />
               UAN {phone}
             </a>
           </MobileMenu>

@@ -171,7 +171,7 @@ export default async function BranchPage({ params }: Props) {
                       data-label={branch.slug}
                       className="link-arrow"
                     >
-                      <MapPinIcon size={18} className="text-gold" />
+                      <MapPinIcon size={18} className="text-accent" />
                       Get directions
                     </a>
                   </dd>
@@ -203,7 +203,7 @@ export default async function BranchPage({ params }: Props) {
                     label={`branch-details-${branch.slug}`}
                     className="inline-flex items-center gap-3 text-lg text-fg hover:text-heading"
                   >
-                    <WhatsAppIcon className="text-gold" />
+                    <WhatsAppIcon className="text-accent" />
                     WhatsApp {whatsapp}
                   </WhatsAppLink>
                 </dd>
@@ -215,7 +215,7 @@ export default async function BranchPage({ params }: Props) {
                     data-label={`branch-${branch.slug}`}
                     className="inline-flex items-center gap-3 text-lg text-fg hover:text-heading"
                   >
-                    <PhoneIcon className="text-gold" />
+                    <PhoneIcon className="text-accent" />
                     {branch.phone ? `Call ${branch.phone}` : `UAN ${settings.clinicPhone}`}
                   </a>
                 </dd>

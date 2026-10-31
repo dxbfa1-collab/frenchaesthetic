@@ -30,7 +30,7 @@ export default async function HomePage() {
       <h1 className="sr-only">French Medical Aesthetics and French Aesthetics Academy</h1>
       <div className="grid min-h-[calc(100svh-2.75rem)] gap-px bg-hairline md:grid-cols-2">
         <Door
-          photo={SITE_PHOTOS.facial}
+          photo={SITE_PHOTOS.lounge}
           icon={<Sparkles size={30} strokeWidth={1.5} />}
           label="Treatments"
           title="French Medical Aesthetics"

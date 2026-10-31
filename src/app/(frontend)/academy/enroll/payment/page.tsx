@@ -89,7 +89,7 @@ export default async function PaymentPage({ searchParams }: Props) {
                   label="payment-status"
                   className="link-arrow"
                 >
-                  <WhatsAppIcon size={18} className="text-gold" />
+                  <WhatsAppIcon size={18} className="text-accent" />
                   WhatsApp {settings.admissionsWhatsApp}
                 </WhatsAppLink>
               </div>

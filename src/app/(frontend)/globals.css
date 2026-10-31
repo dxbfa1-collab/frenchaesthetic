@@ -901,15 +901,11 @@ a.marquee-chip:hover {
   border: 1.5px solid rgb(201 169 110 / 0.55);
   border-radius: 1rem;
   background: radial-gradient(circle at 30% 25%, rgb(201 169 110 / 0.22), transparent 70%);
-  color: #c9a96e;
+  color: var(--tone-accent);
   transition:
     transform 0.4s var(--ease-soft),
     background-color 0.3s,
     color 0.3s;
-}
-
-[data-theme='light'] .icon-badge {
-  color: #0d0d0d;
 }
 
 .group:hover .icon-badge,

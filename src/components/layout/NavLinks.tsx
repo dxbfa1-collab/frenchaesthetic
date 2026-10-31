@@ -127,7 +127,7 @@ export function NavLinks({ items, className }: { items: NavItem[]; className?: s
                                     <TopicIcon topic={column.topic} size={18} />
                                   </span>
                                 )}
-                                <span className="group-hover:text-accent">{column.heading}</span>
+                                <span className="group-hover:text-gold">{column.heading}</span>
                               </Link>
                             ) : (
                               <p className="label mb-3 text-accent">{column.heading}</p>
@@ -155,7 +155,7 @@ export function NavLinks({ items, className }: { items: NavItem[]; className?: s
                                     <TopicIcon
                                       topic={link.topic}
                                       size={18}
-                                      className="shrink-0 text-gold"
+                                      className="shrink-0 text-accent"
                                     />
                                   )}
                                   <span>

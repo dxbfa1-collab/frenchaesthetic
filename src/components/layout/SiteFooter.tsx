@@ -33,7 +33,7 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
                 label="site-footer"
                 className={contactLink}
               >
-                <WhatsAppIcon className="text-gold" />
+                <WhatsAppIcon className="text-accent" />
                 UAN / WhatsApp {settings.clinicPhone}
               </WhatsAppLink>
             </li>
@@ -59,7 +59,7 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
                 label="site-footer"
                 className={contactLink}
               >
-                <WhatsAppIcon className="text-gold" />
+                <WhatsAppIcon className="text-accent" />
                 Admissions WhatsApp {settings.admissionsWhatsApp}
               </WhatsAppLink>
             </li>

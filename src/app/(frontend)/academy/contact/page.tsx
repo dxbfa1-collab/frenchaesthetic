@@ -66,7 +66,7 @@ export default async function AcademyContactPage() {
                 <h2 className="mt-6 text-[2.25rem]">{campus.shortName || campus.name} Campus</h2>
                 {campus.address && (
                   <p className="mt-4 flex items-start gap-3 text-lg">
-                    <MapPinIcon className="mt-1 shrink-0 text-gold" />
+                    <MapPinIcon className="mt-1 shrink-0 text-accent" />
                     <span>
                       <Pending confirmed={campus.addressStatus === 'confirmed'}>
                         {campus.address}
@@ -103,14 +103,14 @@ export default async function AcademyContactPage() {
               label="contact-details"
               className="inline-flex items-center gap-3 text-lg font-semibold text-heading"
             >
-              <WhatsAppIcon className="text-gold" /> WhatsApp {whatsapp}
+              <WhatsAppIcon className="text-accent" /> WhatsApp {whatsapp}
             </WhatsAppLink>
             {settings.academyEmail && (
               <a
                 href={`mailto:${settings.academyEmail}`}
                 className="flex items-center gap-3 text-lg font-semibold text-heading"
               >
-                <MailIcon className="text-gold" /> {settings.academyEmail}
+                <MailIcon className="text-accent" /> {settings.academyEmail}
               </a>
             )}
           </div>

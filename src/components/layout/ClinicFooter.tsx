@@ -66,7 +66,7 @@ export function ClinicFooter({
                 data-label="footer"
                 className={contactLink}
               >
-                <PhoneIcon className="text-gold" />
+                <PhoneIcon className="text-accent" />
                 UAN {settings.clinicPhone}
               </a>
             </li>
@@ -78,14 +78,14 @@ export function ClinicFooter({
                 label="footer"
                 className={contactLink}
               >
-                <WhatsAppIcon className="text-gold" />
+                <WhatsAppIcon className="text-accent" />
                 WhatsApp
               </WhatsAppLink>
             </li>
             {settings.clinicEmail && (
               <li>
                 <a href={`mailto:${settings.clinicEmail}`} className={contactLink}>
-                  <MailIcon className="text-gold" />
+                  <MailIcon className="text-accent" />
                   {settings.clinicEmail}
                 </a>
               </li>

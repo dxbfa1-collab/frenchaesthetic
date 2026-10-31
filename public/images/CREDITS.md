@@ -22,10 +22,6 @@ Free-licence stock photos (Unsplash Licence / Pexels Licence: commercial use all
 - `categories/hair.webp`: https://unsplash.com/photos/WIj6y1OFWd8
 - `categories/body.webp`: https://www.pexels.com/photo/37078056/
 - `categories/medical-dermatology.webp`: https://unsplash.com/photos/PNdOpC-6q-I
-- `clinic/consultation.webp`: https://www.pexels.com/photo/14438369/
-- `clinic/reception.webp`: https://unsplash.com/photos/ECBg5FQkBXI
-- `clinic/waiting-room.webp`: https://unsplash.com/photos/jH05wxjmAWE
-- `clinic/facial.webp`: https://unsplash.com/photos/PqyzuzFiQfY
 - `academy/supervised-practice.webp`: https://www.pexels.com/photo/31613326/
 - `academy/anatomy-class.webp`: https://www.pexels.com/photo/40117755/
 - `academy/laser-practical.webp`: https://www.pexels.com/photo/7108264/
@@ -34,6 +30,10 @@ Free-licence stock photos (Unsplash Licence / Pexels Licence: commercial use all
 - `academy/syringe-preparation.webp`: https://www.pexels.com/photo/7581073/
 - `academy/skin-booster-vial.webp`: https://www.pexels.com/photo/29648630/
 - `academy/facial-practice.webp`: https://unsplash.com/photos/HtXyytr9304
+
+## Our clinic
+
+Everything in `clinic/` shows our own clinic, in photos supplied by the owner on 31 Oct 2026 (cropped, straightened and colour corrected). Not AI-made and not stock.
 
 ## Doctors
 

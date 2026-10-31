@@ -26,7 +26,7 @@ export function OfferPanel({
       <ul className={cn('space-y-4', title && 'mt-6')}>
         {points.map((point) => (
           <li key={point} className="flex items-start gap-3 text-lg font-semibold text-fg">
-            <CheckIcon size={22} className="mt-0.5 shrink-0 text-gold" />
+            <CheckIcon size={22} className="mt-0.5 shrink-0 text-accent" />
             {point}
           </li>
         ))}

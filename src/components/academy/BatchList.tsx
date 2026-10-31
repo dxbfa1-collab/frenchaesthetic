@@ -70,7 +70,7 @@ export function BatchList({
                 label={`batch-${batch.id}`}
                 className="link-arrow"
               >
-                <WhatsAppIcon size={18} className="text-gold" />
+                <WhatsAppIcon size={18} className="text-accent" />
                 Ask about this batch
               </WhatsAppLink>
             </div>

@@ -82,7 +82,7 @@ export default async function PolicyPage({ params }: Props) {
                     label={`policy-${page.key}`}
                     className="link-arrow"
                   >
-                    <WhatsAppIcon size={18} className="text-gold" />
+                    <WhatsAppIcon size={18} className="text-accent" />
                     Clinic {settings.clinicPhone}
                   </WhatsAppLink>
                   <WhatsAppLink
@@ -92,7 +92,7 @@ export default async function PolicyPage({ params }: Props) {
                     label={`policy-${page.key}`}
                     className="link-arrow"
                   >
-                    <WhatsAppIcon size={18} className="text-gold" />
+                    <WhatsAppIcon size={18} className="text-accent" />
                     Academy admissions {settings.admissionsWhatsApp}
                   </WhatsAppLink>
                 </div>

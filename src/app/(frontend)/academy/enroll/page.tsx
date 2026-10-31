@@ -97,7 +97,7 @@ export default async function EnrollPage({ searchParams }: Props) {
                 label="enroll-aside"
                 className="link-arrow mt-2"
               >
-                <WhatsAppIcon size={18} className="text-gold" />
+                <WhatsAppIcon size={18} className="text-accent" />
                 Chat on WhatsApp: {settings.admissionsWhatsApp}
               </WhatsAppLink>
             </div>

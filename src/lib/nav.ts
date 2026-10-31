@@ -29,6 +29,7 @@ export const clinicNav: NavItem[] = [
 
 export const clinicMoreNav: NavItem[] = [
   { label: 'Technology', href: '/clinic/technology' },
+  { label: 'Gallery', href: '/gallery' },
   { label: 'FAQ', href: '/clinic/faq' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },

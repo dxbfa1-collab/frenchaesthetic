@@ -175,7 +175,7 @@ export default async function AcademyHome() {
       <div className="border-y border-hairline">
         <Container className="flex flex-wrap items-center gap-x-8 gap-y-3 py-4 text-[0.9375rem]">
           <span className="inline-flex items-center gap-2 font-bold text-heading">
-            <TopicIcon topic="calendar" size={18} className="text-gold" />
+            <TopicIcon topic="calendar" size={18} className="text-accent" />
             {nextByCourse.length > 0 ? (
               <>
                 Next batch:{' '}
@@ -194,7 +194,7 @@ export default async function AcademyHome() {
             )}
           </span>
           <span className="inline-flex items-center gap-2 text-muted">
-            <TopicIcon topic="seats" size={18} className="text-gold" />
+            <TopicIcon topic="seats" size={18} className="text-accent" />
             Max 20 seats{campus && ` · ${campus}, Lahore`}
           </span>
           <Link href="/academy/batches" className="link-arrow ml-auto">

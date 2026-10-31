@@ -55,7 +55,7 @@ export default async function ContactPage() {
                   label="contact-page"
                   className={contactLink}
                 >
-                  <WhatsAppIcon className="text-gold" />
+                  <WhatsAppIcon className="text-accent" />
                   WhatsApp {clinicWhatsApp}
                 </WhatsAppLink>
               </li>
@@ -67,14 +67,14 @@ export default async function ContactPage() {
                   data-label="contact-page"
                   className={contactLink}
                 >
-                  <PhoneIcon className="text-gold" />
+                  <PhoneIcon className="text-accent" />
                   UAN {settings.clinicPhone}
                 </a>
               </li>
               {settings.clinicEmail && (
                 <li>
                   <a href={`mailto:${settings.clinicEmail}`} className={contactLink}>
-                    <MailIcon className="text-gold" />
+                    <MailIcon className="text-accent" />
                     {settings.clinicEmail}
                   </a>
                 </li>
@@ -108,14 +108,14 @@ export default async function ContactPage() {
                   label="contact-page"
                   className={contactLink}
                 >
-                  <WhatsAppIcon className="text-gold" />
+                  <WhatsAppIcon className="text-accent" />
                   Admissions {settings.admissionsWhatsApp}
                 </WhatsAppLink>
               </li>
               {settings.academyEmail && (
                 <li>
                   <a href={`mailto:${settings.academyEmail}`} className={contactLink}>
-                    <MailIcon className="text-gold" />
+                    <MailIcon className="text-accent" />
                     {settings.academyEmail}
                   </a>
                 </li>

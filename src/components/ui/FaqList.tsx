@@ -17,7 +17,7 @@ export function FaqList({ items }: { items: FaqItem[] }) {
             </span>
             <PlusIcon
               size={22}
-              className="mt-1 shrink-0 text-gold transition-transform duration-300 group-open:rotate-45"
+              className="mt-1 shrink-0 text-accent transition-transform duration-300 group-open:rotate-45"
             />
           </summary>
           <p className="max-w-3xl pb-6">{faq.answer}</p>
