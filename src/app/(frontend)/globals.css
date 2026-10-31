@@ -1132,6 +1132,101 @@ a.marquee-chip:hover {
   }
 }
 
+/* Academy batch calendar (src/components/academy/BatchCalendar.tsx). */
+.calendar-arrow {
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(201 169 110 / 0.5);
+  border-radius: 50%;
+  color: #c9a96e;
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    opacity 0.25s;
+}
+
+.calendar-arrow:hover:not(:disabled) {
+  background-color: #c9a96e;
+  color: #0d0d0d;
+}
+
+.calendar-arrow:disabled {
+  opacity: 0.35;
+}
+
+.calendar-day {
+  display: flex;
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  color: rgb(247 244 239 / 0.62);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.calendar-batch {
+  border: 2px solid #c9a96e;
+  color: #f7f4ef;
+  font-weight: 800;
+  transition:
+    transform 0.2s var(--ease-soft),
+    box-shadow 0.25s;
+}
+
+.calendar-batch.is-primary {
+  background: #c9a96e;
+  color: #0d0d0d;
+}
+
+.calendar-batch:hover {
+  transform: scale(1.08);
+}
+
+.calendar-batch.is-selected {
+  box-shadow:
+    0 0 0 3px #1c1c1e,
+    0 0 0 5px #f7f4ef;
+}
+
+.calendar-key {
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 2px solid #c9a96e;
+  border-radius: 0.25rem;
+}
+
+.calendar-key.is-primary {
+  background: #c9a96e;
+}
+
+.calendar-month {
+  min-height: 2.75rem;
+  border: 1px solid rgb(247 244 239 / 0.14);
+  border-radius: 0.5rem;
+  color: #f7f4ef;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  transition:
+    background-color 0.25s,
+    border-color 0.25s,
+    color 0.25s;
+}
+
+.calendar-month:hover {
+  border-color: #c9a96e;
+}
+
+.calendar-month.is-current {
+  border-color: #c9a96e;
+  background: #c9a96e;
+  color: #0d0d0d;
+}
+
 /*
   Custom cursor (src/components/motion/CustomCursor.tsx). Gold with a dark edge and a light halo,
   so it reads on ivory, on charcoal and on photos in both themes. The native cursor is hidden only

@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import { Award, Sparkles, Stethoscope } from 'lucide-react'
 import Link from 'next/link'
 
-import { BatchList, campusName } from '@/components/academy/BatchList'
+import { BatchCalendar, type CalendarBatch } from '@/components/academy/BatchCalendar'
+import { campusName, seatStatus } from '@/components/academy/BatchList'
 import { JourneyTimeline } from '@/components/academy/JourneyTimeline'
 import { CourseCard } from '@/components/academy/CourseCard'
 import { TrainerCard } from '@/components/academy/TrainerCard'
@@ -19,7 +20,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading'
 import { TopicOverview } from '@/components/ui/TopicOverview'
 import { TopicIcon } from '@/components/ui/TopicIcon'
 import { WhatsAppLink } from '@/components/ui/WhatsAppLink'
-import { batchRuleSentence, formatBatchDate } from '@/lib/batches'
+import { batchRuleSentence, formatBatchDate, pktDateKey } from '@/lib/batches'
 import {
   getAcademyFaqs,
   getCourses,
@@ -69,6 +70,21 @@ export default async function AcademyHome() {
     .filter((b): b is (typeof batches)[number] => Boolean(b))
   const campus = nextByCourse.map(campusName).find(Boolean)
   const generalFaqs = faqs.filter((f) => !f.course).slice(0, 4)
+  const calendar: CalendarBatch[] = batches.map((batch) => {
+    const seats = seatStatus(batch)
+    const place = campusName(batch)
+    return {
+      id: batch.id,
+      course: batch.course.shortName,
+      primary: batch.course.id === courses[0]?.id,
+      dateKey: pktDateKey(batch.startDate),
+      dateLabel: formatBatchDate(batch.startDate),
+      place: place ? `${place}, Lahore` : 'Lahore',
+      seats: `Max ${batch.totalSeats} seats · ${seats.text}`,
+      full: seats.full,
+      enrollHref: `/academy/enroll?batch=${batch.id}&from=WEB-HOME`,
+    }
+  })
 
   const nonInvasive = courses.find((c) => c.track === 'nonInvasive')
   const invasive = courses.find((c) => c.track === 'invasive')
@@ -249,20 +265,12 @@ export default async function AcademyHome() {
       <JourneyTimeline />
 
       {/* Next batches */}
-      {batches.length > 0 && (
-        <section className="border-t border-hairline">
-          <Container className="py-20 lg:py-28">
-            <div data-reveal="">
-              <SectionHeading eyebrow="Next batches" title="Choose" accent="your start date." />
-            </div>
-            <div data-reveal="" className="mt-12">
-              <BatchList batches={batches.slice(0, 4)} whatsapp={whatsapp} from="WEB-HOME" />
-            </div>
-            <Link href="/academy/batches" className="link-arrow mt-8">
-              Full batch calendar <ArrowRightIcon size={18} />
-            </Link>
-          </Container>
-        </section>
+      {calendar.length > 0 && (
+        <BatchCalendar
+          batches={calendar}
+          intro={`${batchRuleSentence(courses)} There is no training on Sundays, so a Sunday start moves to Monday.`}
+          whatsapp={whatsapp}
+        />
       )}
 
       {/* Faculty and proof */}

@@ -45,7 +45,7 @@ export function BatchList({
                 </Pending>
               </span>
               <span className="text-muted">
-                {campus ? `${campus}, Lahore` : 'Campus to confirm'} · Max {batch.totalSeats} seats
+                {campus ? `${campus}, Lahore` : 'Lahore'} · Max {batch.totalSeats} seats
                 ·{' '}
                 <span className={seats.full ? 'font-bold text-heading' : undefined}>
                   {seats.text}
