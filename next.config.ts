@@ -132,7 +132,7 @@ const siteCsp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self'",
-  "connect-src 'self' https://*.google-analytics.com https://www.googletagmanager.com https://www.facebook.com",
+  "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://stats.g.doubleclick.net https://www.facebook.com",
   "frame-src 'none'",
   "form-action 'self'",
 ]
