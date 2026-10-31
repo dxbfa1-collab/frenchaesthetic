@@ -316,6 +316,58 @@ export const getGallery = cache(async (): Promise<Media[]> => {
 
 // Blog
 
+export type PostBusiness = Post['business']
+
+const POSTS_PER_PAGE = 12
+
+const publishedPosts = (business: PostBusiness) => ({
+  status: { equals: 'published' },
+  business: { equals: business },
+})
+
+/** One page of a blog, newest first. */
+export const getPostsPage = cache(async (business: PostBusiness, page: number) => {
+  const { docs, totalPages } = await (
+    await client()
+  ).find({
+    collection: 'posts',
+    depth: 1,
+    limit: POSTS_PER_PAGE,
+    overrideAccess: false,
+    page,
+    sort: '-publishedAt',
+    where: publishedPosts(business),
+  })
+  return { docs, totalPages }
+})
+
+export const getLatestPosts = cache(async (business: PostBusiness, limit: number) => {
+  const { docs } = await (
+    await client()
+  ).find({
+    collection: 'posts',
+    depth: 1,
+    limit,
+    overrideAccess: false,
+    sort: '-publishedAt',
+    where: publishedPosts(business),
+  })
+  return docs
+})
+
+export const getPost = cache(async (business: PostBusiness, slug: string) => {
+  const { docs } = await (
+    await client()
+  ).find({
+    collection: 'posts',
+    depth: 1,
+    limit: 1,
+    overrideAccess: false,
+    where: { ...publishedPosts(business), slug: { equals: slug } },
+  })
+  return docs[0] ?? null
+})
+
 export const getPosts = cache(async (): Promise<Post[]> => {
   const { docs } = await (
     await client()

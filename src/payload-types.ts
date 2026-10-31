@@ -773,9 +773,18 @@ export interface Post {
    * Used in the page address. Filled in from the name.
    */
   slug: string;
+  /**
+   * Which blog this article appears on.
+   */
   business: 'clinic' | 'academy';
   status: 'draft' | 'published';
+  /**
+   * Filled in when published, if left empty.
+   */
   publishedAt?: string | null;
+  /**
+   * One or two sentences, shown on the blog page and in Google.
+   */
   excerpt?: string | null;
   cover?: (string | null) | Media;
   body: {

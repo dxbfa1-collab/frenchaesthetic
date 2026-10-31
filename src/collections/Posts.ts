@@ -1,4 +1,4 @@
-import type { Access, CollectionConfig } from 'payload'
+import type { Access, CollectionBeforeChangeHook, CollectionConfig } from 'payload'
 
 import { ownerOr } from '../access/roles'
 import { slugField } from '../fields/shared'
@@ -7,6 +7,12 @@ import { revalidateSite } from '../hooks/revalidate'
 // The public sees published posts only; staff see drafts too.
 const publishedOrStaff: Access = ({ req }) =>
   req.user ? true : { status: { equals: 'published' } }
+
+/** Published articles always have a date, so they sort correctly on the blog. */
+const setPublishedAt: CollectionBeforeChangeHook = ({ data }) => {
+  if (data.status === 'published' && !data.publishedAt) data.publishedAt = new Date().toISOString()
+  return data
+}
 
 /** Blog articles. Medical topics need the reviewing doctor named before publishing (brief §8). */
 export const Posts: CollectionConfig = {
@@ -24,6 +30,7 @@ export const Posts: CollectionConfig = {
   },
   defaultSort: '-publishedAt',
   hooks: {
+    beforeChange: [setPublishedAt],
     afterChange: [({ req }) => revalidateSite(req)],
     afterDelete: [({ req }) => revalidateSite(req)],
   },
@@ -35,6 +42,7 @@ export const Posts: CollectionConfig = {
       fields: [
         {
           name: 'business',
+          label: 'Blog',
           type: 'select',
           required: true,
           defaultValue: 'clinic',
@@ -42,7 +50,7 @@ export const Posts: CollectionConfig = {
             { label: 'Clinic', value: 'clinic' },
             { label: 'Academy', value: 'academy' },
           ],
-          admin: { width: '33%' },
+          admin: { width: '33%', description: 'Which blog this article appears on.' },
         },
         {
           name: 'status',
@@ -58,11 +66,19 @@ export const Posts: CollectionConfig = {
         {
           name: 'publishedAt',
           type: 'date',
-          admin: { width: '33%', date: { pickerAppearance: 'dayOnly' } },
+          admin: {
+            width: '33%',
+            date: { pickerAppearance: 'dayOnly' },
+            description: 'Filled in when published, if left empty.',
+          },
         },
       ],
     },
-    { name: 'excerpt', type: 'textarea' },
+    {
+      name: 'excerpt',
+      type: 'textarea',
+      admin: { description: 'One or two sentences, shown on the blog page and in Google.' },
+    },
     { name: 'cover', type: 'upload', relationTo: 'media' },
     { name: 'body', type: 'richText', required: true },
     {

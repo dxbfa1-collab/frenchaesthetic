@@ -24,6 +24,7 @@ export const clinicNav: NavItem[] = [
   { label: 'Concerns', href: '/clinic/concerns' },
   { label: 'Doctors', href: '/clinic/doctors' },
   { label: 'Branches', href: '/clinic/branches' },
+  { label: 'Blog', href: '/clinic/blog' },
   { label: 'Book a Consultation', href: '/clinic/book' },
 ]
 
@@ -57,6 +58,7 @@ export const academyNav: NavItem[] = [
   { label: 'Internship', href: '/academy/internship' },
   { label: 'Batches', href: '/academy/batches' },
   { label: 'Faculty', href: '/academy/faculty' },
+  { label: 'Blog', href: '/academy/blog' },
   { label: 'Contact', href: '/academy/contact' },
 ]
 

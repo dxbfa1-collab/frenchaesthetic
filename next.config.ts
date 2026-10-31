@@ -70,9 +70,10 @@ const OLD_PAGES: Record<string, string> = {
   '/accreditations': '/academy/about',
   '/our-case': '/clinic',
   '/landing-page': '/clinic',
-  '/blog-standard': '/blog',
-  '/blog-grid': '/blog',
-  '/blog-grid-without-sidebar': '/blog',
+  '/blog': '/clinic/blog',
+  '/blog-standard': '/clinic/blog',
+  '/blog-grid': '/clinic/blog',
+  '/blog-grid-without-sidebar': '/clinic/blog',
   '/wp-sitemap.xml': '/sitemap.xml',
 }
 // Shop, account and theme demo pages from the WordPress template.
@@ -206,6 +207,7 @@ const nextConfig: NextConfig = {
           ]
         : []),
       // Academy addresses from the original prompt, mapped to the FAA brief's (CLAUDE.md, build decisions).
+      { source: '/blog/:slug', destination: '/clinic/blog/:slug', permanent: true },
       { source: '/academy/calendar', destination: '/academy/batches', permanent: true },
       { source: '/academy/trainers', destination: '/academy/faculty', permanent: true },
       { source: '/academy/courses/:slug', destination: '/academy/:slug', permanent: true },

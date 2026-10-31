@@ -13,6 +13,7 @@ import {
   getResults,
   getTreatmentMenu,
 } from '@/lib/payload'
+import { postHref } from '@/lib/posts'
 import { siteUrl } from '@/lib/site'
 import { treatmentHref } from '@/lib/treatments'
 
@@ -82,9 +83,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...branches.map((b) => entry(`/clinic/branches/${b.slug}`, b.updatedAt)),
     ...(results.length > 0 ? [entry('/clinic/results')] : []),
     ...courses.map((c) => entry(`/academy/${c.slug}`, c.updatedAt)),
-    ...(posts.length > 0
-      ? [entry('/blog'), ...posts.map((p) => entry(`/blog/${p.slug}`, p.updatedAt))]
-      : []),
+    ...(['clinic', 'academy'] as const).flatMap((business) => {
+      const own = posts.filter((p) => p.business === business)
+      return own.length > 0
+        ? [entry(`/${business}/blog`), ...own.map((p) => entry(postHref(p), p.updatedAt))]
+        : []
+    }),
     ...(gallery.length > 0 ? [entry('/gallery')] : []),
     ...POLICIES.filter((p) => policies[`${p.key}Status`] === 'confirmed').map((p) =>
       entry(`/policies/${p.key}`),
