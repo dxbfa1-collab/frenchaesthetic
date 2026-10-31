@@ -9,7 +9,7 @@ export function ThemeToggle() {
     const next = root.dataset.theme === 'light' ? 'dark' : 'light'
     root.dataset.theme = next
     try {
-      localStorage.setItem('fa-theme', next)
+      localStorage.setItem('fa-theme-choice', next)
     } catch {
       // Storage blocked (private mode): the theme still changes for this visit.
     }

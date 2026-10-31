@@ -36,13 +36,15 @@
 }
 
 /*
-  Tones. Pages follow the visitor's theme: dark by default (the brand lead), ivory in light mode.
+  Tones. Pages follow the visitor's theme: ivory by default, charcoal in dark mode.
   .tone-inverse flips a band (ivory on a dark page, charcoal on a light page).
-  .tone-dark pins brand chrome: header, footer, sticky bars, offer panels, the menu.
+  .tone-dark pins brand chrome: header, footer, sticky bars, offer panels.
+  The phone menu opens from inside the header but follows the theme, so it is listed in both tones.
 */
 :root,
 [data-theme='dark'],
 [data-theme='light'] .tone-inverse,
+[data-theme='dark'] .menu-sheet,
 .tone-dark {
   --tone-bg: #0d0d0d;
   --tone-surface: #1c1c1e;
@@ -59,6 +61,7 @@
 /* On ivory, gold is never text (2.0:1), only lines and borders, so text accents turn charcoal. */
 [data-theme='light'],
 [data-theme='dark'] .tone-inverse,
+[data-theme='light'] .menu-sheet,
 .tone-light {
   --tone-bg: #f7f4ef;
   --tone-surface: #eeebe6;
@@ -69,7 +72,8 @@
   --tone-line: #c9a96e;
   --tone-hairline: rgb(13 13 13 / 0.12);
   --tone-focus: #0d0d0d;
-  color-scheme: light;
+  /* "only" stops a phone's auto-dark setting from turning the light theme dark. */
+  color-scheme: only light;
 }
 
 @layer base {

@@ -27,7 +27,7 @@ const sans = Nunito_Sans({
 })
 
 // Light is the default (owner, 29 Oct 2026); dark stays one click away and the choice is remembered.
-const themeScript = `try{document.documentElement.dataset.theme=localStorage.getItem('fa-theme')==='dark'?'dark':'light'}catch(e){}`
+const themeScript = `try{document.documentElement.dataset.theme=localStorage.getItem('fa-theme-choice')==='dark'?'dark':'light'}catch(e){}`
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

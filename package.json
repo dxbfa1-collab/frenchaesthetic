@@ -5,7 +5,9 @@
   "description": "Website for French Medical Aesthetics (clinic) and French Aesthetics Academy",
   "type": "module",
   "scripts": {
+    "prebuild": "node scripts/image-variants.mjs",
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=3072\" next build --webpack",
+    "predev": "node scripts/image-variants.mjs",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",

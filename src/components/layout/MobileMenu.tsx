@@ -42,9 +42,9 @@ export function MobileMenu({ label, items, moreItems = [], logo, children }: Pro
       <dialog
         ref={dialog}
         aria-label={`${label} menu`}
-        className="menu-sheet tone-dark fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto p-0"
+        className="menu-sheet fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-bg p-0"
       >
-        <div className="flex h-[4.5rem] items-center justify-between gap-4 border-b border-hairline px-4 sm:px-6">
+        <div className="tone-dark flex h-[4.5rem] items-center justify-between gap-4 border-b border-hairline bg-bg px-4 sm:px-6">
           {logo}
           <button
             type="button"
@@ -55,14 +55,14 @@ export function MobileMenu({ label, items, moreItems = [], logo, children }: Pro
             <CloseIcon size={26} />
           </button>
         </div>
-        <nav aria-label={label} className="px-4 pb-6 pt-8 sm:px-6">
-          <ul className="space-y-1">
+        <nav aria-label={label} className="px-4 pb-4 pt-3 sm:px-6">
+          <ul className="divide-y divide-hairline">
             {items.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
                   onClick={close}
-                  className="block py-1.5 font-display text-[2.125rem] leading-tight text-heading"
+                  className="block py-3.5 text-lg font-bold text-heading"
                 >
                   {item.label}
                 </Link>
@@ -70,13 +70,13 @@ export function MobileMenu({ label, items, moreItems = [], logo, children }: Pro
             ))}
           </ul>
           {moreItems.length > 0 && (
-            <ul className="mt-8 space-y-1 border-t border-hairline pt-6">
+            <ul className="mt-2 border-t border-hairline pt-3">
               {moreItems.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     onClick={close}
-                    className="block py-2 text-lg font-semibold text-fg"
+                    className="block py-2 text-base font-semibold text-fg"
                   >
                     {item.label}
                   </Link>
@@ -86,7 +86,7 @@ export function MobileMenu({ label, items, moreItems = [], logo, children }: Pro
           )}
         </nav>
         {children && (
-          <div className="border-t border-hairline px-4 pb-10 pt-8 sm:px-6">{children}</div>
+          <div className="border-t border-hairline px-4 pb-8 pt-5 sm:px-6">{children}</div>
         )}
       </dialog>
     </>

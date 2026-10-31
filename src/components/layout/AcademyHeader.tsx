@@ -43,10 +43,10 @@ export function AcademyHeader({ whatsapp, nav }: { whatsapp: string; nav: NavIte
             <AcademyWhatsApp
               number={whatsapp}
               label="menu"
-              className={buttonClass('primary', { size: 'lg', className: 'w-full' })}
+              className={buttonClass('primary', { className: 'w-full' })}
             >
               <WhatsAppIcon size={20} />
-              Chat on WhatsApp: <span className="whitespace-nowrap">{whatsapp}</span>
+              <span className="whitespace-nowrap">Chat on WhatsApp: {whatsapp}</span>
             </AcademyWhatsApp>
           </MobileMenu>
         </div>

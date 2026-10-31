@@ -150,13 +150,11 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
-    formats: ['image/avif', 'image/webp'],
-    localPatterns: [
-      { pathname: '/api/media/file/**' },
-      { pathname: '/brand/**' },
-      { pathname: '/images/**' },
-    ],
-    remotePatterns: [{ protocol: 'https', hostname: 'res.cloudinary.com' }],
+    // Widths match scripts/image-variants.mjs.
+    loader: 'custom',
+    loaderFile: './src/lib/imageLoader.ts',
+    deviceSizes: [640, 828, 1200, 1600],
+    imageSizes: [128, 256, 384],
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
@@ -181,6 +179,11 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },
+      // Lets the CDN keep photos. A replaced photo needs a new file name.
+      {
+        source: '/images/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000' }],
+      },
       ...(dev
         ? []
         : [

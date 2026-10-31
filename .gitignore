@@ -57,3 +57,6 @@ node_modules/
 # secrets (never commit)
 *.env
 !.env.example
+
+# resized photos, made by scripts/image-variants.mjs before dev and build
+/public/images/_w/
