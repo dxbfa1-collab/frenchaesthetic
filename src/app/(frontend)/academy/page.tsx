@@ -3,6 +3,7 @@ import { Award, Sparkles, Stethoscope } from 'lucide-react'
 import Link from 'next/link'
 
 import { BatchList, campusName } from '@/components/academy/BatchList'
+import { JourneyTimeline } from '@/components/academy/JourneyTimeline'
 import { CourseCard } from '@/components/academy/CourseCard'
 import { TrainerCard } from '@/components/academy/TrainerCard'
 import { ArrowRightIcon, WhatsAppIcon } from '@/components/icons'
@@ -46,12 +47,6 @@ const whyUs = [
   'Hands-on on real clients and patients, under supervision.',
   'Max 20 seats per batch, personal attention.',
   'Dermatologist-led team, inside a working clinic.',
-]
-
-const journey = [
-  { week: 'Week 1', text: 'Hands-on training with trainers.' },
-  { week: 'Week 2', text: 'Internship, you perform treatments yourself, supervised.' },
-  { week: 'Week 3', text: 'Supervised practice until you work with confidence.' },
 ]
 
 // The two home buttons carry their own WEB codes (FAA brief §15).
@@ -251,22 +246,7 @@ export default async function AcademyHome() {
         </Container>
       </section>
 
-      {/* How it works */}
-      <section>
-        <Container className="py-20 lg:py-28">
-          <div data-reveal="">
-            <SectionHeading eyebrow="How it works" title="From training" accent="to confidence." />
-          </div>
-          <ol data-reveal="" className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
-            {journey.map((step) => (
-              <li key={step.week} className="border-t border-line pt-6">
-                <span className="label text-accent">{step.week}</span>
-                <p className="mt-4 text-xl font-semibold text-heading">{step.text}</p>
-              </li>
-            ))}
-          </ol>
-        </Container>
-      </section>
+      <JourneyTimeline />
 
       {/* Next batches */}
       {batches.length > 0 && (

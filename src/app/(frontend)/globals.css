@@ -989,6 +989,149 @@ a.marquee-chip:hover {
   }
 }
 
+/* Academy journey (src/components/academy/JourneyTimeline.tsx). */
+.journey::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -20%;
+  right: -10%;
+  width: 55%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(201 169 110 / 0.14), transparent 65%);
+}
+
+.journey-fact {
+  border: 1px solid rgb(201 169 110 / 0.45);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  color: #f7f4ef;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+/* The line runs through the icons: down the left on phones, between the outer icons on desktop. */
+.journey-track {
+  position: absolute;
+  top: 1.75rem;
+  bottom: 1.75rem;
+  left: 1.75rem;
+  width: 2px;
+  overflow: hidden;
+  background: rgb(247 244 239 / 0.14);
+  transform: translateX(-1px);
+}
+
+.journey-fill {
+  position: absolute;
+  inset: 0;
+  background: #c9a96e;
+}
+
+.journey-fill-x {
+  display: none;
+  transform-origin: left;
+}
+
+.journey-fill-y {
+  transform-origin: top;
+}
+
+.journey-step {
+  position: relative;
+  padding-left: 4.75rem;
+}
+
+.journey-node {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 3.5rem;
+  height: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgb(201 169 110 / 0.55);
+  border-radius: 50%;
+  background: #1c1c1e;
+  color: #c9a96e;
+  transition:
+    background-color 0.4s,
+    color 0.4s,
+    transform 0.4s var(--ease-soft),
+    box-shadow 0.4s;
+}
+
+.journey-step.is-lit .journey-node {
+  background: #c9a96e;
+  color: #0d0d0d;
+  transform: scale(1.08);
+  box-shadow: 0 0 0 7px rgb(201 169 110 / 0.16);
+}
+
+.journey-card {
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgb(247 244 239 / 0.12);
+  border-radius: 1rem;
+  background: #1c1c1e;
+  transition:
+    border-color 0.4s,
+    transform 0.4s var(--ease-soft);
+}
+
+.journey-step.is-lit .journey-card {
+  border-color: rgb(201 169 110 / 0.55);
+}
+
+.journey-card:hover {
+  transform: translateY(-6px);
+}
+
+.journey-number {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.25rem;
+  color: #f7f4ef;
+  font-family: var(--font-nunito), Arial, sans-serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 2px 16px rgb(13 13 13 / 0.7);
+}
+
+@media (min-width: 768px) {
+  .journey-track {
+    top: 1.75rem;
+    right: 16.66%;
+    bottom: auto;
+    left: 16.66%;
+    width: auto;
+    height: 2px;
+    transform: translateY(-1px);
+  }
+
+  .journey-fill-x {
+    display: block;
+  }
+
+  .journey-fill-y {
+    display: none;
+  }
+
+  .journey-step {
+    padding-top: 5rem;
+    padding-left: 0;
+  }
+
+  .journey-node {
+    left: 50%;
+    margin-left: -1.75rem;
+  }
+}
+
 /*
   Custom cursor (src/components/motion/CustomCursor.tsx). Gold with a dark edge and a light halo,
   so it reads on ivory, on charcoal and on photos in both themes. The native cursor is hidden only
