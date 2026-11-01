@@ -988,7 +988,8 @@ a.marquee-chip:hover {
     transform: none !important;
   }
 
-  .marquee-track {
+  .marquee-track,
+  .student-map-pulse {
     animation: none;
   }
 }
@@ -1229,6 +1230,67 @@ a.marquee-chip:hover {
   border-color: #c9a96e;
   background: #c9a96e;
   color: #0d0d0d;
+}
+
+/* Where students come from (src/components/academy/StudentMap.tsx). */
+.student-map-land {
+  fill: var(--tone-surface);
+  stroke: var(--tone-line);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.student-map-focus {
+  fill: rgb(201 169 110 / 0.2);
+  stroke: #c9a96e;
+  stroke-width: 2;
+}
+
+.student-map-link {
+  fill: none;
+  stroke: #c9a96e;
+  stroke-dasharray: 5 5;
+  stroke-width: 1.5;
+}
+
+.student-map-lens {
+  fill: var(--tone-bg);
+}
+
+.student-map-rim {
+  fill: none;
+  stroke: #c9a96e;
+  stroke-width: 2.5;
+}
+
+.student-map-pin {
+  fill: #c9a96e;
+  stroke: #0d0d0d;
+  stroke-width: 2;
+}
+
+.student-map-pulse {
+  fill: #c9a96e;
+  opacity: 0.5;
+  animation: map-pulse 2.4s ease-out infinite;
+}
+
+.student-map-label {
+  fill: var(--tone-heading);
+  font-family: var(--font-sans);
+  font-size: 23px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: var(--tone-surface);
+  stroke-linejoin: round;
+  stroke-width: 5px;
+}
+
+@keyframes map-pulse {
+  to {
+    opacity: 0;
+    transform: scale(2.6);
+  }
 }
 
 /*

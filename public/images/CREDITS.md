@@ -40,3 +40,7 @@ Everything in `clinic/` shows our own clinic, in photos supplied by the owner on
 Photos of our own doctors, taken from the previous frenchaesthetic.com site. The owner confirmed on 29 Oct 2026 that they are real photos, not AI-made.
 
 - `doctors/dr-sadaf.webp`, `doctors/dr-maria.webp`, `doctors/dr-iqra-fatima.webp`
+
+## Map
+
+The outline of Pakistan on the academy home comes from Natural Earth (public domain), through the world-atlas package.

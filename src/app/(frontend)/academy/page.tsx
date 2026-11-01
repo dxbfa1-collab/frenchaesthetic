@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { BatchCalendar, type CalendarBatch } from '@/components/academy/BatchCalendar'
 import { campusName, seatStatus } from '@/components/academy/BatchList'
 import { JourneyTimeline } from '@/components/academy/JourneyTimeline'
+import { StudentMap } from '@/components/academy/StudentMap'
 import { CourseCard } from '@/components/academy/CourseCard'
 import { TrainerCard } from '@/components/academy/TrainerCard'
 import { ArrowRightIcon, WhatsAppIcon } from '@/components/icons'
@@ -291,11 +292,13 @@ export default async function AcademyHome() {
               Meet the faculty <ArrowRightIcon size={18} />
             </Link>
           </div>
-          <div data-reveal="" className="lg:pt-24">
-            <p className="label eyebrow">Our students</p>
-            <p className="mt-5 font-display text-[2rem] leading-tight text-heading sm:text-[2.5rem]">
-              Students have joined from Lahore, Gujranwala, Sialkot, Kasur and Daska.
-            </p>
+          <div data-reveal="">
+            <SectionHeading
+              eyebrow="Our students"
+              title="Students from"
+              accent="different cities."
+            />
+            <StudentMap />
           </div>
         </Container>
       </section>
