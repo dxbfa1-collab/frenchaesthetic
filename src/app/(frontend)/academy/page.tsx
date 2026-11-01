@@ -297,6 +297,7 @@ export default async function AcademyHome() {
               eyebrow="Our students"
               title="Students from"
               accent="different cities."
+              intro="Our students come to Lahore for training from cities across Pakistan."
             />
             <StudentMap />
           </div>

@@ -1240,27 +1240,20 @@ a.marquee-chip:hover {
   stroke-linejoin: round;
 }
 
-.student-map-focus {
-  fill: rgb(201 169 110 / 0.2);
-  stroke: #c9a96e;
-  stroke-width: 2;
+.student-map-disputed {
+  stroke: var(--tone-line);
+  stroke-width: 1;
 }
 
-.student-map-link {
-  fill: none;
-  stroke: #c9a96e;
-  stroke-dasharray: 5 5;
+.student-map-hatch {
+  stroke: var(--tone-line);
   stroke-width: 1.5;
 }
 
-.student-map-lens {
-  fill: var(--tone-bg);
-}
-
-.student-map-rim {
-  fill: none;
-  stroke: #c9a96e;
-  stroke-width: 2.5;
+.student-map-leader {
+  stroke: var(--tone-heading);
+  stroke-opacity: 0.45;
+  stroke-width: 1;
 }
 
 .student-map-pin {
@@ -1278,10 +1271,10 @@ a.marquee-chip:hover {
 .student-map-label {
   fill: var(--tone-heading);
   font-family: var(--font-sans);
-  font-size: 23px;
+  font-size: 19px;
   font-weight: 800;
   paint-order: stroke;
-  stroke: var(--tone-surface);
+  stroke: var(--tone-bg);
   stroke-linejoin: round;
   stroke-width: 5px;
 }
