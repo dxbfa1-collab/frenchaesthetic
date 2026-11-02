@@ -50,6 +50,8 @@ export const metadata: Metadata = {
   },
   twitter: { card: 'summary_large_image' },
   formatDetection: { telephone: false, email: false, address: false },
+  // Bing Webmaster Tools ownership check (owner, 3 Nov 2026). Not a secret.
+  verification: { other: { 'msvalidate.01': '67F49AF5ED9988918DB1DCF829AB47F8' } },
 }
 
 export const viewport: Viewport = {
